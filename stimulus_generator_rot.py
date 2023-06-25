@@ -1,6 +1,8 @@
 
+import jsonlines
 
 
+# Functions for encoding in rot-2 or rot-13
 alphabet = "abcdefghijklmnopqrstuvwxyz"
 rot2 = {}
 rot13 = {}
@@ -36,29 +38,61 @@ def rot13_encode(sequence):
 print(rot2_encode("stay"))
 print(rot13_encode("stay"))
 
-for fi_name, fo_name in [("sentence_outputs/high_probability.txt", "stimuli/rot2_highprob.txt"), ("sentence_outputs/low_probability.txt", "stimuli/rot2_lowprob.txt"), ("sentence_outputs/adversarial.txt", "stimuli/rot2_adversarial.txt"), ("sentence_outputs/random.txt", "stimuli/rot2_random.txt")]:
+for fi_name, fo_name in [("sentence_outputs/high_probability.txt", "stimuli/rot2_highprob.jsonl"), ("sentence_outputs/low_probability.txt", "stimuli/rot2_lowprob.jsonl"), ("sentence_outputs/adversarial.txt", "stimuli/rot2_adversarial.jsonl"), ("sentence_outputs/random.txt", "stimuli/rot2_random.jsonl")]:
     
     fi = open(fi_name, "r")
     fo2 = open(fo_name, "w")
+    jsl2 = jsonlines.Writer(fo2)
     fo13 = open(fo_name.replace("rot2", "rot13"), "w")
+    jsl13 = jsonlines.Writer(fo13)
 
     count_encoded = 0
     for line in fi:
+        example2 = {}
+        example13 = {}
+
+        # Task
+        example2["task_name"] = "rot2"
+        example13["task_name"] = "rot13"
+
+        # Condition
+        example_type = fo_name.split("_")[1].split(".")[0]
+        example2["example_type"] = example_type
+        example13["example_type"] = example_type
+
+
         sentence = line.strip()
         encoded2 = rot2_encode(sentence)
         encoded13 = rot13_encode(sentence)
 
-        inp2 = 'Rot-2 is a cipher in which each letter is shifted 2 positions forward in the alphabet. For example, "stay" would become "uvca". Decode the following message, which was written in rot-2: "' + encoded2 + '"'
-        inp13 = 'Rot-13 is a cipher in which each letter is shifted 2 positions forward in the alphabet. For example, "stay" would become "fgnl". Decode the following message, which was written in rot-13: "' + encoded13 + '"'
         
-        fo2.write(inp2 + "\n")
-        fo13.write(inp13 + "\n")
+        # Instruction
+        example2["task_instruction"] = 'Rot-2 is a cipher in which each letter is shifted 2 positions forward in the alphabet. For example, "stay" would become "uvca". Decode the following message, which was written in rot-2: "%s"'
+        example13["task_instruction"] = 'Rot-13 is a cipher in which each letter is shifted 13 positions forward in the alphabet. For example, "stay" would become "fgnl". Decode the following message, which was written in rot-13: "%s"'
+
+        # Input
+        example2["input"] = encoded2
+        example13["input"] = encoded13
+
+        # Combining the instruction and input (this is the string that should be given to the model)
+        example2["instruction_plus_input"] = example2["task_instruction"] % example2["input"]
+        example13["instruction_plus_input"] = example13["task_instruction"] % example13["input"]
+
+        # The correct output
+        example2["correct_output"] = sentence
+        example13["correct_output"] = sentence
+
+
+        jsl2.write(example2)
+        jsl13.write(example13)
+        
+
         count_encoded += 1
         if count_encoded == 100:
             break
 
 
-
+    
 
 
 

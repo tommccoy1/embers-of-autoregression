@@ -2,8 +2,10 @@
 # Stimuli
 
 - The inputs to provide to models are in the directory `stimuli/`
+- Each file is in [jsonlines](https://jsonlines.readthedocs.io/en/latest/) format
 - For now, the only ones that are ready to be run are the ones that start with `rot` (a total of 8 conditions: 4 for rot2 and 4 for rot13)
 - Each line in each file should be a totally separate conversation with the model. That is, provide the model with one line from the file, then record its response, then start a completely new conversation in order to process the next line. 
+- These files were produced by running `python stimulus_generator_rot.py` 
 
 # Miscellaneous notes
 
