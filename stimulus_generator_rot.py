@@ -67,8 +67,10 @@ for fi_name, fo_name in [("sentence_outputs/high_probability.txt", "stimuli/rot2
 
         
         # Instruction
-        example2["task_instruction"] = 'Rot-2 is a cipher in which each letter is shifted 2 positions forward in the alphabet. For example, "stay" would become "uvca". Decode the following message, which was written in rot-2: "%s"'
-        example13["task_instruction"] = 'Rot-13 is a cipher in which each letter is shifted 13 positions forward in the alphabet. For example, "stay" would become "fgnl". Decode the following message, which was written in rot-13: "%s"'
+        #example2["task_instruction"] = 'Rot-2 is a cipher in which each letter is shifted 2 positions forward in the alphabet. For example, "stay" would become "uvca". Decode the following message, which was written in rot-2: "%s"'
+        #example13["task_instruction"] = 'Rot-13 is a cipher in which each letter is shifted 13 positions forward in the alphabet. For example, "stay" would become "fgnl". Decode the following message, which was written in rot-13: "%s"'
+        example2["task_instruction"] = 'Rot-2 is a cipher in which each letter is shifted 2 positions forward in the alphabet. For example, here is a message written in rot-2 along with the original text that it was created from:\nRot-2 text: "Uvca jgtg!"\nOriginal text: "Stay here!"\n\nHere is another message in rot-2. Decode this message to produce the original text:\nRot-2 text: "%s"\nOriginal text:'
+        example13["task_instruction"] = 'Rot-13 is a cipher in which each letter is shifted 13 positions forward in the alphabet. For example, here is a message written in rot-13 along with the original text that it was created from:\nRot-13 text: "Fgnl urer!"\nOriginal text: "Stay here!"\n\nHere is another message in rot-13. Decode this message to produce the original text:\nRot-13 text: "%s"\nOriginal text:'
 
         # Input
         example2["input"] = encoded2
