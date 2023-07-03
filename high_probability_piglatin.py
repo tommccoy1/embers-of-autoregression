@@ -1,4 +1,7 @@
 
+TRANSFORMERS_PATH = '/scratch/gpfs/tm4633/transformers'
+import os
+os.environ['TRANSFORMERS_CACHE'] = TRANSFORMERS_PATH
 
 from nltk.tokenize import sent_tokenize, word_tokenize
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
@@ -117,7 +120,7 @@ count_printed = 0
 for sentence in sorted_sentences:
 
     # Print the 500 sentences with the maximum minimum log probability
-    if count_printed >= 500:
+    if count_printed >= 600:
         break
 
     words = word_tokenize(sentence[0])
@@ -131,16 +134,17 @@ for sentence in sorted_sentences:
     for word in words:
         if word[0].lower() == "q":
             bad_first = True
+            print(word)
+            break
             
-
-        if not (word.isalpha() or word in [".", ",", "!", ":", ";", "\"", "'"]):
+        if (not (word.isalpha() or word in [".", ",", "!", ":", ";", "\"", "(", ")", ])) or (word.isupper() and len(word) > 1):
             bad_first = True
+            print(word)
+            break
+
 
     if bad_first:
         continue
-                
-
-    
     
     print(sentence[1], sentence[0])
     fo.write(sentence[0] + "\n")

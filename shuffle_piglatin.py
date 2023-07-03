@@ -1,7 +1,7 @@
 
 from random import shuffle
 
-fi = open("sentence_outputs/low_probability.txt", "r")
+fi = open("sentence_outputs/low_probability_piglatin.txt", "r")
 
 lengths = []
 all_words = []
@@ -26,7 +26,7 @@ for line in fi:
     all_words = all_words + words[:]
 
 shuffle(all_words)
-fo = open("sentence_outputs/random.txt", "w")
+fo = open("sentence_outputs/random_piglatin.txt", "w")
 start_index = 0
 for length in lengths:
     line = all_words[start_index:start_index+length]
