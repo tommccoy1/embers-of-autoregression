@@ -137,17 +137,18 @@ for sentence in sorted_sentences:
             print(word)
             break
 
-        if word[0].lower() in ["c", "g"] and word[1].lower() in ["a", "e", "i", "o", "u", "y"]:
-            bad_first = True
-            print(word)
-            break
+        if word[0].lower() in ["c", "g"] and len(word) > 1:
+            if word[1].lower() in ["e", "i", "y"]:
+                bad_first = True
+                print(word)
+                break
 
         if word.lower() in ["one", "two"]:
             bad_first = True
             print(word)
             break
             
-        if (not (word.isalpha() or word in [".", ",", "!", ":", ";", "\"", "(", ")", ])) or (word.isupper() and len(word) > 1):
+        if (not (word.isalpha() or word in [".", ",", "!", ":", ";", "\"", "(", ")", "’", '“', '”', '—'])) or (word.isupper() and len(word) > 1):
             bad_first = True
             print(word)
             break
@@ -160,5 +161,6 @@ for sentence in sorted_sentences:
     fo.write(sentence[0] + "\n")
     count_printed += 1
 
-
+print("STARTING COUNT", len(sorted_sentences))
+print("PRINTED COUNT", count_printed)
 
