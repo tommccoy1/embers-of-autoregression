@@ -120,7 +120,7 @@ count_printed = 0
 for sentence in sorted_sentences:
 
     # Print the 500 sentences with the maximum minimum log probability
-    if count_printed >= 600:
+    if count_printed >= 1000:
         break
 
     words = word_tokenize(sentence[0])
@@ -133,6 +133,16 @@ for sentence in sorted_sentences:
     bad_first = False
     for word in words:
         if word[0].lower() == "q":
+            bad_first = True
+            print(word)
+            break
+
+        if word[0].lower() in ["c", "g"] and word[1].lower() in ["a", "e", "i", "o", "u", "y"]:
+            bad_first = True
+            print(word)
+            break
+
+        if word.lower() in ["one", "two"]:
             bad_first = True
             print(word)
             break
