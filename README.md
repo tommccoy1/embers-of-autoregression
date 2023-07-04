@@ -19,3 +19,8 @@ Excluding if:
 - Not a complete sentence
 
 
+# Pig Latin data creation notes
+- Exclude sentences containing a word that starts with a soft C or soft G; or the word "one" or "two" or starts with "eu"
+- Exclude acronyms/abbreviations
+- Show example of apostrophe
+

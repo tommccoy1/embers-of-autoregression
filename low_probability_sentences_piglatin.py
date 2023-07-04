@@ -90,8 +90,8 @@ mask_id = roberta_tokenizer.encode("[MASK]")[1]
 
 checked = {}
 
-fi = open("sentence_outputs/high_probability_redo_piglatin.txt", "r")
-fo = open("sentence_outputs/low_probability_redo_piglatin.txt", "w")
+fi = open("sentence_outputs/high_probability_piglatin.txt", "r")
+fo = open("sentence_outputs/low_probability_piglatin.txt", "w")
 for line in fi:
     if line in checked:
         fo.write(checked[line])

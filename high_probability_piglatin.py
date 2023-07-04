@@ -143,7 +143,7 @@ for sentence in sorted_sentences:
                 print(word)
                 break
 
-        if word.lower() in ["one", "two"]:
+        if word.lower() in ["one", "two"] or word.lower().startswith("eu"):
             bad_first = True
             print(word)
             break

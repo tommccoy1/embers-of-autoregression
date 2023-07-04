@@ -14,7 +14,12 @@ def pig_encode(sentence, suffix="ay"):
             word = word[:-1]
 
         if not word.isalpha() or word[0] == "q":
-            return "UNUSABLE"
+            usable = True
+            for char in word:
+                if char.isalpha() or char == "'":
+                    continue
+                else:
+                    return "UNUSABLE"
 
         if word[0] in ["a", "e", "i", "o", "u"]:
             new_word = word + suffix
