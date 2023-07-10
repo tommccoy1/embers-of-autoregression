@@ -21,6 +21,7 @@ Excluding if:
 
 # Pig Latin data creation notes
 - Exclude sentences containing a word that starts with a soft C or soft G; or the word "one" or "two" or starts with "eu"
+- TODO: EXCLUDE STARTING WITH U - UNIVERSITY, USUAL, ...
 - Exclude acronyms/abbreviations
 - Show example of apostrophe
 

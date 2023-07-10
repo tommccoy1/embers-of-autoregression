@@ -13,7 +13,8 @@ def pig_encode(sentence, suffix="ay"):
             punct = word[-1]
             word = word[:-1]
 
-        if not word.isalpha() or word[0] == "q":
+        if (not word.isalpha() or word[0] == "q") and not (word == "—" or word == "–"):
+
             usable = True
             for char in word:
                 if char.isalpha() or char == "'":
@@ -21,7 +22,9 @@ def pig_encode(sentence, suffix="ay"):
                 else:
                     return "UNUSABLE"
 
-        if word[0] in ["a", "e", "i", "o", "u"]:
+        if word == "—" or word == "–":
+            new_word = word
+        elif word[0] in ["a", "e", "i", "o", "u"]:
             new_word = word + suffix
         elif word[0] == "y":
             new_word = word[1:] + "y" + suffix
