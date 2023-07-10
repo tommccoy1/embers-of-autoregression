@@ -148,7 +148,7 @@ for sentence in sorted_sentences:
             print(word)
             break
             
-        if (not (word.isalpha() or word in [".", ",", "!", ":", ";", "\"", "(", ")", "’", '“', '”', '—'])) or (word.isupper() and len(word) > 1):
+        if (not (word.replace("'", "").isalpha() or word in [".", ",", "!", ":", ";", "\"", "(", ")", "’", '“', '”', '—'])) or (word.isupper() and len(word) > 1):
             bad_first = True
             print(word)
             break

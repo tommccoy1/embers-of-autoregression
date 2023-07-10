@@ -89,9 +89,15 @@ roberta_model = RobertaForMaskedLM.from_pretrained('roberta-large').to(device)
 mask_id = roberta_tokenizer.encode("[MASK]")[1]
 
 checked = {}
+fi1 = open("sentence_outputs/high_probability.txt", "r")
+fi2 = open("sentence_outputs/low_probability.txt", "r")
 
-fi = open("sentence_outputs/high_probability_piglatin.txt", "r")
-fo = open("sentence_outputs/low_probability_piglatin.txt", "w")
+#for line1, line2 in zip(fi1, fi2):
+#    checked[line1] = line2
+
+
+fi = open("sentence_outputs/high_probability_piglatin_redo.txt", "r")
+fo = open("sentence_outputs/low_probability_piglatin_redo.txt", "w")
 for line in fi:
     if line in checked:
         fo.write(checked[line])
