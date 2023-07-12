@@ -24,4 +24,7 @@ Excluding if:
 - TODO: EXCLUDE STARTING WITH U - UNIVERSITY, USUAL, ...
 - Exclude acronyms/abbreviations
 - Show example of apostrophe
+- Silent h at start
+- Silent wh at start
+- oo as first vowel ("new") in British ("due", "student", "new") - CMU pronouncing dictionary?
 

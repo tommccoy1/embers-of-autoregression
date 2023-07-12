@@ -17,9 +17,10 @@ def pig_encode(sentence, suffix="ay"):
 
             usable = True
             for char in word:
-                if char.isalpha() or char == "'":
+                if char.isalpha() or char in ["'", "’", "“", "”"]:
                     continue
                 else:
+                    print("\"" + word + "\"", char)
                     return "UNUSABLE"
 
         if word == "—" or word == "–":
