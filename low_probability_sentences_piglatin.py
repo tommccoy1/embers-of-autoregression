@@ -111,7 +111,7 @@ for line in fi:
     candidates = []
 
     # Produce 20 candidates
-    for _ in range(20):
+    for _ in range(100):
         new_sentence = bertify(sentence)
         candidates.append([perplexity_gpt2(new_sentence).item(), new_sentence])
     
