@@ -9,7 +9,7 @@ for line in fi:
     parts = line.strip().split("\t")
     cmu[parts[0].lower()] = parts[1].replace("0", "").replace("1", "").replace("2", "")
 
-ignorable = [".", ",", "'", "?", "!", ":", ";", "’", "—"]
+ignorable = [".", ",", "'", "?", "!", ":", ";", "’", "—", "–"]
 
 def contains_vowel(word):
     vowels = ["a", "e", "i", "o", "u"]
@@ -44,8 +44,8 @@ def first_vowel_cmu(word):
 
     return phonemes[index_vowel]
 
-manually_verified_british_y = ["crucial", "do", "group", "groups", "loom", "looming", "move", "moving", "room", "rule", "rules", "soon", "through", "to", "too", "truth", "you"]
-manually_verified = ["n't", "instagram", "'s", "headscarf", "ethnicities", "unlevel", "steamships", "impactful", "optimisation", "kyrgyz", "digitisation", "fundraise", "ll", "didn", "“", "”"] + manually_verified_british_y 
+manually_verified_british_y = ["boot", "crucial", "do", "doing", "group", "groups", "loom", "looms", "looming", "move", "moving", "room", "root", "rule", "rules", "soon", "through", "throughout", "to", "too", "truly", "truth", "you"]
+manually_verified = ["n't", "instagram", "'s", "headscarf", "ethnicities", "unlevel", "steamships", "impactful", "optimisation", "kyrgyz", "digitisation", "fundraise", "ll", "didn", "“", "”", "fandom", "scholarships"] + manually_verified_british_y 
 
 phoneme_dict = {}
 phoneme_dict["B"] = ["b"]
@@ -73,10 +73,12 @@ cluster_dict[("DH",)] = ["th"]
 cluster_dict[("TH",)] = ["th"]
 cluster_dict[("SH",)] = ["sh"]
 cluster_dict[("W",)] = ["wh"]
-cluster_dict[("R",)] = ["wr"]
+cluster_dict[("R",)] = ["wr", "rh"]
 cluster_dict[("N",)] = ["kn"]
 cluster_dict[("TH", "R",)] = ["thr"]
+cluster_dict[("TH", "W",)] = ["thw"]
 cluster_dict[("F",)] = ["ph"]
+cluster_dict[("K", "R",)] = ["chr"]
 
 def phonemes_match_letters(word):
 
@@ -104,7 +106,7 @@ def phonemes_match_letters(word):
         return False
 
 
-fi2 = open("sentence_outputs/high_probability_piglatin.txt", "r")
+fi2 = open("sentence_outputs/low_probability_piglatin.txt", "r")
 for line in fi2:
     words = word_tokenize(line.lower().strip())
 
