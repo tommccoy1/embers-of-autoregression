@@ -44,8 +44,8 @@ def first_vowel_cmu(word):
 
     return phonemes[index_vowel]
 
-manually_verified_british_y = ["boot", "crucial", "do", "doing", "group", "groups", "loom", "looms", "looming", "move", "movements", "moving", "room", "root", "rule", "rules", "ruling", "soon", "through", "throughout", "to", "too", "truly", "truth", "you"]
-manually_verified = ["n't", "instagram", "'s", "headscarf", "ethnicities", "unlevel", "steamships", "impactful", "optimisation", "kyrgyz", "digitisation", "fundraise", "ll", "didn", "“", "”", "fandom", "scholarships"] + manually_verified_british_y 
+manually_verified_british_y = ["boosts", "boot", "crucial", "do", "doing", "food", "group", "groups", "loom", "looms", "looming", "move", "movements", "moving", "room", "root", "rule", "rules", "ruling", "rune", "runes", "soon", "through", "throughout", "to", "too", "truly", "truth", "you"]
+manually_verified = ["n't", "instagram", "'s", "headscarf", "ethnicities", "unlevel", "steamships", "impactful", "optimisation", "kyrgyz", "digitisation", "fundraise", "ll", "didn", "“", "”", "fandom", "scholarships", "poetical", "offsite", "limpet", "mooing", "equably", "leasers", "risible", "versified", "measurers", "busying"] + manually_verified_british_y 
 
 phoneme_dict = {}
 phoneme_dict["B"] = ["b"]
@@ -106,32 +106,34 @@ def phonemes_match_letters(word):
     else:
         return False
 
+fi_list = ["high_probability_piglatin.txt", "low_probability_piglatin.txt", "adversarial_piglatin.txt"]
+fi2 = open("sentence_outputs/adversarial_piglatin.txt", "r")
+for filename in fi_list:
+    fi = open("sentence_outputs/" + filename, "r")
+    for line in fi:
+        words = word_tokenize(line.lower().strip())
 
-fi2 = open("sentence_outputs/low_probability_piglatin.txt", "r")
-for line in fi2:
-    words = word_tokenize(line.lower().strip())
+        for index, word in enumerate(words):
+            if word in ignorable:
+                continue
 
-    for index, word in enumerate(words):
-        if word in ignorable:
-            continue
-
-        if word in manually_verified:
-            pass
-        elif word not in cmu:
-            print("NOT IN CMU", word)
-        elif not contains_vowel(word):
-            if index != 0 and words[index-1] in ["'", "’"] and word in ["m", "s", "t", "ll"]:
+            if word in manually_verified:
                 pass
-            else:
-                print("NO VOWEL", word, words[index-1])
+            elif word not in cmu:
+                print("NOT IN CMU", word)
+            elif not contains_vowel(word):
+                if index != 0 and words[index-1] in ["'", "’"] and word in ["m", "s", "t", "ll"]:
+                    pass
+                else:
+                    print("NO VOWEL", word, words[index-1])
         
-        elif first_vowel_cmu(word) == "UW":
-            print("OO", word)
-        else:
-            if phonemes_match_letters(word):
-                #print("GOOD", word)
-                pass
+            elif first_vowel_cmu(word) == "UW":
+                print("OO", word)
             else:
-                print("BAD", word)
+                if phonemes_match_letters(word):
+                    #print("GOOD", word)
+                    pass
+                else:
+                    print("BAD", word)
 
 

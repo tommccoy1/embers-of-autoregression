@@ -20,7 +20,9 @@ def only_alnum(string):
 
     return remove_excess_spaces("".join(new_string))
 
-for line in fi:
+for index, line in enumerate(fi):
+    if index >= 100:
+        break
     words = only_alnum(line.strip()).lower().split()
     lengths.append(len(words))
     all_words = all_words + words[:]

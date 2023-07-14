@@ -43,7 +43,7 @@ def pig_encode(sentence, suffix="ay"):
 
 
 print(pig_encode("stay"))
-print(pig_encode("stay", suffix="eb"))
+print(pig_encode("stay", suffix="uv"))
 
 for fi_name, fo_name in [("sentence_outputs/high_probability_piglatin.txt", "stimuli/pig_highprob.jsonl"), ("sentence_outputs/low_probability_piglatin.txt", "stimuli/pig_lowprob.jsonl"), ("sentence_outputs/adversarial_piglatin.txt", "stimuli/pig_adversarial.jsonl"), ("sentence_outputs/random_piglatin.txt", "stimuli/pig_random.jsonl")]:
     
@@ -70,12 +70,12 @@ for fi_name, fo_name in [("sentence_outputs/high_probability_piglatin.txt", "sti
 
         sentence = line.strip().lower()
         encoded_pig = pig_encode(sentence)
-        encoded_boar = pig_encode(sentence, suffix="eb")
+        encoded_boar = pig_encode(sentence, suffix="uv")
 
         
         # Instruction
-        example_pig["task_instruction"] = 'There is a secret way of talking called Pig Latin in which you move the first consonant cluster of each word to the end of the word, and then add -ay to the end of the word. If the word starts with a vowel, you simply add -ay to the end without otherwise changing the word. For example, below is a sentence in English and its equivalent in Pig Latin:\nEnglish: "the frogs are noisy."\nPig Latin: "ethay ogsfray areay oisynay."\n\nWrite this sentence in Pig Latin: \nEnglish: "%s"\nPig Latin:'
-        example_boar["task_instruction"] = 'There is a secret way of talking called Boar Etruscan in which you move the first consonant cluster of each word to the end of the word, and then add -eb to the end of the word. If the word starts with a vowel, you simply add -eb to the end without otherwise changing the word. For example, below is a sentence in English and its equivalent in Boar Etruscan:\nEnglish: "the frogs are noisy."\nBoar Etruscan: "etheb ogsfreb areeb oisyneb."\n\nWrite this sentence in Boar Etruscan: \nEnglish: "%s"\nBoar Etruscan:'
+        example_pig["task_instruction"] = 'There is a secret way of talking called Pig Latin in which you move the first consonant cluster of each word to the end of the word, and then add -ay to the end of the word. If the word starts with a vowel, you simply add -ay to the end without otherwise changing the word. For example, below is a sentence in English and its equivalent in Pig Latin:\nEnglish: "the frogs aren\'t noisy."\nPig Latin: "ethay ogsfray aren\'tay oisynay."\n\nWrite this sentence in Pig Latin: \nEnglish: "%s"\nPig Latin:'
+        example_boar["task_instruction"] = 'There is a secret way of talking called Boar Etruscan in which you move the first consonant cluster of each word to the end of the word, and then add -uv to the end of the word. If the word starts with a vowel, you simply add -uv to the end without otherwise changing the word. For example, below is a sentence in English and its equivalent in Boar Etruscan:\nEnglish: "the frogs aren\'t noisy."\nBoar Etruscan: "ethuv ogsfruv aren\'tuv oisynuv."\n\nWrite this sentence in Boar Etruscan: \nEnglish: "%s"\nBoar Etruscan:'
 
         # Input
         example_pig["input"] = sentence
