@@ -44,7 +44,7 @@ def first_vowel_cmu(word):
 
     return phonemes[index_vowel]
 
-manually_verified_british_y = ["boot", "crucial", "do", "doing", "group", "groups", "loom", "looms", "looming", "move", "moving", "room", "root", "rule", "rules", "soon", "through", "throughout", "to", "too", "truly", "truth", "you"]
+manually_verified_british_y = ["boot", "crucial", "do", "doing", "group", "groups", "loom", "looms", "looming", "move", "movements", "moving", "room", "root", "rule", "rules", "ruling", "soon", "through", "throughout", "to", "too", "truly", "truth", "you"]
 manually_verified = ["n't", "instagram", "'s", "headscarf", "ethnicities", "unlevel", "steamships", "impactful", "optimisation", "kyrgyz", "digitisation", "fundraise", "ll", "didn", "“", "”", "fandom", "scholarships"] + manually_verified_british_y 
 
 phoneme_dict = {}
@@ -79,6 +79,7 @@ cluster_dict[("TH", "R",)] = ["thr"]
 cluster_dict[("TH", "W",)] = ["thw"]
 cluster_dict[("F",)] = ["ph"]
 cluster_dict[("K", "R",)] = ["chr"]
+cluster_dict[("S", "F",)] = ["sph"]
 
 def phonemes_match_letters(word):
 
