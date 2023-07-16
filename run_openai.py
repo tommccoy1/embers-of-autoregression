@@ -27,7 +27,7 @@ def solve_file(name, model, temperature):
     file = f'./stimuli/{name}.jsonl'
     if not os.path.exists(file):
         print(f'File {file} does not exist')
-        return
+        return None
     with open(file, 'r') as f:
         lines = f.readlines()
     lines = [json.loads(line) for line in lines]
@@ -67,5 +67,6 @@ if __name__ == '__main__':
         for condition in conditions:
             name = f'{task}_{condition}'
             d = solve_file(name, model=model, temperature=0.0)
-            print(f'{name}, {model}: {d["acc"]:.2f} ({d["ed"]:.2f})')
+            if d is not None:
+                print(f'{name}, {model}: {d["acc"]:.2f} ({d["ed"]:.2f})')
 
