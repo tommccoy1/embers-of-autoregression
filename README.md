@@ -9,11 +9,18 @@
 
 ## UPDATE (July 13)
 
-- We should rerun the "random" conditions for rot2 and rot13 - i.e., `rot13_random.jsonl` and `rot2_random.jsonl` 
+- We should rerun the "random" conditions for rot2 and rot13 - i.e., `rot13_random.jsonl` and `rot2_random.jsonl`
+```bash
+python run_openai.py --tasks rot13,rot2 --conditions random --model gpt-4
+python run_openai.py --tasks rot13,rot2 --conditions random --model gpt-3.5-turbo
+```
 - The Pig Latin stimuli are now ready. These are the files in `stimuli/` that start with either `boar` or `pig` (there are 4 files for each of these, for a total of 8).
 - The Acronym stimuli are now ready. These are the files in `stimuli/` that start with `acronym` (6 files in total). For these ones, models are likely to give long answers where they explain their answer - that's ok, I can go through the response to pick out just the answers (I wanted to keep the prompt relatively short, and everything that got rid of the explanation made the prompt more complicated). 
 - The Keyboard Cipher stimuli are now ready. These are the files in `stimuli/` that start with `keyboard` (4 files in total).
-
+```bash
+python run_openai.py --tasks boar,pig,acronym1,acronym2,keyboard --conditions random,adversarial,highprob,lowprob --model gpt-4
+python run_openai.py --tasks boar,pig,acronym1,acronym2,keyboard --conditions random,adversarial,highprob,lowprob --model gpt-3.5-turbo
+```
 # Miscellaneous notes
 
 Running on GPU:
