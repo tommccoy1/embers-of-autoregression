@@ -1,5 +1,16 @@
 
 
+import os
+os.environ['TRANSFORMERS_CACHE'] = '/scratch/gpfs/tm4633/transformers' 
+
+verified = {}
+for line in open("sentence_outputs/high_probability.txt", "r"):
+    verified[line.strip()] = 1
+for line in open("sentence_outputs/two_articles_combined.txt", "r"):
+    verified[line.strip()] = 1
+for line in open("sentence_outputs/high_probability_piglatin.txt", "r"):
+    verified[line.strip()] = 1
+
 from nltk.tokenize import sent_tokenize, word_tokenize
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 import torch
@@ -111,11 +122,17 @@ for index, filename in enumerate(filenames):
             words = word_tokenize(sentence.lower())
 
             count_articles = 0
-            for word in words:
+            nonalpha_neighbors = False
+            for index, word in enumerate(words):
                 if word in ["a", "an", "the"]:
                     count_articles += 1
+                
+                    if index == 0 or index == len(words)-1:
+                        nonalpha_neighbors = True
+                    elif not words[index-1].isalpha() or not words[index+1].isalpha():
+                        nonalpha_neighbors = True
 
-            if count_articles >= 2:
+            if count_articles >= 1 and not nonalpha_neighbors:
                 min_prob = min_prob_gpt2(sentence)
                 scored_sentences.append([sentence, min_prob])
 
@@ -125,7 +142,7 @@ count_printed = 0
 for sentence in sorted_sentences:
 
     # Print the 500 sentences with the maximum minimum log probability
-    if count_printed >= 500:
+    if count_printed >= 1500:
         break
 
     # Exclude sentences shorter than 10 tokens
@@ -134,7 +151,10 @@ for sentence in sorted_sentences:
         continue
     
     print(sentence[1], sentence[0])
-    fo.write(sentence[0] + "\n")
+    if sentence[0] in verified:
+        fo.write(sentence[0] + "\n")
+    else:
+        fo.write("xxx" + sentence[0] + "\n")
     count_printed += 1
 
 
