@@ -1,7 +1,9 @@
 
 import json
 from Levenshtein import distance
-
+import statistics
+import scipy
+import numpy as np
 
 fi = open("logs/acronyms_verified.tsv", "r")
 index2name = {}
@@ -28,11 +30,14 @@ for line in fi:
 for model in ["gpt-3.5-turbo", "gpt-4"]:
     print("")
     print(model)
+    dists_dict = {}
     for condition in ["acronym1_highprob", "acronym1_random", "acronym2_highprob", "acronym2_random"]:
         
         fi = open("logs/" + condition + "_" + model + "_temp=0.0_n=1.json", "r")
         data = json.load(fi)
 
+
+        dists = []
         count_correct = 0
         count_total = 0
         total_dist = 0
@@ -44,9 +49,14 @@ for model in ["gpt-3.5-turbo", "gpt-4"]:
 
             dist = distance(gt, res)
             total_dist += dist
+            dists.append(dist)
             
             if gt == res:
                 count_correct += 1
             count_total += 1
 
-        print(condition, "acc:", count_correct*1.0/count_total, "levdist:", total_dist*1.0/count_total)
+        print(condition, "acc:", count_correct*1.0/count_total, "levdist:", total_dist*1.0/count_total, statistics.median(dists))
+        dists_dict[condition] = dists
+
+    print("Acronym 1", scipy.stats.ttest_ind(a=np.array(dists_dict["acronym1_highprob"]), b=np.array(dists_dict["acronym1_random"])))
+    print("Acronym 2", scipy.stats.ttest_ind(a=np.array(dists_dict["acronym2_highprob"]), b=np.array(dists_dict["acronym2_random"])))
