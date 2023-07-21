@@ -23,7 +23,7 @@ def edit_distance(s1: str, s2: str) -> int:
     return previous_row[-1]
 
 
-def solve_file(name, model, temperature):
+def solve_file(name, model, temperature, max_tokens):
     file = f'./stimuli/{name}.jsonl'
     if not os.path.exists(file):
         print(f'File {file} does not exist')
@@ -33,7 +33,7 @@ def solve_file(name, model, temperature):
     lines = [json.loads(line) for line in lines]
     prompts = [line['instruction_plus_input'] for line in lines]
     gts = ['"' + line['correct_output'] + '"' for line in lines]
-    res = gpts(prompts, model=model, temperature=0.0)
+    res = gpts(prompts, model=model, temperature=0.0, max_tokens=max_tokens)
     accs = [(r == gt) for r, gt in zip(res, gts)]
     eds = [edit_distance(r, gt) for r, gt in zip(res, gts)]
     acc = sum(accs) / len(accs)
@@ -54,6 +54,7 @@ def parse_args():
     args.add_argument('--tasks', type=str, required=True, help='split by comma')
     args.add_argument('--conditions', type=str, required=True, help='split by comma')
     args.add_argument('--model', type=str, required=True, choices=['gpt-3.5-turbo', 'gpt-4'])
+    args.add_argument('--max_tokens', type=int, help='default = 1000', default=1000)
     args = args.parse_args()
     return args
 
@@ -62,11 +63,12 @@ if __name__ == '__main__':
     tasks = args.tasks.split(',')
     conditions = args.conditions.split(',')
     model = args.model
+    max_tokens = args.max_tokens
 
     for task in tasks:
         for condition in conditions:
             name = f'{task}_{condition}'
-            d = solve_file(name, model=model, temperature=0.0)
+            d = solve_file(name, model=model, temperature=0.0, max_tokens=max_tokens)
             if d is not None:
                 print(f'{name}, {model}: {d["acc"]:.2f} ({d["ed"]:.2f})')
 
