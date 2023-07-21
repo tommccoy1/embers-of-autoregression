@@ -67,8 +67,6 @@ for model in ["gpt-3.5-turbo"]:
                 if res[-1] == '"':
                     res = res[:-1]
 
-                res = res.lower()
-
                 
                 dist = distance(res, gt)
                 total_dist += dist
@@ -83,10 +81,10 @@ for model in ["gpt-3.5-turbo"]:
 
                 if res == gt:
                     count_by_number[len(gt.split())][0] += 1
-                else:
-                    print(gt)
-                    print(res)
-                    print("")
+                #else:
+                #    print(gt)
+                #    print(res)
+                #    print("")
                 count_by_number[len(gt.split())][1] += 1
 
                 

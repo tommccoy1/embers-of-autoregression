@@ -61,7 +61,7 @@ fo_common = open("../examples/capitalize_third_common.txt", "w")
 fo_rare = open("../examples/capitalize_third_rare.txt", "w")
 
 
-for length in range(1,11):
+for length in range(4,11):
     for _ in range(30):
         words_common = []
         words_rare = []
