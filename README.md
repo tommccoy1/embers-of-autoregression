@@ -15,6 +15,8 @@ python run_openai.py --tasks keyboard --conditions highprob,lowprob,adversarial,
 python run_openai.py --tasks repeat --conditions highprob,lowprob,adversarial,random --model gpt-4
 python run_openai.py --tasks swap --conditions base_prev,base_next,prev_base,next_base --model gpt-4
 python run_openai.py --tasks multiplication --conditions number,word,allcaps,alternatingcaps --max_tokens 100 --model gpt-4
+python run_openai.py --tasks counting_words --conditions common,rare,common_common,common_rare,rare_common,rare_rare --max_tokens 25 --model gpt-4
+python run_openai.py --tasks capitalize_third --conditions common,rare --model gpt-4
 
 python run_openai.py --tasks acronym1 --conditions 11,12,13,14,15,21,22,23,24,25,31,32,33,34,35,41,42,43,44,45,51,52,53,54,55  --max_tokens 100 --model gpt-4
 python run_openai.py --tasks acronym2 --conditions 11  --max_tokens 100 --model gpt-4
@@ -236,3 +238,71 @@ python run_openai.py --tasks multiplication --conditions number,word,allcaps,alt
 ```
 python eval_multiplication.py
 ```
+
+
+# Counting task
+
+## Example generation
+
+```
+# Create a file listing the frequency and token count for words that appear at least 20 times in Wikitext
+python counting_tokens.py
+
+# Then create lists of candidate common and rare words: 400 for each token count (2, 3, or 4)
+python counting_candidate_words.py 
+# After this, we manually filtered the candidates, down to 150 of each token count
+
+# Count how often each number appears
+python counting_numbers.py
+
+# Create examples: 30 for each number 1 to 100, made from common or rare words; matching the tokenization
+# splits and word lengths across common and rare words
+python counting_words.py
+python counting_char.py
+
+# Create examples that also vary whether the output number is common or rare
+python counting_words_frequency.py
+python counting_chars_frequency.py
+```
+
+## Stimulus generation
+- Done with `stimulus_generation_scripts/stimulus_generator_counting.py` and `stimulus_generation_scripts/stimulus_generator_counting_frequency.py`
+
+## Model testing
+- Run these commands:
+```
+python run_openai.py --tasks counting_chars,counting_words --conditions common,rare,common_common,common_rare,rare_common,rare_rare --max_tokens 25 --model gpt-4 # TODO
+python run_openai.py --tasks counting_chars,counting_words --conditions common,rare,common_common,common_rare,rare_common,rare_rare --max_tokens 25 --model gpt-3.5-turbo
+```
+
+- Then, inside `evaluation/`:
+```
+python eval_counting.py
+python eval_counting_frequency.py
+```
+
+
+# Capitalize-third task
+
+## Example generation
+- Done with `example_generation_scripts/capitalize_third.py`
+
+## Stimulus generation
+- Done with `stimulus_generation_scripts/stimulus_generator_capitalize_third.py`
+
+## Model testing
+- Run these commands:
+```
+python run_openai.py --tasks capitalize_third --conditions common,rare --model gpt-4 # TODO
+python run_openai.py --tasks capitalize_third --conditions common,rare --model gpt-3.5-turbo
+```
+
+- Then, inside `evaluation/`:
+```
+python eval_capitalize_third.py
+```
+
+
+
+
+ 
