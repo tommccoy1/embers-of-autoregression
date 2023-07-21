@@ -8,7 +8,7 @@ for model in ["gpt-3.5-turbo", "gpt-4"]:
     print(model)
     for condition in ["pig_highprob", "pig_lowprob", "pig_random", "boar_highprob", "boar_lowprob", "boar_random"]:
         
-        fi = open("logs/" + condition + "_" + model + "_temp=0.0_n=1.json", "r")
+        fi = open("../logs/" + condition + "_" + model + "_temp=0.0_n=1.json", "r")
         data = json.load(fi)
 
         count_correct = 0
