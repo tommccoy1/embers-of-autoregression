@@ -1,5 +1,9 @@
 TOEFL-Spell/
 global_voices/
-old_code/
+old_logs/
+old_scripts/
+old_sentence_outputs/
+old_stimuli/
+old_wikitext/
 wikitext-103/
 .DS_Store
