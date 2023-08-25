@@ -73,8 +73,47 @@ The actual regressions were run in the notebook `Regressions.ipynb`.
 
 
 
+# Reversal task
 
+## Example generation
+- This task uses the same examples as the rot-13 task.
 
+## Stimulus generation
+- Done with `stimulus_generator_reverse_encode.py` and `stimulus_generator_reverse_decode.py`
+
+## Model testing
+- Run these commands:
+```
+python run_openai.py --tasks revenc,revdec --conditions highprob,mediumprob,lowprob,adversarial --model gpt-4
+python run_openai.py --tasks revenc,revdec --conditions highprob,mediumprob,lowprob,adversarial --model gpt-3.5-turbo
+```
+
+- Then, inside `evaluation/`:
+```
+python eval_reverse.py
+```
+
+## Statistics
+To compute summary statistics about the stimulus sets:
+```
+python stimuli_statistics.py --fi revenc_highprob.jsonl 
+python stimuli_statistics.py --fi revenc_mediumprob.jsonl 
+python stimuli_statistics.py --fi revenc_lowprob.jsonl 
+python stimuli_statistics.py --fi revenc_adversarial.jsonl 
+
+python stimuli_statistics.py --fi revdec_highprob.jsonl 
+python stimuli_statistics.py --fi revdec_mediumprob.jsonl
+python stimuli_statistics.py --fi revdec_lowprob.jsonl 
+python stimuli_statistics.py --fi revdec_adversarial.jsonl
+
+```
+
+To produce the data for use in R:
+```
+python tsv_reverse.py
+```
+
+The actual regressions were run in the notebook `Regressions.ipynb`.
 
 
 
@@ -148,42 +187,6 @@ python stimuli_statistics.py --fi pigdec_uv_mediumprob.jsonl
 python stimuli_statistics.py --fi pigdec_uv_lowprob.jsonl 
 python stimuli_statistics.py --fi pigdec_uv_adversarial.jsonl 
 ```
-
-# Reversal task
-
-## Example generation
-- This task uses the same examples as the rot-13 task.
-
-## Stimulus generation
-- Done with `stimulus_generator_reverse_encode.py` and `stimulus_generator_reverse_decode.py`
-
-## Model testing
-- Run these commands:
-```
-python run_openai.py --tasks revenc,revdec --conditions highprob,mediumprob,lowprob,adversarial --model gpt-4
-python run_openai.py --tasks revenc,revdec --conditions highprob,mediumprob,lowprob,adversarial --model gpt-3.5-turbo
-```
-
-- Then, inside `evaluation/`:
-```
-python eval_reverse.py
-```
-
-## Statistics
-To compute summary statistics about the stimulus sets:
-```
-python stimuli_statistics.py --fi revenc_highprob.jsonl 
-python stimuli_statistics.py --fi revenc_mediumprob.jsonl 
-python stimuli_statistics.py --fi revenc_lowprob.jsonl 
-python stimuli_statistics.py --fi revenc_adversarial.jsonl 
-
-python stimuli_statistics.py --fi revdec_highprob.jsonl 
-python stimuli_statistics.py --fi revdec_mediumprob.jsonl
-python stimuli_statistics.py --fi revdec_lowprob.jsonl 
-python stimuli_statistics.py --fi revdec_adversarial.jsonl
-
-```
-
 
 # Acronym task
 
