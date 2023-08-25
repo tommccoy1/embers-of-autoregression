@@ -197,20 +197,6 @@ The regressions were carried out in `Regressions.ipynb`.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-# BELOW HERE IS OLD STUFF
-
-
 # Acronym task
 
 ## Example generation
@@ -220,17 +206,18 @@ The regressions were carried out in `Regressions.ipynb`.
 wget https://s3.amazonaws.com/research.metamind.io/wikitext/wikitext-103-v1.zip
 unzip wikitext-103-v1.zip
 
-# Find all words that are 2 tokens long in uppercase (whether or not there
-# is a space before them), and similarly for lowercase; this produces one
-# file for uppercase and one for lowercase, both sorted by frequency in Wikitext
+# Find all words that appear in the CMU Pronouncing Dictionary that are 2 tokens long 
+# in uppercase (whether or not there is a space before them), and similarly for 
+# lowercase; this produces one file for uppercase and one for lowercase, 
+# both sorted by the probability assigned to them by GPT-2. This code assumes you have
+# already downloaded the CMU pronouncing dictionary, as described above under Pig Latin.
 cd example_generation_scripts
-python acronym_tokens_double.py
-probability_cmu.py
+python probability_cmu.py
 
 # We then manually removed any words in the lists that included profanity
 ```
 
-- Then, generate acronyms using `example_generation_scripts/acronym.py`. This controls for split points: that is, for a given line index, all 25 acronym files will have at that index an output word that has the same split point as all other files do, and each input word will have the same split point as the input words at the same position in all other files. The split point is the index where the first subword token ends.
+- Then, generate acronyms using `example_generation_scripts/acronym.py`. This controls for split points: that is, for a given line index, all generated acronym files will have at that index an output word that has the same split point as all other files do, and each input word will have the same split point as the input words at the same position in all other files. The split point is the index where the first subword token ends.
 - To check that the inputs and outputs match, and that the break points are correctly controlled for, we ran `python acronym_check.py` in `example_generation_scripts/- A note about the filenames: "1" means highest probability, "5" means lowest. Each file has a 2-digit tag indicating first the output probability then the input probability. E.g., `acronym1_51` means very low-probability outputs and very high-probability inputs.
 
 ## Stimulus generation
@@ -246,14 +233,7 @@ python run_openai.py --tasks acronym2 --conditions 11  --max_tokens 100 --model 
 python run_openai.py --tasks acronym2 --conditions 11  --max_tokens 100 --model gpt-3.5-turbo
 ```
 
-- Then, inside `evaluation/`:
-```
-python eval_acronym.py 
-```
-
-
-## Statistics
-To compute summary statistics about the stimulus sets:
+Compute statistics about the stimuli, inside `stimuli/':
 ```
 python stimuli_statistics_acronym.py --fi acronym1_11.jsonl 
 python stimuli_statistics_acronym.py --fi acronym1_21.jsonl
@@ -269,6 +249,25 @@ python stimuli_statistics_acronym.py --fi acronym1_15.jsonl
 python stimuli_statistics_acronym.py --fi acronym2_11.jsonl
 
 ```
+
+- Then, inside `evaluation/`:
+```
+python eval_acronym.py 
+```
+
+## Statistics
+The regressions were performed in the notebook `Regressions.py`.
+
+
+
+
+
+
+
+
+
+
+# BELOW HERE IS OLD STUFF
 
 
 # Counting task
