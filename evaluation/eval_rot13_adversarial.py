@@ -10,7 +10,7 @@ for line in fi_highprob:
 for model in ["gpt-3.5-turbo", "gpt-4"]:
     print("")
     print(model)
-    for condition in ["rot13dec_adversarial", "rot2dec_adversarial"]: 
+    for condition in ["rot13dec_adversarial"]: 
         
         fi = open("../logs/" + condition + "_" + model + "_temp=0.0_n=1.json", "r")
         data = json.load(fi)
@@ -36,6 +36,9 @@ for model in ["gpt-3.5-turbo", "gpt-4"]:
                 count_correct_full += 1
             if res == regularized:
                 count_regularized_full += 1
+                #print(gt)
+                #print(res)
+                #print("")
             for index, (word_gt, word_regularized) in enumerate(zip(gt.split(), regularized.split())):
                 if word_gt != word_regularized:
                     index_difference = index

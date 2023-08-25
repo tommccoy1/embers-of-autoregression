@@ -117,8 +117,8 @@ decoded_tokens = torch.LongTensor([len(roberta_tokenizer.decode([x])) for x in r
 gpt4_tokenizer = tiktoken.get_encoding("cl100k_base")
 
 
-fi = open("sentences/sentences_high_probability.txt", "r")
-fo = open("sentences/sentences_medium_probability.txt", "w")
+fi = open("../examples/sentences_high_probability.txt", "r")
+fo = open("../examples/sentences_medium_probability.txt", "w")
 for index, line in enumerate(fi):
     sentence = line.strip()
     fo.write("\n")

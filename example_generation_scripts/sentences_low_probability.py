@@ -1,8 +1,8 @@
 
 from random import shuffle
 
-fi = open("sentences/sentences_medium_probability.txt", "r")
-fo = open("sentences/sentences_low_probability.txt", "w")
+fi = open("../examples/sentences_medium_probability.txt", "r")
+fo = open("../examples/sentences_low_probability.txt", "w")
 
 # Preserve the first and last words in their positions; shuffle all others
 for index, line in enumerate(fi):

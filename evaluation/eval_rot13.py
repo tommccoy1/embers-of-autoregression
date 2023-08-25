@@ -1,7 +1,13 @@
 
 import json
 from Levenshtein import distance
+import statistics
 
+def second_not_first_contains(first, second, wordlist):
+    for word in wordlist:
+        if word in second and word not in first:
+            return True
+    return False
 
 for task in ["enc", "dec"]:
     
@@ -21,6 +27,7 @@ for task in ["enc", "dec"]:
             count_correct = 0
             count_total = 0
             total_dist = 0
+            dists = []
             for gt, res in zip(data["gts"], data["res"]):
                 if gt[0] == '"':
                     gt = gt[1:]
@@ -34,9 +41,18 @@ for task in ["enc", "dec"]:
 
                 dist = distance(gt, res)
                 total_dist += dist
+                dists.append(dist)
             
                 if gt == res:
                     count_correct += 1
+                #elif condition == "rot13dec_highprob" and model == "gpt-4":
+                elif task == "dec" and "highprob" in condition and model == "gpt-4" and  second_not_first_contains(gt, res, ["cipher", "code", "crypt", " rot", "shift"]):
+                #elif task == "dec" and "rot13" in condition and model == "gpt-4":
+                    #print(gt)
+                    #print(res)
+                    #print("")
+                    pass
                 count_total += 1
 
-            print(condition, "acc:", count_correct*1.0/count_total, "levdist:", total_dist*1.0/count_total)
+            print(condition, "acc:", count_correct*1.0/count_total, "levdist:", total_dist*1.0/count_total, statistics.median(dists))
+            #print(dists)

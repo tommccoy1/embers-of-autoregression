@@ -30,7 +30,11 @@ for task in ["enc", "dec"]:
     for model in ["gpt-3.5-turbo", "gpt-4"]:
         
         fo = open("table_rot13" + task + "_" + model + ".tsv", "w")
+        fo_dist = open("table_rot13" + task + "_" + model + "_dist.tsv", "w")
+        
+        # Headers
         fo.write("\t".join(["index", "input_nchars", "input_ntokens", "input_logprob", "output_nchars", "output_ntokens", "output_logprob", "correct"]) + "\n")
+        fo_dist.write("\t".join(["index", "input_nchars", "input_ntokens", "input_logprob", "output_nchars", "output_ntokens", "output_logprob", "correct", "distance"]) + "\n")
 
         for condition in ["rot13" + task + "_highprob", "rot13" + task + "_mediumprob", "rot13" + task + "_lowprob"]:
             inputs = []
@@ -62,9 +66,15 @@ for task in ["enc", "dec"]:
                     correct = "0"
                 count_total += 1
 
+                dist = distance(gt, res)
+
                 data = [str(index), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"], 
                         saved_stats[gt]["n_characters"], saved_stats[gt]["n_gpt4_tokens"], saved_stats[gt]["gpt2_logprob"], correct]
                 fo.write("\t".join(data) + "\n")
+
+                data_dist = [str(index), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"],
+                        saved_stats[gt]["n_characters"], saved_stats[gt]["n_gpt4_tokens"], saved_stats[gt]["gpt2_logprob"], correct, str(dist)]
+                fo_dist.write("\t".join(data_dist) + "\n")
             print(model, condition, count_correct*1.0/count_total)
 
             

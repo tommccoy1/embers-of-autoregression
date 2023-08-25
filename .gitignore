@@ -1,15 +1,4 @@
-TOEFL-Spell/
 global_voices/
-old_logs/
-old_scripts/
-old_sentence_outputs/
-old_stimuli/
-old_wikitext/
-prev_evaluation/
-prev_example_generation_scripts/
-prev_examples/
-prev_logs/
-prev_stimuli/
-prev_stimulus_generation_scripts/
-wikitext-103/
+old_old/
+prev/
 .DS_Store

@@ -145,23 +145,17 @@ with jsonlines.open(args.fi) as reader:
 
 
 print("MEAN INPUT CHARACTER COUNT", statistics.mean(input_character_counts))
-#print("MEDIAN INPUT CHARACTER COUNT", statistics.median(input_character_counts))
 print("MEAN OUTPUT CHARACTER COUNT", statistics.mean(output_character_counts))
-#print("MEDIAN OUTPUT CHARACTER COUNT", statistics.median(output_character_counts))
 
 print("")
 
 print("MEAN INPUT TOKEN COUNT", statistics.mean(input_token_counts))
-#print("MEDIAN INPUT TOKEN COUNT", statistics.median(input_token_counts))
 print("MEAN OUTPUT TOKEN COUNT", statistics.mean(output_token_counts))
-#print("MEDIAN OUTPUT TOKEN COUNT", statistics.median(output_token_counts))
 
 print("")
 
 print("MEAN INPUT LOGPROB", statistics.mean(input_logprobs))
-#print("MEDIAN INPUT LOGPROB", statistics.median(input_logprobs))
 print("MEAN OUTPUT LOGPROB", statistics.mean(output_logprobs))
-#print("MEDIAN OUTPUT LOGPROB", statistics.median(output_logprobs))
 
 
 
