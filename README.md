@@ -117,24 +117,6 @@ The actual regressions were run in the notebook `Regressions.ipynb`.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# BELOW HERE IS OLD STUFF
-
-
-
 # Pig Latin and Boar Etruscan tasks
 
 ## Example generation
@@ -157,11 +139,15 @@ python piglatin_consonant_check.py
 ```
 python run_openai.py --tasks pigenc_ay,pigdec_ay,pigenc_uv,pigdec_uv --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200 --model gpt-4
 python run_openai.py --tasks pigenc_ay,pigdec_ay,pigenc_uv,pigdec_uv --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200 --model gpt-3.5-turbo
+
+python run_openai.py --tasks pigenc_way,pigdec_way,pigenc_yay,pigdec_yay,pigenc_hay,pigdec_hay,pigenc_say,pigdec_say --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200 --model gpt-4
+python run_openai.py --tasks pigenc_way,pigdec_way,pigenc_yay,pigdec_yay,pigenc_hay,pigdec_hay,pigenc_say,pigdec_say --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200 --model gpt-3.5-turbo
 ```
 
 - Then, inside `evaluation/`:
 ```
 python eval_pig_boar.py
+python eval_pig_prob.py
 ```
 
 ## Statistics
@@ -186,7 +172,44 @@ python stimuli_statistics.py --fi pigdec_uv_highprob.jsonl
 python stimuli_statistics.py --fi pigdec_uv_mediumprob.jsonl 
 python stimuli_statistics.py --fi pigdec_uv_lowprob.jsonl 
 python stimuli_statistics.py --fi pigdec_uv_adversarial.jsonl 
+
+
+
+python stimuli_statistics.py --fi pigdec_way_highprob.jsonl
+python stimuli_statistics.py --fi pigdec_yay_highprob.jsonl
+python stimuli_statistics.py --fi pigdec_hay_highprob.jsonl
+python stimuli_statistics.py --fi pigdec_say_highprob.jsonl
+
+python stimuli_statistics.py --fi pigenc_way_highprob.jsonl
+python stimuli_statistics.py --fi pigenc_yay_highprob.jsonl
+python stimuli_statistics.py --fi pigenc_hay_highprob.jsonl
+python stimuli_statistics.py --fi pigenc_say_highprob.jsonl
 ```
+
+To generate the data that is read in by R:
+```
+python tsv_pig.py
+python tsv_pig_boar.py
+python tsv_pig_prob.py
+```
+
+The regressions were carried out in `Regressions.ipynb`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# BELOW HERE IS OLD STUFF
+
 
 # Acronym task
 
