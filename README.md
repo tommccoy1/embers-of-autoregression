@@ -206,11 +206,14 @@ The regressions were carried out in `Regressions.ipynb`.
 wget https://s3.amazonaws.com/research.metamind.io/wikitext/wikitext-103-v1.zip
 unzip wikitext-103-v1.zip
 
+# Download CMU Pronouncing Dictionary
+wget https://raw.githubusercontent.com/Alexir/CMUdict/master/cmudict-0.7b
+mv cmudict-0.7b cmudict.txt
+
 # Find all words that appear in the CMU Pronouncing Dictionary that are 2 tokens long 
 # in uppercase (whether or not there is a space before them), and similarly for 
 # lowercase; this produces one file for uppercase and one for lowercase, 
-# both sorted by the probability assigned to them by GPT-2. This code assumes you have
-# already downloaded the CMU pronouncing dictionary, as described above under Pig Latin.
+# both sorted by the probability assigned to them by GPT-2.
 cd example_generation_scripts
 python probability_cmu.py
 
@@ -260,16 +263,6 @@ The regressions were performed in the notebook `Regressions.py`.
 
 
 
-
-
-
-
-
-
-
-# BELOW HERE IS OLD STUFF
-
-
 # Counting task
 
 ## Example generation
@@ -315,6 +308,12 @@ python counting_chars_frequency.py
 ```
 python run_openai.py --tasks counting_chars,counting_words --conditions common,rare,common_common,common_rare,rare_common,rare_rare --max_tokens 25 --model gpt-4
 python run_openai.py --tasks counting_chars,counting_words --conditions common,rare,common_common,common_rare,rare_common,rare_rare --max_tokens 25 --model gpt-3.5-turbo
+
+
+# STILL TO DO FROM FIRST:
+python run_openai.py --tasks counting_words --conditions rare,common_common,common_rare,rare_common,rare_rare --max_tokens 25 --model gpt-4
+
+
 ```
 
 - Then, inside `evaluation/`:
@@ -323,6 +322,86 @@ python eval_counting.py
 python eval_counting_frequency.py
 ```
 
+
+# Multiplication task
+
+## Example generation
+- Done with `example_generation_scripts/multiplication.py`
+
+## Stimulus generation
+- Done with `stimulus_example_generation/stimulus_generator_multiplication.py` and `stimulus_example_generation/stimulus_generator_multiplication3.py`
+
+## Model testing
+- Run these commands:
+```
+python run_openai.py --tasks multiplication --conditions number,word,allcaps,alternatingcaps --max_tokens 100 --model gpt-4
+python run_openai.py --tasks multiplication --conditions number,word,allcaps,alternatingcaps --max_tokens 100 --model gpt-3.5-turbo
+```
+
+- Then, inside `evaluation/`:
+```
+python eval_multiplication.py
+```
+
+
+
+# Conversion task
+
+## Names for conditions
+This code repository uses names for the conditions that differ somewhat from how we discuss them in the paper. Here is a guide to the terms used in the codebase:
+- The function (9/5)x+32 is referred to as `actual`, while (7/5)x+31 is referred to as `fake`.
+- The default setting is to control the inputs across functions. When we instead control the outputs, it is referred to as `inverse`. In some files, this distinction is referred to as `fwd` (the default setting) vs.\ `rev` (the inverse setting).
+- The case where the inputs are sampled uniformly from the integers 0 to 999 is referred to as `conversion`, while the case where the inputs are constrained to be greater than 500 and not divisible by 10 is referred to as `conversion_ood`.
+
+
+## Example generation
+- Done with `example_generation_scripts/celsius.py`. This generates two pairs:
+    - `conversion_actual.txt` and `conversion_fake.txt` use the same inputs for the two task versions, but different outputs.
+    - `conversion_actualinverse.txt` and `conversion_fakeinverse.txt` use the same outputs (after rounding) for the two task versions, but different inputs.
+- And then we also ran `example_generation_scripts/celsius_ood.py`, which similarly generates two pairs but labeled `conversion_ood` instead of `conversion`.
+
+
+## Stimulus generation
+- Done with `stimulus_generation_scripts/stimulus_generator_conversion.py` and `stimulus_generation_scripts/stimulus_generator_conversion_ood.py`. This generates stimuli for the above pairs, as well as a `primed` and `primedcontrol` versions of `actual`, both of which are the same as `actual` but with either a mention of Fahrenheit and Celsius in the prompt (`primed`) or a neutral extra sentence in the prompt (`primedcontrol`).
+
+## Model testing
+- Run these commands:
+```
+python run_openai.py --tasks conversion --conditions actual,actualinverse,actualprimed,actualprimedcontrol,fake,fakeinverse --max_tokens 100 --model gpt-4
+python run_openai.py --tasks conversion --conditions actual,actualinverse,actualprimed,actualprimedcontrol,fake,fakeinverse --max_tokens 100 --model gpt-3.5-turbo
+
+python run_openai.py --tasks conversion_ood --conditions actual,actualinverse,actualprimed,actualprimedcontrol,fake,fakeinverse --max_tokens 100 --model gpt-4
+python run_openai.py --tasks conversion_ood --conditions actual,actualinverse,actualprimed,actualprimedcontrol,fake,fakeinverse --max_tokens 100 --model gpt-3.5-turbo
+```
+
+- Then, inside `evaluation/`:
+```
+python eval_conversion.py 
+python eval_conversion_ood.py
+```
+
+## Statistics
+
+Statistical tests were perfomed in `Regressions.ipynb`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# BELOW HERE IS OLD STUFF
 
 
 ## Statistics
@@ -337,30 +416,6 @@ python stimuli_statistics_counting.py --fi counting_words_common.jsonl
 python stimuli_statistics_counting.py --fi counting_words_rare.jsonl
 
 ```
-
-
-# Conversion task
-
-## Example generation
-- Done with `example_generation_scripts/celsius.py`. This generates two pairs:
-    - `conversion_actual.txt` and `conversion_fake.txt` use the same inputs for the two task versions, but different outputs.
-    - `conversion_actualinverse.txt` and `conversion_fakeinverse.txt` use the same outputs (after rounding) for the two task versions, but different inputs.
-
-## Stimulus generation
-- Done with `stimulus_generation_scripts/stimulus_generator_conversion.py`. This generates stimuli for the above pairs, as well as a `primed` and `primedcontrol` versions of `actual`, both of which are the same as `actual` but with either a mention of Fahrenheit and Celsius in the prompt (`primed`) or a neutral extra sentence in the prompt (`primedcontrol`).
-
-## Model testing
-- Run these commands:
-```
-python run_openai.py --tasks conversion --conditions actual,actualinverse,actualprimed,actualprimedcontrol,fake,fakeinverse --max_tokens 100 --model gpt-4
-python run_openai.py --tasks conversion --conditions actual,actualinverse,actualprimed,actualprimedcontrol,fake,fakeinverse --max_tokens 100 --model gpt-3.5-turbo
-```
-
-- Then, inside `evaluation/`:
-```
-python eval_conversion.py 
-```
-
 
 
 
@@ -383,27 +438,6 @@ python run_openai.py --tasks keyboard --conditions highprob,medprob,lowprob,adve
 ```
 python eval_keyboard.py
 ``
-
-# Multiplication task
-
-## Example generation
-- Done with `example_generation_scripts/multiplication.py`
-
-## Stimulus generation
-- Done with `stimulus_example_generation/stimulus_generator_multiplication.py` and `stimulus_example_generation/stimulus_generator_multiplication3.py`
-
-## Model testing
-- Run these commands:
-```
-python run_openai.py --tasks multiplication --conditions number,word,allcaps,alternatingcaps --max_tokens 100 --model gpt-4
-python run_openai.py --tasks multiplication --conditions number,word,allcaps,alternatingcaps --max_tokens 100 --model gpt-3.5-turbo
-```
-
-- Then, inside `evaluation/`:
-```
-python eval_multiplication.py
-```
-
 
 
 # Spelling
