@@ -18,7 +18,7 @@
 - Adversarial sentences: Copied the high-probability sentences into a new file, and then manually edited each line to replace a single word with another word that was grammatical but unlikely in that context. The new word was selected to be one that had a Levenshtein edit distance of either 1 or 2 from the word being replaced (where each edit could be a single-letter insertion, deletion, or substitution).
 
 ## Stimulus generation
-- Done with `stimulus_example_generation/stimulus_generator_rot_encode.py`, `stimulus_example_generation/stimulus_generator_rot_decode.py`, and `stimulus_example_generator/stimulus_generator_shift.py`
+- Done with `stimulus_example_generation/stimulus_generator_rot_encode.py`, `stimulus_example_generation/stimulus_generator_rot_decode.py`, `python stimulus_generator_rot_prompts.py`, `stimulus_example_generator/stimulus_generator_shift.py`, and `stimulus_generator_shift_prompts.py`.
 
 ## Model testing
 - Run these commands:
@@ -30,13 +30,26 @@ python run_openai.py --tasks rot13enc,rot13dec,rot2enc,rot2dec --conditions high
 # Other shifts
 python run_openai.py --tasks shift --conditions 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 --max_tokens 200  --model gpt-4
 python run_openai.py --tasks shift --conditions 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 --max_tokens 200  --model gpt-3.5-turbo
+
+# Comparing prompting styles
+python run_openai.py --tasks shiftcot,shiftstep --conditions 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 --max_tokens 2000  --model gpt-4
+python run_openai.py --tasks shiftbasic --conditions 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 --max_tokens 200  --model gpt-4
+
+python run_openai.py --tasks rot13encstep,rot13decstep,rot13enccot,rot13deccot --conditions highprob,mediumprob,lowprob --max_tokens 2000  --model gpt-4
+python run_openai.py --tasks rot2encstep,rot2decstep,rot2enccot,rot2deccot --conditions highprob --max_tokens 2000  --model gpt-4
+
+python run_openai.py --tasks rot13encbasic,rot13decbasic --conditions highprob,mediumprob,lowprob --max_tokens 200  --model gpt-4
+python run_openai.py --tasks rot2encbasic,rot2decbasic --conditions highprob --max_tokens 200  --model gpt-4
 ```
+
 
 - Then, inside `evaluation/`:
 ```
 python eval_rot13.py
 python eval_rot13_adversarial.py
 python eval_shift.py 
+python eval_rot13_prompts.py
+python eval_shift_prompts.py 
 ```
 
 ## Statistics
@@ -70,6 +83,9 @@ python tsv_rot13and2.py
 ```
 
 The actual regressions were run in the notebook `Regressions.ipynb`.
+
+## Estimating task frequency
+Done with `corpus_analysis/c4_shift_finder.py`, which generates `c4_shifts.txt`, which we analyzed manually.
 
 
 
@@ -195,6 +211,10 @@ python tsv_pig_prob.py
 
 The regressions were carried out in `Regressions.ipynb`.
 
+## Task frequency analysis
+Using `corpus_analysis/c4_commonness_checker.py`, we generated `c4_piglatin.txt`. We then analyzed this manually to determine the frequency of each Pig Latin variant.
+
+
 
 
 # Acronym task
@@ -287,8 +307,9 @@ python score_cmu_words.py
 python counting_candidate_words.py 
 # After this, we manually filtered the candidates, down to 150 of each token count
 
-# Count how often each number appears
-python counting_numbers.py
+# Count how often each number appears in C4
+cd corpus_analysis/
+python c4_number_frequency.py
 
 # Create examples: 30 for each number 1 to 100, made from common or rare words; matching the tokenization
 # splits and word lengths across common and rare words
@@ -308,12 +329,6 @@ python counting_chars_frequency.py
 ```
 python run_openai.py --tasks counting_chars,counting_words --conditions common,rare,common_common,common_rare,rare_common,rare_rare --max_tokens 25 --model gpt-4
 python run_openai.py --tasks counting_chars,counting_words --conditions common,rare,common_common,common_rare,rare_common,rare_rare --max_tokens 25 --model gpt-3.5-turbo
-
-
-# STILL TO DO FROM FIRST:
-python run_openai.py --tasks counting_words --conditions rare,common_common,common_rare,rare_common,rare_rare --max_tokens 25 --model gpt-4
-
-
 ```
 
 - Then, inside `evaluation/`:
@@ -321,6 +336,26 @@ python run_openai.py --tasks counting_words --conditions rare,common_common,comm
 python eval_counting.py
 python eval_counting_frequency.py
 ```
+
+## Stimuli statistics
+```
+python stimuli_statistics_counting.py --fi counting_chars_common.jsonl
+python stimuli_statistics_counting.py --fi counting_chars_rare.jsonl 
+python stimuli_statistics_counting.py --fi counting_chars_common_common.jsonl 
+python stimuli_statistics_counting.py --fi counting_chars_common_rare.jsonl 
+python stimuli_statistics_counting.py --fi counting_chars_rare_common.jsonl 
+python stimuli_statistics_counting.py --fi counting_chars_rare_rare.jsonl 
+
+python stimuli_statistics_counting.py --fi counting_words_common.jsonl 
+python stimuli_statistics_counting.py --fi counting_words_rare.jsonl 
+python stimuli_statistics_counting.py --fi counting_words_common_common.jsonl 
+python stimuli_statistics_counting.py --fi counting_words_common_rare.jsonl 
+python stimuli_statistics_counting.py --fi counting_words_rare_common.jsonl
+python stimuli_statistics_counting.py --fi counting_words_rare_rare.jsonl 
+```
+
+The regressions were run inside `Regressions.ipynb`.
+
 
 
 # Multiplication task
@@ -342,6 +377,9 @@ python run_openai.py --tasks multiplication --conditions number,word,allcaps,alt
 ```
 python eval_multiplication.py
 ```
+
+## Statistical tests
+The regressions were run in `Regressions.ipynb`.
 
 
 
@@ -387,6 +425,28 @@ Statistical tests were perfomed in `Regressions.ipynb`.
 
 
 
+# Keyboard cipher task
+
+## Example generation
+- This task uses the same examples as the rot-13 task.
+
+## Stimulus generation
+- Done with `stimulus_example_generation/stimulus_generator_keyboard.py`
+
+## Model testing
+- Run these commands:
+```
+python run_openai.py --tasks keyboardcot,keyboardcotreference,keyboardcotdetailed --conditions highprob --max_tokens 4000 --model gpt-4
+python run_openai.py --tasks keyboardcot,keyboardcotreference,keyboardcotdetailed --conditions highprob --max_tokens 3000 --model gpt-3.5-turbo
+```
+
+- Then, inside `evaluation/':
+```
+python eval_keyboard.py
+``
+
+
+
 
 
 
@@ -416,28 +476,6 @@ python stimuli_statistics_counting.py --fi counting_words_common.jsonl
 python stimuli_statistics_counting.py --fi counting_words_rare.jsonl
 
 ```
-
-
-
-# Keyboard cipher task
-
-## Example generation
-- This task uses the same examples as the rot-13 task.
-
-## Stimulus generation
-- Done with `stimulus_example_generation/stimulus_generator_keyboard.py`
-
-## Model testing
-- Run these commands:
-```
-python run_openai.py --tasks keyboard --conditions highprob,medprob,lowprob,adversarial --max_tokens 200 --model gpt-4
-python run_openai.py --tasks keyboard --conditions highprob,medprob,lowprob,adversarial --max_tokens 200 --model gpt-3.5-turbo
-```
-
-- Then, inside `evaluation/':
-```
-python eval_keyboard.py
-``
 
 
 # Spelling
