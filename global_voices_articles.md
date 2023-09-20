@@ -1,0 +1,53 @@
+
+Here are the articles from Global Voices that we used as the sources for example sentences: 
+1. [A Caribbean perspective on World Sea Turtle Day](https://globalvoices.org/2023/06/16/a-caribbean-perspective-on-world-sea-turtle-day/) by Janine Mendes-Franco
+2. [Central Asian leaders sigh with relief as Erdoğan wins presidential elections in Turkey](https://globalvoices.org/2023/06/15/central-asian-leaders-sigh-with-relief-as-erdogan-wins-presidential-elections-in-turkey/) by Nurbek Bekmurzaev
+3. [Rumors blame Ukrainian saboteurs for setting wildfires in Russia](https://globalvoices.org/2023/06/14/rumors-blame-ukrainian-saboteurs-for-setting-wildfires-in-russia/) by Daria Dergacheva
+4. [César Chávez, American](https://globalvoices.org/2023/06/14/cesar-chavez-american/) by natematias
+5. [Little Mariupol in exile in Dnipro, Ukraine](https://globalvoices.org/2023/06/14/little-mariupol-in-exile-in-dnipro-ukraine/) by Olya Rusina
+6. [Can poetry in translation reimagine a free Belarusian–Ukrainian bridge?](https://globalvoices.org/2023/06/14/can-poetry-in-translation-reimagine-a-free-belarusian-ukrainian-bridge/) by Filip Noubel
+7. [Trans woman MP designate advocates for a more gender-inclusive Thailand](https://globalvoices.org/2023/06/13/trans-woman-mp-designate-advocates-for-a-more-gender-inclusive-thailand/) by Prachatai
+8. [The origins of Brazil’s national jersey and its changing symbolism 70 years later](https://globalvoices.org/2023/06/13/the-origins-of-brazils-national-jersey-and-its-changing-symbolism-70-years-later/) by Luís Gustavo Carmo and Liam Anderson
+9. [Zimbabwe’s uneven electoral field: Data protection laws used to deny digital voter roll inspection](https://globalvoices.org/2023/06/13/zimbabwes-uneven-electoral-field-data-protection-laws-used-to-deny-digital-voter-roll-inspection/) by Advox
+10. [Kazakhstan is still haunted by Soviet-era political repression and famine](https://globalvoices.org/2023/06/13/kazakhstan-is-still-haunted-by-soviet-era-political-repression-and-famine/) by Nurbek Bekmurzaev
+11. [Feeling the heat: Community science and survival in Fresno, California](https://globalvoices.org/2023/06/12/feeling-the-heat-community-science-and-survival-in-fresno-california/) by natematias
+12. [Nepal mountaineer rescues a Malaysian climber from the ‘Death Zone’ of Mount Everest](https://globalvoices.org/2023/06/12/nepal-mountaineer-rescues-a-malaysian-climber-from-the-death-zone-of-mount-everest/) by Benju Lwagun
+13. [Switching from Taiwan to China has led to more exploitation: Interview with Cameroonian scholar Richard Atimniraye Nyelade](https://globalvoices.org/2023/06/12/switching-from-taiwan-to-china-has-lead-to-more-exploitation-interview-with-cameroonian-scholar-richard-atimniraye-nyelade/) by Filip Noubel
+14. [Belize’s co-management framework is a model for community conservation](https://globalvoices.org/2023/06/12/belizes-co-management-framework-is-a-model-for-community-conservation/) by Cari-Bois News
+15. [How climate change is affecting food production in Guyana and St. Vincent & the Grenadines](https://globalvoices.org/2023/06/12/how-climate-change-is-affecting-food-production-in-guyana-and-st-vincent-the-grenadines/) by Cari-Bois News
+16. [The saga of a jaguar allegedly terrorising a Trinidad village is a masterclass in misinformation](https://globalvoices.org/2023/06/10/the-saga-of-a-jaguar-allegedly-terrorising-a-trinidad-village-is-a-masterclass-in-misinformation/) by Janine Mendes-Franco
+17. [Inspired by a Netflix drama, Taiwan finally has its #MeToo moment](https://globalvoices.org/2023/06/09/inspired-by-a-netflix-drama-taiwan-finally-has-its-metoo-moment/) by Oiwan Lam
+18. [Residents of Ukrainian town occupied by Russia recount stories from a flooded Oleshky](https://globalvoices.org/2023/06/09/residents-of-ukrainian-town-occupied-by-russia-recount-stories-from-a-flooded-oleshky/) by Daria Dergacheva
+19. [Challenges of independent filmmaking in Indonesia](https://globalvoices.org/2023/06/09/challenges-of-independent-filmmaking-in-indonesia/) by EngageMedia
+20. [Kyrgyzstan's YouTube sensation, D Billions, kicks off its global concert tour](https://globalvoices.org/2023/06/09/kyrgyzstans-youtube-sensation-d-billions-kicks-off-its-global-concert-tour/) by Nurbek Bekmurzaev
+21. [The Corpus Christi procession in Port of Spain, Trinidad, in photos](https://globalvoices.org/2023/06/09/the-corpus-christi-procession-in-port-of-spain-trinidad-in-photos/) by Janine Mendes-Franco
+22. [On loving and understanding our communities: Journalist Melissa Montalvo in Fresno, California](https://globalvoices.org/2023/06/08/on-loving-and-understanding-our-communities-journalist-melissa-montalvo-in-fresno-california/) by natematias
+23. [The counteroffensive has started in Ukraine — or maybe not](https://globalvoices.org/2023/06/08/the-counteroffensive-has-started-in-ukraine-or-maybe-not/) by Yulia Abibok
+24. [Unfreedom Monitor Report: Kyrgyzstan](https://globalvoices.org/2023/06/08/unfreedom-monitor-report-kyrgyzstan/) by Arzuu Sheranova
+25. [Uganda enacts repressive law putting LGBTQ+ communities at serious risk](https://globalvoices.org/2023/06/08/uganda-enacts-repressive-law-putting-lgbtq-communities-at-serious-risk/) by Jean Sovon (translated by Laura)
+26. [After a decade of constrictions, how are NGOs operating in Azerbaijan?](https://globalvoices.org/2023/06/07/after-a-decade-of-constrictions-how-are-ngos-operating-in-azerbaijan/) by Kelly Chaib De Mares
+27. [Hong Kong seeks to ban protest anthem ‘Glory to Hong Kong’ in all media](https://globalvoices.org/2023/06/07/hong-kong-seeks-to-ban-protest-anthem-glory-to-hong-kong-in-all-media-forms/) by Hong Kong Free Press
+28. [Women-led legislature revives a small Spanish town against all odds](https://globalvoices.org/2023/06/07/women-led-legislature-revives-a-small-spanish-town-against-all-odds/) by Romina Navarro (translated by Melissa Vida)
+29. [Alexey Sidorenko: ‘As we speak, with every new prison sentence, the situation worsens’](https://globalvoices.org/2023/06/07/alexey-sidorenko-as-we-speak-with-every-new-prison-sentence-the-situation-worsens/) by Daria Dergacheva
+30. [How I ended up despising my mother tongue in Ukraine](https://globalvoices.org/2023/06/07/how-i-ended-up-despising-my-mother-tongue-in-ukraine/) by Yulia Abibok
+31. [Serbian politicians and media continue the anti-NATO narratives over 1999 Kosovo War intervention](https://globalvoices.org/2023/06/06/serbian-politicians-and-media-continue-the-anti-nato-narratives-over-1999-kosovo-war-intervention/) by Sbunker
+32. [Understanding divisions in Turkey one award at a time](https://globalvoices.org/2023/06/06/understanding-divisions-in-turkey-one-award-at-a-time/) by Arzu Geybullayeva
+33. [The Boomerang: Education and civic engagement in California's Central Valley](https://globalvoices.org/2023/06/06/the-boomerang-education-and-civic-engagement-in-californias-central-valley/) by natematias
+34. [Historic ruling in Ecuador shows clash between global demand for minerals and protecting biodiversity](https://globalvoices.org/2023/06/06/historic-ruling-in-ecuador-shows-clash-between-global-demand-for-minerals-and-protecting-biodiversity/) by Liam Anderson
+35. [The war has spread to the territory of Russia. Authorities are ignoring it, there is chaos on the border](https://globalvoices.org/2023/06/06/the-war-has-spread-to-the-territory-of-russia-authorities-are-ignoring-it-there-is-chaos-on-the-border/) by Daria Dergacheva
+36. [Reporting from ‘the roof of the world': How Pamir Daily News works in Tajikistan](https://globalvoices.org/2023/06/06/reporting-from-the-roof-of-the-world-how-pamir-daily-news-works-in-tajikistan/) by Nurbek Bekmurzaev
+37. [Comedian and YouTube content creator arrested in Sri Lanka over satire on Buddhism](https://globalvoices.org/2023/06/06/comedian-and-youtube-content-creator-arrested-in-sri-lanka-over-satire-on-buddhism/) by Rezwan
+38. [Battle of the donuts: Can a foreign brand displace a local Jamaican favourite?](https://globalvoices.org/2023/06/05/battle-of-the-donuts-can-a-foreign-brand-displace-a-local-jamaican-favourite/) by Emma Lewis
+39. [A journey through three continents: 150 years of Indian Caribbean migration to The Netherlands](https://globalvoices.org/2023/06/05/a-journey-through-three-continents-150-years-of-indian-caribbean-migration-to-the-netherlands/) by Fausia S. Abdul
+40. [Unfreedom Monitor Report: Kenya](https://globalvoices.org/2023/06/05/unfreedom-monitor-report-kenya/) by Chepkoech Rotich
+41. [Hadda Ouakki: The enchanting Amazigh voice that moved the Atlas Mountains and soothed the Atlantic Ocean](https://globalvoices.org/2023/06/05/hadda-ouakki-the-enchanting-amazigh-voice-that-moved-the-atlas-mountains-and-soothed-the-atlantic-ocean/) by رصيف 22 and Honey Hashem
+42. [Taiwan and Burkina Faso: A tumultuous history of cooperation and estrangement](https://globalvoices.org/2023/06/05/taiwan-and-burkina-faso-a-tumultuous-history-of-cooperation-and-estrangement/) by Filip Noubel
+43. [Malaysian authorities confiscate PRIDE-themed Swatch watches](https://globalvoices.org/2023/06/04/malaysian-authorities-confiscate-pride-themed-swatch-watches/) by Mong Palatino
+44. [Hong Kong authorities clamp down on the annual commemoration of the 1989 Tiananmen crackdown](https://globalvoices.org/2023/06/04/hong-kong-authorities-clampdown-on-the-annual-commemoration-of-the-1989-tiananmen-crackdown/) by Oiwan Lam
+45. [As the 2023 Atlantic hurricane season begins, the Caribbean looks back—and to the future](https://globalvoices.org/2023/06/03/as-the-2023-atlantic-hurricane-season-begins-the-caribbean-looks-back-and-to-the-future/) by Janine Mendes-Franco
+46. [Hunger strike and high school graduation: A visit to The Forty Acres](https://globalvoices.org/2023/06/03/hunger-strike-and-high-school-graduation-a-visit-to-the-forty-acres/) by natematias
+47. [In a post-election Turkey, the country remains divided on political lines](https://globalvoices.org/2023/06/03/in-a-post-election-turkey-the-country-remains-divided-on-political-lines/) by Arzu Geybullayeva
+48. [Negotiations for Moldova's accession to the EU could commence this year](https://globalvoices.org/2023/06/02/negotiations-for-moldovas-accession-to-the-eu-could-commence-this-year/) by Daria Dergacheva
+49. [Queer-led unions show the way forward for sex workers in Spain and Latin America](https://globalvoices.org/2023/06/02/queer-led-unions-show-the-way-forward-for-sex-workers-in-spain-and-latin-america/) by AWID
+50. [An endless marathon for a Ukrainian runner](https://globalvoices.org/2023/06/02/an-endless-marathon-for-a-ukrainian-runner/) by Alla Vaskovska
+
