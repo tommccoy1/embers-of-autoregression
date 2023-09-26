@@ -1,6 +1,0 @@
-in alphabetical order	95492
-in reverse alphabetical order	629
-in ascending order	21562
-in descending order	31378
-the first letter of each word	2945
-the second letter of each word	21

@@ -5,6 +5,20 @@
 1. Update .gitignore
 
 
+# VALUE FOR PREFIX IS: -13.357776641845703
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Shift ciphers
 
 ## Example generation
@@ -24,22 +38,20 @@
 - Run these commands:
 ```
 # Rot-13
-python run_openai.py --tasks rot13enc,rot13dec,rot2enc,rot2dec --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200  --model gpt-4
-python run_openai.py --tasks rot13enc,rot13dec,rot2enc,rot2dec --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200  --model gpt-3.5-turbo
+python run_openai.py --tasks rot13enc,rot13dec,rot2enc,rot2dec --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200  --model gpt-4-0613
+python run_openai.py --tasks rot13enc,rot13dec,rot2enc,rot2dec --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200  --model gpt-3.5-turbo-0613
 
 # Other shifts
-python run_openai.py --tasks shift --conditions 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 --max_tokens 200  --model gpt-4
-python run_openai.py --tasks shift --conditions 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 --max_tokens 200  --model gpt-3.5-turbo
+python run_openai.py --tasks shift --conditions 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 --max_tokens 200  --model gpt-4-0613
+python run_openai.py --tasks shift --conditions 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 --max_tokens 200  --model gpt-3.5-turbo-0613
+
 
 # Comparing prompting styles
-python run_openai.py --tasks shiftcot,shiftstep --conditions 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 --max_tokens 2000  --model gpt-4
-python run_openai.py --tasks shiftbasic --conditions 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 --max_tokens 200  --model gpt-4
+python run_openai.py --tasks shiftcot,shiftstep --conditions 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 --max_tokens 2000  --model gpt-4-0613
 
-python run_openai.py --tasks rot13encstep,rot13decstep,rot13enccot,rot13deccot --conditions highprob,mediumprob,lowprob --max_tokens 2000  --model gpt-4
-python run_openai.py --tasks rot2encstep,rot2decstep,rot2enccot,rot2deccot --conditions highprob --max_tokens 2000  --model gpt-4
+python run_openai.py --tasks rot13encstep,rot13decstep,rot13enccot,rot13deccot --conditions highprob,mediumprob,lowprob --max_tokens 2000  --model gpt-4-0613
+python run_openai.py --tasks rot2encstep,rot2decstep,rot2enccot,rot2deccot --conditions highprob --max_tokens 2000  --model gpt-4-0613
 
-python run_openai.py --tasks rot13encbasic,rot13decbasic --conditions highprob,mediumprob,lowprob --max_tokens 200  --model gpt-4
-python run_openai.py --tasks rot2encbasic,rot2decbasic --conditions highprob --max_tokens 200  --model gpt-4
 ```
 
 
@@ -100,8 +112,8 @@ Done with `corpus_analysis/c4_shift_finder.py`, which generates `c4_shifts.txt`,
 ## Model testing
 - Run these commands:
 ```
-python run_openai.py --tasks revenc,revdec --conditions highprob,mediumprob,lowprob,adversarial --model gpt-4
-python run_openai.py --tasks revenc,revdec --conditions highprob,mediumprob,lowprob,adversarial --model gpt-3.5-turbo
+python run_openai.py --tasks revenc,revdec --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200 --model gpt-4-0613
+python run_openai.py --tasks revenc,revdec --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200 --model gpt-3.5-turbo-0613
 ```
 
 - Then, inside `evaluation/`:
@@ -133,6 +145,60 @@ The actual regressions were run in the notebook `Regressions.ipynb`.
 
 
 
+
+
+# Swapping task
+
+## Example generation
+- This sentences were generated in a similar way as the sentences for rot-13, except with the added restriction that each sentence had to contain at least one article (a, an, or the). Further, they could not have an article as the first or last letter (since that could create issues when attempting to swap the article the adjacent word - in such cases there would be no adjacent word for one of the possible swapping directions).
+```
+python swap_high_probability.py
+python swap_low_probability.py
+python swap_medium_probability.py
+python swap_next_prev.py
+```
+
+## Stimulus generation
+- Done with `stimulus_generator_swap.py`
+
+## Model testing
+- Run these commands:
+```
+python run_openai.py --tasks swap_base_next,swap_base_prev,swap_next_base,swap_prev_base --conditions highprob,mediumprob,lowprob --max_tokens 200 --model gpt-4-0613
+python run_openai.py --tasks swap_base_next,swap_base_prev,swap_next_base,swap_prev_base --conditions highprob,mediumprob,lowprob --max_tokens 200 --model gpt-3.5-turbo-0613
+```
+
+- Then, inside `evaluation/`. Note that `next_base` is the case we focus on in the paper; the other three are just discussed in the appendix:
+```
+python eval_swap.py
+```
+
+## Statistics
+To compute summary statistics about the stimulus sets:
+```
+python stimuli_statistics.py --fi swap_base_next_highprob.jsonl
+python stimuli_statistics.py --fi swap_base_next_mediumprob.jsonl 
+python stimuli_statistics.py --fi swap_base_next_lowprob.jsonl
+
+python stimuli_statistics.py --fi swap_base_prev_highprob.jsonl
+python stimuli_statistics.py --fi swap_base_prev_mediumprob.jsonl 
+python stimuli_statistics.py --fi swap_base_prev_lowprob.jsonl
+
+python stimuli_statistics.py --fi swap_next_base_highprob.jsonl
+python stimuli_statistics.py --fi swap_next_base_mediumprob.jsonl 
+python stimuli_statistics.py --fi swap_next_base_lowprob.jsonl
+
+python stimuli_statistics.py --fi swap_prev_base_highprob.jsonl
+python stimuli_statistics.py --fi swap_prev_base_mediumprob.jsonl
+python stimuli_statistics.py --fi swap_prev_base_lowprob.jsonl
+```
+
+
+The regressions were run in the notebook `Regressions.ipynb`.
+
+
+
+
 # Pig Latin and Boar Etruscan tasks
 
 ## Example generation
@@ -153,11 +219,11 @@ python piglatin_consonant_check.py
 ## Model testing
 - Run these commands:
 ```
-python run_openai.py --tasks pigenc_ay,pigdec_ay,pigenc_uv,pigdec_uv --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200 --model gpt-4
-python run_openai.py --tasks pigenc_ay,pigdec_ay,pigenc_uv,pigdec_uv --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200 --model gpt-3.5-turbo
+python run_openai.py --tasks pigenc_ay,pigdec_ay,pigenc_uv,pigdec_uv --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200 --model gpt-4-0613
+python run_openai.py --tasks pigenc_ay,pigdec_ay,pigenc_uv,pigdec_uv --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200 --model gpt-3.5-turbo-0613
 
-python run_openai.py --tasks pigenc_way,pigdec_way,pigenc_yay,pigdec_yay,pigenc_hay,pigdec_hay,pigenc_say,pigdec_say --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200 --model gpt-4
-python run_openai.py --tasks pigenc_way,pigdec_way,pigenc_yay,pigdec_yay,pigenc_hay,pigdec_hay,pigenc_say,pigdec_say --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200 --model gpt-3.5-turbo
+python run_openai.py --tasks pigenc_way,pigdec_way,pigenc_yay,pigdec_yay,pigenc_hay,pigdec_hay,pigenc_say,pigdec_say --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200 --model gpt-4-0613
+python run_openai.py --tasks pigenc_way,pigdec_way,pigenc_yay,pigdec_yay,pigenc_hay,pigdec_hay,pigenc_say,pigdec_say --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200 --model gpt-3.5-turbo-0613
 ```
 
 - Then, inside `evaluation/`:
@@ -217,6 +283,10 @@ Using `corpus_analysis/c4_commonness_checker.py`, we generated `c4_piglatin.txt`
 
 
 
+
+
+
+
 # Acronym task
 
 ## Example generation
@@ -249,11 +319,11 @@ python probability_cmu.py
 ## Model testing
 - Run these commands:
 ```
-python run_openai.py --tasks acronym1 --conditions 11,12,13,14,15,21,31,41,51  --max_tokens 100 --model gpt-4 
-python run_openai.py --tasks acronym1 --conditions 11,12,13,14,15,21,31,41,51  --max_tokens 100 --model gpt-3.5-turbo
+python run_openai.py --tasks acronym1 --conditions 11,12,13,14,15,21,31,41,51  --max_tokens 100 --model gpt-4-0613 
+python run_openai.py --tasks acronym1 --conditions 11,12,13,14,15,21,31,41,51  --max_tokens 100 --model gpt-3.5-turbo-0613
 
-python run_openai.py --tasks acronym2 --conditions 11  --max_tokens 100 --model gpt-4 
-python run_openai.py --tasks acronym2 --conditions 11  --max_tokens 100 --model gpt-3.5-turbo
+python run_openai.py --tasks acronym2 --conditions 11  --max_tokens 100 --model gpt-4-0613 
+python run_openai.py --tasks acronym2 --conditions 11  --max_tokens 100 --model gpt-3.5-turbo-0613
 ```
 
 Compute statistics about the stimuli, inside `stimuli/':
@@ -327,8 +397,8 @@ python counting_chars_frequency.py
 ## Model testing
 - Run these commands:
 ```
-python run_openai.py --tasks counting_chars,counting_words --conditions common,rare,common_common,common_rare,rare_common,rare_rare --max_tokens 25 --model gpt-4
-python run_openai.py --tasks counting_chars,counting_words --conditions common,rare,common_common,common_rare,rare_common,rare_rare --max_tokens 25 --model gpt-3.5-turbo
+python run_openai.py --tasks counting_chars,counting_words --conditions common,rare,common_common,common_rare,rare_common,rare_rare --max_tokens 25 --model gpt-4-0613
+python run_openai.py --tasks counting_chars,counting_words --conditions common,rare,common_common,common_rare,rare_common,rare_rare --max_tokens 25 --model gpt-3.5-turbo-0613
 ```
 
 - Then, inside `evaluation/`:
@@ -369,8 +439,8 @@ The regressions were run inside `Regressions.ipynb`.
 ## Model testing
 - Run these commands:
 ```
-python run_openai.py --tasks multiplication --conditions number,word,allcaps,alternatingcaps --max_tokens 100 --model gpt-4
-python run_openai.py --tasks multiplication --conditions number,word,allcaps,alternatingcaps --max_tokens 100 --model gpt-3.5-turbo
+python run_openai.py --tasks multiplication --conditions number,word,allcaps,alternatingcaps --max_tokens 100 --model gpt-4-0613
+python run_openai.py --tasks multiplication --conditions number,word,allcaps,alternatingcaps --max_tokens 100 --model gpt-3.5-turbo-0613
 ```
 
 - Then, inside `evaluation/`:
@@ -405,11 +475,11 @@ This code repository uses names for the conditions that differ somewhat from how
 ## Model testing
 - Run these commands:
 ```
-python run_openai.py --tasks conversion --conditions actual,actualinverse,actualprimed,actualprimedcontrol,fake,fakeinverse --max_tokens 100 --model gpt-4
-python run_openai.py --tasks conversion --conditions actual,actualinverse,actualprimed,actualprimedcontrol,fake,fakeinverse --max_tokens 100 --model gpt-3.5-turbo
+python run_openai.py --tasks conversion --conditions actual,actualinverse,actualprimed,actualprimedcontrol,fake,fakeinverse --max_tokens 100 --model gpt-4-0613
+python run_openai.py --tasks conversion --conditions actual,actualinverse,actualprimed,actualprimedcontrol,fake,fakeinverse --max_tokens 100 --model gpt-3.5-turbo-0613
 
-python run_openai.py --tasks conversion_ood --conditions actual,actualinverse,actualprimed,actualprimedcontrol,fake,fakeinverse --max_tokens 100 --model gpt-4
-python run_openai.py --tasks conversion_ood --conditions actual,actualinverse,actualprimed,actualprimedcontrol,fake,fakeinverse --max_tokens 100 --model gpt-3.5-turbo
+python run_openai.py --tasks conversion_ood --conditions actual,actualinverse,actualprimed,actualprimedcontrol,fake,fakeinverse --max_tokens 100 --model gpt-4-0613
+python run_openai.py --tasks conversion_ood --conditions actual,actualinverse,actualprimed,actualprimedcontrol,fake,fakeinverse --max_tokens 100 --model gpt-3.5-turbo-0613
 ```
 
 - Then, inside `evaluation/`:
@@ -436,8 +506,8 @@ Statistical tests were perfomed in `Regressions.ipynb`.
 ## Model testing
 - Run these commands:
 ```
-python run_openai.py --tasks keyboardcot,keyboardcotreference,keyboardcotdetailed --conditions highprob --max_tokens 4000 --model gpt-4
-python run_openai.py --tasks keyboardcot,keyboardcotreference,keyboardcotdetailed --conditions highprob --max_tokens 3000 --model gpt-3.5-turbo
+python run_openai.py --tasks keyboardcot,keyboardcotreference,keyboardcotdetailed --conditions highprob --max_tokens 4000 --model gpt-4-0613
+python run_openai.py --tasks keyboardcot,keyboardcotreference,keyboardcotdetailed --conditions highprob --max_tokens 3000 --model gpt-3.5-turbo-0613
 ```
 
 - Then, inside `evaluation/':
@@ -462,8 +532,8 @@ python sort_numbers.py
 ## Model testing
 - Run these commands:
 ```
-python run_openai.py --tasks sorting --conditions fwd,rev,ascending,descending --max_tokens 200 --model gpt-4
-python run_openai.py --tasks sorting --conditions fwd,rev,ascending,descending --max_tokens 200 --model gpt-3.5-turbo
+python run_openai.py --tasks sorting --conditions fwd,rev,ascending,descending --max_tokens 200 --model gpt-4-0613
+python run_openai.py --tasks sorting --conditions fwd,rev,ascending,descending --max_tokens 200 --model gpt-3.5-turbo-0613
 ```
 
 - Then, inside `evaluation/':
@@ -508,8 +578,8 @@ python birthday_generator.py
 ## Model testing
 - Run these commands:
 ```
-python run_openai.py --tasks birthdays --conditions 1,2,3,4 --max_tokens 100 --model gpt-4
-python run_openai.py --tasks birthdays --conditions 1,2,3,4 --max_tokens 100 --model gpt-3.5-turbo
+python run_openai.py --tasks birthdays --conditions 1,2,3,4 --max_tokens 100 --model gpt-4-0613
+python run_openai.py --tasks birthdays --conditions 1,2,3,4 --max_tokens 100 --model gpt-3.5-turbo-0613
 ```
 
 - Then, inside `evaluation/':
@@ -540,8 +610,8 @@ Statistical tests are run in `Regressions.ipynb`.
 
 4. Then evaluate models:
 ```
-python run_openai.py --tasks spelling --conditions all --max_tokens 100 --model gpt-4
-python run_openai.py --tasks spelling --conditions all --max_tokens 100 --model gpt-3.5-turbo
+python run_openai.py --tasks spelling --conditions all --max_tokens 100 --model gpt-4-0613
+python run_openai.py --tasks spelling --conditions all --max_tokens 100 --model gpt-3.5-turbo-0613
 ```
 
 5. Then evaluate models:
@@ -558,12 +628,43 @@ python eval_spelling.py
 
 
 
+# Zero-shot cases
 
+## Swapping
+```
+python stimulus_generator_zeroshot_swap.py 
 
+python run_openai.py --tasks zeroshot_swap_next_base,zeroshot_swap_prev_base --conditions highprob,mediumprob,lowprob --max_tokens 200 --model gpt-4-0613
+python run_openai.py --tasks zeroshot_swap_next_base,zeroshot_swap_prev_base --conditions highprob,mediumprob,lowprob --max_tokens 200 --model gpt-3.5-turbo-0613
 
+```
 
+## Rot-13
+```
+python stimulus_generator_zeroshot_rot_decode.py
+python stimulus_generator_zeroshot_rot_encode.py
 
+python run_openai.py --tasks zeroshot_rot13enc,zeroshot_rot13dec --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200  --model gpt-4-0613
+python run_openai.py --tasks zeroshot_rot13enc,zeroshot_rot13dec --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200  --model gpt-3.5-turbo-0613
+```
 
+## Reversal
+```
+python stimulus_generator_zeroshot_reverse_decode.py
+python stimulus_generator_zeroshot_reverse_encode.py
+
+python run_openai.py --tasks zeroshot_revenc,zeroshot_revdec --conditions highprob,mediumprob,lowprob --max_tokens 200  --model gpt-4-0613
+python run_openai.py --tasks zeroshot_revenc,zeroshot_revdec --conditions highprob,mediumprob,lowprob --max_tokens 200  --model gpt-3.5-turbo-0613
+```
+
+## Pig Latin
+```
+python stimulus_generator_zeroshot_piglatin_decode.py
+python stimulus_generator_zeroshot_piglatin_encode.py
+
+python run_openai.py --tasks zeroshot_pigenc_ay,zeroshot_pigdec_ay --conditions highprob,mediumprob,lowprob --max_tokens 200  --model gpt-4-0613
+python run_openai.py --tasks zeroshot_pigenc_ay,zeroshot_pigdec_ay --conditions highprob,mediumprob,lowprob --max_tokens 200  --model gpt-3.5-turbo-0613
+```
 
 
  

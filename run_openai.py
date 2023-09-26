@@ -53,7 +53,7 @@ def parse_args():
     args = argparse.ArgumentParser()
     args.add_argument('--tasks', type=str, required=True, help='split by comma')
     args.add_argument('--conditions', type=str, required=True, help='split by comma')
-    args.add_argument('--model', type=str, required=True, choices=['gpt-3.5-turbo', 'gpt-4'])
+    args.add_argument('--model', type=str, required=True, choices=['gpt-3.5-turbo-0613', 'gpt-4-0613'])
     args.add_argument('--max_tokens', type=int, help='default = 1000', default=1000)
     args = args.parse_args()
     return args
