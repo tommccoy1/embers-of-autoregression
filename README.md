@@ -573,7 +573,7 @@ python run_openai.py --tasks birthdays --conditions 1,2,3,4 --max_tokens 100 --m
 - Then, inside `evaluation/':
 ```
 python eval_birthdays.py
-``
+```
 
 ## Stimulus statistics
 
