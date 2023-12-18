@@ -3,7 +3,7 @@
 
 # Embers of autoregression
 
-This repository gives the stimuli and LLM predictions for the paper Embers of Autoregression.
+This repository gives the stimuli and LLM predictions for the paper Embers of Autoregression. The commands given in the rest of this README show how to run the tests for GPT-3.5 and GPT-4. To extend the results to Llama 2, change `run_openai.py` to `run_llama.py` and use `--model llama-2-70b-chat`. To extend the results to PaLM 2, change `run_openai.py` to `run_palm.py` and use `--model text-bison-001`.
 
 
 
