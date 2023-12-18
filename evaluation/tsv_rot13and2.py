@@ -57,7 +57,7 @@ for task in ["enc", "dec"]:
                 if res[-1] == '"':
                     res = res[:-1]
 
-                if gt == res:
+                if gt in res:
                     correct = "1"
                     count_correct += 1
                 else:

@@ -67,7 +67,7 @@ def join_single_letters(res):
     return " ".join(new_words), first_three_single
 
 
-indicator_sequences = ["spells out the word ", "gives us the sequence ", "resulting in the answer ", "this spells out ", "the answer is ", "spell out the word ", "spells out the sequence ", "spells out the sequence: ", "creates the sequence ", "you get the sequence ", "spells out the code ", "results in the following sequence of letters: ", "answer: ", "results in the sequence ", "a sequence of letters is created when you combine the first letters of the words in the sequence is the following: ", "a sequence of letters is created when you combine the first letters of the words in the sequence as follows: ", "the first letter of each word in order spells ", "combine the first letters of each word to form a new sequence: ", "a sequence of letters is created by combining the first letters of the words in the sequence as follows: ", "the first letters of each word in order spell out ", "the first letter of each word in order would be: ", "the first letter of each word in sequence spells out ", "combining these letters in the correct order spells ", "the answer to this puzzle is ", "these letters form the word ", "to create the following sequence of letters: ", "combined first letters: ", "the first letter of each word in the sequence spells out ", "the first letter of each word in sequence spells out: ", "spells the word ", "the first letter of each word in the sequence spells ", "combining the first letters of these words gives us ", "you get the following sequence of letters: ", "results in the following sequence: ", "when combined they form the sequence ", "what is the answer to this puzzle? c) ", "they form the word ", "spell out the following sequence of letters: ", "the correct answer is ", "here's the solution: ", "if we take the first letter of each word and combine them the sequence would be: ", "combining the first letters of each word in the sequence spells out ", "when you combine these letters you get the word ", "combining these letters gives us the word ", "combine the first letters of each word to form the sequence: ", "the first letters of these words form the sequence ", "the solution to this puzzle is ", "the sequence of letters created by combining the first letters of the words in the sequence is ", "when combined they form the letter sequence ", "combined first letters of = ", "when combined forms the word ", "this sequence of letters can be written in capital letters as follows: ", "forms the following sequence: ", "when you combine the first letters of the words in the sequence you get the letters ", "spell out the name ", "can be rearranged to form the word ", "the first letters of the words in this sequence spell the name ", "here is the sequence of letters you asked for: ", "the correct sequence is ", "i think the sequence of letters would be: ", "you get the sequence: ", "the first letter of each word spells out ", "the answer to this question is ", "the correct sequence of letters is ", "combine the letters to form a new sequence: ", "the first letter of each word in order spells: ", "creates the following sequence of letters: ", "the letters in capital letters with no spaces or punctuation would be:", "which spells out ", "spell out the following sequence: ", "the answer to this riddle is ", "gives you a new sequence of letters:", "when combined these letters form the sequence", "spell out the letters ", "to form the sequence of letters ", "formed by combining the first letters of the words in the given sequence is ", "the answer would be: ", "the sequence of letters created by combining the first letters of the given words is "]
+indicator_sequences = ["spells out the word ", "gives us the sequence ", "resulting in the answer ", "this spells out ", "the answer is ", "spell out the word ", "spells out the sequence ", "spells out the sequence: ", "creates the sequence ", "you get the sequence ", "spells out the code ", "results in the following sequence of letters: ", "answer: ", "results in the sequence ", "a sequence of letters is created when you combine the first letters of the words in the sequence is the following: ", "a sequence of letters is created when you combine the first letters of the words in the sequence as follows: ", "the first letter of each word in order spells ", "combine the first letters of each word to form a new sequence: ", "a sequence of letters is created by combining the first letters of the words in the sequence as follows: ", "the first letters of each word in order spell out ", "the first letter of each word in order would be: ", "the first letter of each word in sequence spells out ", "combining these letters in the correct order spells ", "the answer to this puzzle is ", "these letters form the word ", "to create the following sequence of letters: ", "combined first letters: ", "the first letter of each word in the sequence spells out ", "the first letter of each word in sequence spells out: ", "spells the word ", "the first letter of each word in the sequence spells ", "combining the first letters of these words gives us ", "you get the following sequence of letters: ", "results in the following sequence: ", "when combined they form the sequence ", "what is the answer to this puzzle? c) ", "they form the word ", "spell out the following sequence of letters: ", "the correct answer is ", "here's the solution: ", "if we take the first letter of each word and combine them the sequence would be: ", "combining the first letters of each word in the sequence spells out ", "when you combine these letters you get the word ", "combining these letters gives us the word ", "combine the first letters of each word to form the sequence: ", "the first letters of these words form the sequence ", "the solution to this puzzle is ", "the sequence of letters created by combining the first letters of the words in the sequence is ", "when combined they form the letter sequence ", "combined first letters of = ", "when combined forms the word ", "this sequence of letters can be written in capital letters as follows: ", "forms the following sequence: ", "when you combine the first letters of the words in the sequence you get the letters ", "spell out the name ", "can be rearranged to form the word ", "the first letters of the words in this sequence spell the name ", "here is the sequence of letters you asked for: ", "the correct sequence is ", "i think the sequence of letters would be: ", "you get the sequence: ", "the first letter of each word spells out ", "the answer to this question is ", "the correct sequence of letters is ", "combine the letters to form a new sequence: ", "the first letter of each word in order spells: ", "creates the following sequence of letters: ", "the letters in capital letters with no spaces or punctuation would be:", "which spells out ", "spell out the following sequence: "]
 
 manually_recognized_answers = {}
 manual_answers = ["UNCLE SAM", "THE ROADSTER", "BE LATE D", "BAC KIN GI", "THE RIVES", "NO NCO", "TRAN SIT", "CR EAT OR", "SHORTE R", "TEACH ER", "APP LIED" "STAR TREK", "APP LIDE", "PRUDE NT", "STAR TRE", "MATC HUP", "STAR TREK", "POPU LAR", "HIPS TER", "AME RICA", "SP ECIES", "NEAR EST", "REC LAM", "APP LIED", "PRINTE D", "STAR TUP", "SHA TTER", "UNCLE AR", "NEAR EAST", "CONE SLOE", "PAS SIV VE", "SP EC IE S", "PAS SIVE", "CLIC KER", "DRI LLED", "COND CERT", "SMARTE R", "AR RIV AL", "ROUN DUP", "MARKE RS", "ROTA TED", "COUNTE D", "HAS HING", "STAR TREKS", "BLUE RED", "LIGH TEN", "HAS HING", "STAR TED", "FAR RIRE", "ANNA BEL", "COUNTE D", "HAS HING", "PAS SING", "STAN GER", "BRA TTLE", "CHES TER", "LES SING", "BLAC KEN", "ARCHE RS", "STEALE R", "STEA MED", "STAC KER", "BAC KERS", "BAC KM AN", "BACKE RS", "BAC KERS", "SPELLE R", "LES SIGN", "MANS HIP", "MAD DING", "TRAN SOM", "ONE TIME", "EARS HOT", "MAR KMAN", "SEL ECTS", "PAT CHIN", "NEW SMAN", "CEN TIME", "POPP ELL", "OVE RUSE", "CARDO NE", "FIRS TAR", "TORS TAR", "RAIN GER", "HAS H MAN", "ROSA BEL", "HAN DIER", "ATTA CHE", "WRATH ER", "RECR OSS", "ARMR EST", "PATCHE N", "NEW SOME", "SEC LUDE", "GERS TER", "INCS TAR", "INS CORE", "DEC HANT", "MARKE RT", "INSURE DEVIOUS", "CARP OOLO", "A MENDED DRAGNET ECHELON DRAGNET", "DELIVER EXCELLENCE RESPONSIBLY", "ATTRACTIVE THIEVES COHOST RIEMANN ATTRACTIONS ASKANCE", "DIS TAN TEX"]
@@ -142,157 +142,6 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
  
                         temp_res = res[:]
                         res = res.replace("the sequence of letters created when you combine the first letters of the words in the sequence \"" + inp.lower() + "\" is:", "")
-
-                        res_lines = res.strip().split("\n\n")
-                        if len(res_lines) == 2:
-                            if len(res_lines[0].split()) == 7 and len(res_lines[1].split()) == 1:
-                                res = res_lines[1]
-                     
-                        if res.strip().split("\n")[0].strip().lower() in [gt.lower(), gt.lower() + "."]:
-                            res = res.strip().split("\n")[0]
-                        if res.strip().split("\n")[-1].strip().lower().replace(" ", "") in [gt.lower(), gt.lower() + "."]:
-                            res = res.strip().split("\n")[-1].replace(" ", "")
-                        if res.strip().endswith("creates the sequence:\ns c o o p e r."):
-                            res = "scooper"
-                        if res.strip().startswith("the first letter of each word, in order, are:\nd e l i v e r\n"):
-                            res = "deliver"
-                        if "so the sequence of letters would be:\n\no p t i m a l\n" in res:
-                            res = "optimal"
-                        if res.strip().endswith("\nproceed\n\ni hope this helps! let me know if you have any other questions."):
-                            res = "proceed"
-                        if "the first letters of the words in the sequence spell out \"decline\"." in res:
-                            res = "decline"
-                        if "is realtor.\n\nhere's how it works:" in res:
-                            res = "realtor"
-                        if "combining these letters spells topicalee." in res:
-                            res = "topicalee"
-                        if res.strip().startswith("a possible answer is\n\nc o l l e c t i o n"):
-                            res = "collection"
-                        if "results in the letter sequence \"climate\"." in res:
-                            res = "climate"
-                        if "the correct answer is \"chavers odetics royster reiders emerton crevier teutsch\"." in res:
-                            res = "chaversodeticsroysterreidersemertoncrevierteutsch"
-                        if "what is the sequence of letters created by combining the first letters of these words?\n\nconfide" in res:
-                            res = "confide"
-                        if res.strip().endswith("archives\n\ni hope this helps! let me know if you have any other questions."):
-                            res = "archives"
-                        if res.strip().endswith("to create the final answer.\n\np - a - t - t - e - r - n"):
-                            res = "pattern"
-                        if res.strip().endswith("\ns h a t t e r r o d w e l l"):
-                            res = "s h a t t e r r o d w e l l"
-                        if "would be:\n\nc\no\na\nc\nh\ne\nd\n" in res:
-                            res = "coached"
-                        if res.strip().startswith("the first letter of each word, when combined, forms the sequence:\ni m p u l s e g e"):
-                            res = "impulsege"
-                        if res.strip().startswith("ethical impact\n\nexplanation:"):
-                            res = "ethicalimpact"
-                        if "when we combine the first letters of each word, we get the following sequence of letters:\n\nr e v e r s e e" in res:
-                            res = "r e v e r s e e"
-                        if res.strip().startswith("rockley estella dearden rinella estella sievers sutphen\n\nredress."):
-                            res = "redress"
-                        if "and create a new sequence:\n\nc\nl\ni\nm\na\nt\ne" in res:
-                            res = "climate"
-                        if res.strip().startswith("the first letter of each word, when combined in order, forms the sequence:\n\nr e a l t o r o w."):
-                            res = "r e a l t o r o w"
-                        if res.strip().endswith("the first letter of each word, when arranged in order, forms the word attract."):
-                            res = "attract"
-                        if res.strip().startswith("the solution is p-a-r-t-i-a-l."):
-                            res = "partial"
-                        if res.strip().startswith("a: science\n"):
-                            res = "science"
-                        if "reprice\" spells \"recover\"." in res:
-                            res = "recover"
-                        if "e: corrected\n\ne\n" in res:
-                            res = "corrected"
-                        if "d) vincent\n\nd) vincent\n" in res:
-                            res = "vincent"
-                        if res.strip().endswith("combine the letters: p r o c e e d"):
-                            res = "proceed"
-                        if "\nf - i - l - t - e - r - s - s\n" in res:
-                            res = "f - i - l - t - e - r - s - s"
-                        if res.strip().startswith("the letters \"a l t e r e d\" can be formed"):
-                            res = "altered"
-                        if "the first letter of each word, in sequence, would be:\n\nl e a t h e r\n" in res:
-                            res = "leather"
-                        if res.strip().startswith("the solution is\n\nr e s o l v e\n"):
-                            res = "resolve"
-                        if "\nsnappede\n" in res:
-                            res = "snappede"
-                        if res.strip().startswith("the solution is resolve."):
-                            res = "resolve"
-                        if "\nf i c t i o n\n" in res:
-                            res = "fiction"
-                        if "can be combined to form the following sequence:\n\nt r a p p e d r\n" in res:
-                            res = "trappedr"
-                        if res.strip().startswith("uniformly resists.\n"):
-                            res = "uniformlyresists"
-                        if "combining the first letters of all the words in the sequence spells out \"armored\"." in res:
-                            res = "armored"
-                        if res.strip().startswith("a) perceint\n"):
-                            res = "perceint"
-                        if "\npartiall.\n\nhere's how" in res:
-                            res = "partiall"
-                        if res.strip() == "t he a t e r o w":
-                            res = "theaterow"
-                        if "combine the first letters of each word to form a sequence of letters:\nf-u-n-e-r-a-l" in res:
-                            res = "funeral"
-                        if "when combined, they form the letters radicals." in res:
-                            res = "radicals"
-                        if "spells out the name \"realtor\"." in res:
-                            res = "realtor"
-                        if res.strip().endswith("letters.\n\nr e t r e a t e d m e"):
-                            res = "r e t r e a t e d m e"
-                        if "repress\n\ninvadernitratevertigoaquiferdragnetentitlerepress." in res:
-                            res = "invadernitratevertigoaquiferdragnetentitlerepress"
-
-                        if res.endswith("required r.o.a.s.t.e.r.e."):
-                            res = "roastere"
-                        if res.strip().endswith("and so on.\n\nemporia"):
-                            res = "emporia"
-                        if "\ninskeepep\n" in res:
-                            res = "inskeepep"
-                        if res.strip().startswith("commune.\n\nhint:"):
-                            res = "commune"
-                        if "\nl-i-n-k-i-n-g\n" in res:
-                            res = "linking"
-                        if res.strip().startswith("buttons\n\nthe sequence"):
-                            res = "buttons"
-                        if res.strip().startswith("invadernitratevertigoaquiferdragnetentitlerepress.\n\nnote:"):
-                            res = "invadernitratevertigoaquiferdragnetentitlerepress"
-                        if res.strip().endswith("d) nonsense\n\nd) nonsense"):
-                            res = "nonsense"
-                        if res.strip().endswith("expanse\":\narchive"):
-                            res = "archive"
-                        if res.strip().startswith("proceedwe\n\nthe sequence"):
-                            res = "proceedwe"
-                        if res.strip().endswith("\nb - a - c - k - u - p - s"):
-                            res = "backups"
-                        if res.strip().startswith("answers: \n\na d a p t e r e i s e\n\nnote:"):
-                            res = "adaptereise"
-                        if res.strip().startswith("shallow.\n\nnote:"):
-                            res = "shallow"
-                        if res.strip().endswith("\n\nc\no\nm\np\no\ns\nt"):
-                            res = "compost"
-                        if res.strip().startswith("badlands\n\nthe sequence"):
-                            res = "badlands"
-                        if "when you combine these letters, the result is the sequence restock." in res:
-                            res = "restock"
-                        if res.strip().startswith("s.n.a.r.i.n.g.\n"):
-                            res = "snaring"
-                        if "spell the word armrest." in res:
-                            res = "armrest"
-                        if "is roister.\n\nhere's" in res:
-                            res = "roister"
-                        if "1. e l n t i t l e\n" in res:
-                            res = "elntitle"
-                        if res.strip().endswith("would be:\n\ns e v i l l e"):
-                            res = "seville"
-                        if "\nc e l l a r s\n" in res:
-                            res = "cellars"
-                        if "\nt e n d i n g\n" in res:
-                            res = "tending"
-                        if "\ndelan ge." in res:
-                            res = "delange"
                         if res.strip().startswith("a sequence of letters is created when you combine the first letters of the words in the sequence \"capella outcast neptune outback vaunted epistle retrain\" as follows:\n\nc o n o v e r t."):
                             res = "conovert"
                         if res.strip().startswith("olingere.\n\nthe first letter of"):
@@ -335,8 +184,6 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                             res = "outings"
                         if res.strip().startswith("legates\n\nthe first letter"):
                             res = "legates"
-                        if res.strip().endswith("c a s s e l l o t e l a s"):
-                            res = "cassellotelas"
                         if res.strip().startswith("reagent\n\nthe sequence of letters"):
                             res = "reagent"
                         if res.strip().startswith("bonfire attuned retrain robotcop outflast orice manmade\n\nbarroom"):
@@ -435,25 +282,6 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                             res = "armored"
                         if res.strip().endswith("vernier\namerson\nlabella\n\nrevival"):
                             res = "revival"
-                        if res.strip().endswith("t h a c h e r f\n\ni hope this helps! let me know if you have any questions."):
-                            res = "thacherf"
-                        if "devious\":\n\ni n c i s e d\n" in res:
-                            res = "incised"
-                        if res.strip().startswith("c.a.t.h.e.l.l.e.a.k.e.r.s.l.o.a.t.h.e.d."):
-                            res = "c.a.t.h.e.l.l.e.a.k.e.r.s.l.o.a.t.h.e.d."
-                        if res.strip().endswith("p, a, t, c, h, e, n.\n\npatclen"):
-                            res = "patclen"
-                        if res.strip().endswith("rectify dragnet\n\nm-a-i-n-a-r-d"):
-                            res = "mainard"
-                        if res.strip().endswith("\":\nc r e a s o n"):
-                            res = "creason"
-                        if res.strip().endswith("riskier knuckle\n\nsanmark."):
-                            res = "sanmark"
-                        if res.strip().endswith("and so on.\n\nc o m b e s t."):
-                            res = "combest"
-                        if res.strip().endswith("aplenty nodding\n\nflagman."):
-                            res = "flagman"
-
                         if res.strip().endswith("schabel unisons ryerson fulmore azinger caswell enson\n\nsurface"):
                             res = "surface"
                         if res.strip().endswith("reister estella anaacker luellen tenorio okamoto rudnick\n\nrealtor"):
@@ -488,8 +316,6 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                             res = "creator"
                         if res.strip().endswith("risotto ourself midlife afirms noncash chugged excrete\n\nromance"):
                             res = "romance"
-                        if res.strip().endswith("reissue octopus amplenty dracula catfish appease peeling\n\nroadcap"):
-                            res = "roadcap"
                         if res.strip().startswith("i am not able to provide an answer"):
                             res = ""
                         if res.strip().startswith("sunroom\ncrooper\nroister\namabile\ntrinkle\ncreason\nheight\n\n\n\nscratch"):
@@ -595,8 +421,8 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                             # Don't need to worry in this case, because the correct answer is not in the response, so we can be confident that the model didn't produce the correct answer
                             pass
                         elif len(res.split()) != 1:
-                            print("RES", res)
-                            print("TEMP_RES", temp_res)
+                            print(res)
+                            print(temp_res)
                             print(inp)
                             print(words)
                             print("")
@@ -640,7 +466,6 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                             pass
                         count_total += 1
 
-        
                         if model.startswith("gpt"):
                             data = [str(index), condition, saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"], 
                                     saved_stats[gt]["n_characters"], saved_stats[gt]["n_gpt4_tokens"], saved_stats[gt]["gpt2_logprob"], correct]
@@ -653,6 +478,7 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                         else:
                             14/0
                         fo.write("\t".join(data) + "\n")
+
 
 
                     print(condition + "_" + str(inner) + str(outer), "acc:", count_correct*1.0/count_total, "levdist:", total_dist*1.0/count_total, statistics.median(dists))

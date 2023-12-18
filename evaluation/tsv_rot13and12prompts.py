@@ -65,7 +65,7 @@ for prompt in ["", "step", "cot"]:
                     if res[-1] == '"':
                         res = res[:-1]
 
-                    if gt == res:
+                    if gt in res:
                         correct = "1"
                         count_correct += 1
                     else:
