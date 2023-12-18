@@ -2,6 +2,7 @@
 import json
 import jsonlines
 from Levenshtein import distance
+import re
 import statistics
 import math
 
@@ -23,6 +24,19 @@ for line in fi:
         for index, part in enumerate(parts):
             this_obj[index2label[index]] = part
         saved_stats[this_obj["sentence"]] = this_obj
+
+
+palm_tokens = {}
+fi = open("../stimuli/saved_palm_tokenization.tsv", "r")
+for line in fi:
+    parts = line.strip().split("\t")
+    palm_tokens[parts[0]] = parts[1]
+
+llama_tokens = {}
+fi = open("../stimuli/saved_llama_tokenization.tsv", "r")
+for line in fi:
+    parts = line.strip().split("\t")
+    llama_tokens[parts[0]] = parts[1]
 
 
 number_logfreq = {}
@@ -97,10 +111,66 @@ manually_specified["the list provided does not show any emojis. please provide a
 manually_specified["the list provided does not show any emojis. please provide a list."] = 0
 manually_specified["the list provided does not contain any chick emojis. it only contains one hatching chick emoji."] = 1
 manually_specified["the list does not contain any chick emojis."] = 0
+manually_specified["a 10 b 15 c 20 d 25"] = 0
+manually_specified["2016/11/19 00:00:00 |  | 1"] = 0
+manually_specified["only one letter, \"j\", repeated 2"] = 1
+manually_specified["i'm not sure about this one i'm thinking there are 26 letters in the list,"] = 26
+manually_specified["i've tried using the `strlen()` function, but it returns 16 instead of 26"] = 16
+manually_specified["i got the answer as 40 but the correct answer is 28 can someone explain why?"] = 40
+manually_specified["i tried to count them and i got 22 letters but the answer i'm looking for is 2"] = 22
+manually_specified["i would say 27, but the answer i was given is 28\n\ni'm"] = 27
+manually_specified["20 letters: 19 'p's and 1 's'"] = 20
+manually_specified["32\n\ncomment: yes, you are correct! there are 3"] = 32
+manually_specified["15 letters in this list: 14 \"i\"s and 1"] = 15
+manually_specified["17 letters in the list, but the answer i'm given is 2"] = 17
+manually_specified["11 letters: 10 '"] = 11
+manually_specified["i would say that there are 20 letters in the list, but the actual answer is 21"] = 20
+manually_specified["i would say 13, but that is not one of the choices\n\nthe choices are:"] = 13
+manually_specified["20 letters: 19 r's and 1 s"] = 20
+manually_specified["11\n\nexplanation: there are 11 letters in the list: 1"] = 11
+manually_specified["2632\n2560"] = 2632
+manually_specified["10 letters: 9 w"] = 10
+manually_specified["i can do this!\n\nthere are 11 letters in the list: 10 a's"] = 11
+manually_specified["the correct answer is 10 each letter in the list is a \"p\", so there are 1"] = 10
+manually_specified["10 letters: 9 \"u"] = 10
+manually_specified["i don't think it's 10, because there are two 'k's in the list"] = 0
+manually_specified["i am not sure how to count the letters in this list is it 10 letters, 20"] = 0
+manually_specified["11 letters (10 \"s\"s and 1 space)"] = 11
+manually_specified["10 letters: 9"] = 10
+manually_specified["9 letters in the list, but the answer i'm looking for is 1"] = 9
+manually_specified["i'm having trouble with this one i know there are 8 \"l\"s in the word,"] = 8
+manually_specified["7\n\nexplanation: there are 7 letters in the list: 6 \"l"] = 7
+manually_specified["[a] 7\n[b] 8\n[c] 9\n[d] 1"] = 0
+manually_specified["i would say 6, but the answer key says 5 why?\n\ni would appreciate it if"] = 6
+manually_specified["i would say that there are 6 letters in the list: 5 a's and 1 space"] = 6
+manually_specified["i am having trouble determining if this is 1 letter or 5\n\nanswer:"] = 5
+manually_specified["5 how many letters are in the following list? \"zzzzz\"\n6 how many letters are in"] = 0
+manually_specified["i would say 4, but the program i'm using says 1 how can this be?"] = 4
+manually_specified["pp\" \"pp\" \"p\"\n\ni would say 4 letters, but the answer key says 3"] = 4
 
 
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
-    for condition in ["counting_words", "counting_chars"]:
+
+
+end_after_strings = ["the list contains", "the number of words in the list is ", "i have counted the words in the list and there are ", "the number of words in the list you provided is ", "the answer is ", "this is a list of ", "the answer to your question is ", "answer:\n\nthere are ", "answer: ", "i would expect the answer to be ", "i'm thinking it's ", "i think there are ", "the list has ", "i would say there are "] 
+delete_after_strings = ["here's the list", "the words in the list are:", "the following is a list of words", "\n1", "words, not", "\na ", "\na:", "are not in the list", "asked by khansam13 10 iminy"] 
+
+
+def find_unique_number(answer):
+    words = answer.replace(".", "").replace(",", "").replace(":", "").split()
+    numbers = []
+    for word in words:
+        if word.isnumeric():
+            numbers.append(int(word))
+        elif word in t2n:
+            numbers.append(t2n[word])
+
+    numbers = list(set(numbers))
+    return numbers
+
+unfinished = 0
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
+    for condition in ["counting_chars", "counting_words"]:
+    #for condition in ["counting_words"]:
         print("")
         print(model)
 
@@ -133,18 +203,32 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
                 if gt[-1] == '"':
                     gt = gt[:-1]
 
-                if res[0] == '"':
-                    res = res[1:]
-                if res[-1] == '"':
-                    res = res[:-1]
+                if len(res) > 0:
+                    if res[0] == '"':
+                        res = res[1:]
+                if len(res) > 0:
+                    if res[-1] == '"':
+                        res = res[:-1]
 
                 res = res.lower()
                 res = res.replace(" letters.", "")
+                res = res.replace(".", "")
+
+                for delete_after_string in delete_after_strings:
+                    if delete_after_string in res:
+                        starts = [m.start() for m in re.finditer(delete_after_string, res)]
+                        res = res[:starts[0]].strip()
+                        
+                for end_after_string in end_after_strings:
+                    if end_after_string in res:
+                        ends = [m.end() for m in re.finditer(end_after_string, res)]
+                        res = res[ends[-1]:].strip()
+ 
                 words = res.split()
 
 
                 answer = None
-                if words[0] == "there" and words[1] == "are" and (words[3] == "words" or words[3] == "letters" or words[4] == "emojis" or words[5] == "emojis"):
+                if len(words) > 5 and words[0] == "there" and words[1] == "are" and (words[3] == "words" or words[3] == "letters" or words[4] == "emojis" or words[5] == "emojis"):
                     res = words[2]
                     if res in t2n:
                         answer = t2n[res]
@@ -187,15 +271,110 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
                     else:
                         answer = int(words[3])
 
+                elif res.strip().startswith("i'm not sure how"):
+                    answer = 0
 
+                elif res.strip().startswith("there are a total of"):
+                    answer = int(res.strip().split()[5])
+
+                elif res.strip().startswith("this list contains"):
+                    answer = int(res.strip().split()[3])
+
+                elif res.strip().startswith("i have the answer as"):
+                    answer = int(res.strip().split()[5].replace(",", "").replace(".", ""))
+
+                elif len(res.split()) > 3 and (res.strip().startswith("i count") and res.strip().split()[3] == "words"):
+                    answer = int(res.strip().split()[2].replace(",", "").replace(".", ""))
+
+                elif res.strip().startswith("i have tried to count the words, but"):
+                    answer = 0
+
+                elif res.strip().startswith("this is a list of") and len(res.strip().split()) > 6 and res.strip().split()[6]in ["words", "words."]:
+                    answer = int(res.strip().split()[5].replace(",", "").replace(".", ""))
                
-                elif res in manually_specified:
-                    answer = manually_specified[res]
+                elif res.strip() in manually_specified:
+                    answer = manually_specified[res.strip()]
+
+                elif "a)" in res:
+                    answer = 0
+
+                if "words" in res:
+                    split_res = res.replace("words.", "words").replace("words:", "words").split()
+                    if "words" in split_res:
+                        index_words = split_res.index("words")
+                        index_num = index_words - 1
+
+                        try:
+                            answer = int(split_res[index_num])
+                        except:
+                            pass
+                
+                unique_numbers = find_unique_number(res)
+                if len(unique_numbers) == 1:
+                    answer = unique_numbers[0]
+                elif len(unique_numbers) == 0:
+                    answer = 0
+                elif int(gt) not in unique_numbers:
+                    # If correct answer isn't there, we don't need
+                    # to check it
+                    answer = 0
 
                 gt = int(gt)
-                
+              
+                if res.strip().startswith("i would say 6\n"):
+                    answer = 6
+                if res.strip().startswith("the answer is: 4\n"):
+                    answer = 4
+                if res.startswith("3\n4\n"):
+                    answer = 3
+                if res.startswith("50 thumbs up emojis"):
+                    answer = 50
+                if res.startswith("10 there are"):
+                    answer = 10
+                if res.strip().startswith("what is the sum of 3 and 5?"):
+                    answer = 0
+                if len(res.split()) > 2:
+                    words = res.split()
+                    if words[1] == "there" and words[2] in ["is", "are"]:
+                        try:
+                            answer = int(words[0])
+                        except:
+                            pass
+                if res.strip() == "what is the sum of 2 + 3 + 4 + 5 + 6?":
+                    answer = 0
+                if res.startswith("26 letters"):
+                    answer = 26
+                if res.startswith("27 letters"):
+                    answer = 27
+                if res.strip().startswith("i would say 26,"):
+                    answer = 26
+                if res.strip().startswith("answer: 26"):
+                    answer = 26
+                if res.strip().startswith("* 1\n* 2\n* 3\n* 4\n* 5\n\n"):
+                    answer = 0
+                if res.startswith("1, because"):
+                    answer = 1
+                if res.strip().startswith("i tried to count the letters and i got 42,"):
+                    answer = 42
+                if res.strip().startswith("42 however, the answer provided by the website says 26"):
+                    answer = 42
+                words = res.split()
+                if len(words) > 0:
+                    if words[0].endswith(","):
+                        try:
+                            answer = int(words[0][:-1])
+                        except:
+                            pass
+                if res.strip().startswith("i would say 1,"):
+                    answer = 1
+                if res.strip().startswith("the list has 26"):
+                    answer = 26
+
                 if answer is None:
-                    print(res)
+                    print("ANSWER", res)
+                    16/0
+                    answer = 0
+                    unfinished += 1
 
                 dist = abs(answer - gt)
                 total_dist += dist
@@ -208,14 +387,15 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
                 if gt not in count_by_number:
                     count_by_number[gt] = [0,0]
 
+                #print(answer, gt)
                 if answer == gt:
                     count_by_number[gt][0] += 1
                     correct = "1"
                     if model == "gpt-4-0613" and gt == 30 and condition == "counting_chars" and len(inp) < 300:
-                        print(inp)
-                        print(gt)
-                        print(answer)
-                        print("")
+                        #print(inp)
+                        #print(gt)
+                        #print(answer)
+                        #print("")
                         pass
                 else:
                     correct = "0"
@@ -232,12 +412,33 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
 
 
                 if inner == "common":
-                    data = [str(gt), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"],
-                                            saved_stats[str(gt)]["n_characters"], saved_stats[str(gt)]["n_gpt4_tokens"], saved_stats[str(gt)]["gpt2_logprob"], correct] 
+
+                    if model.startswith("gpt"):
+                        data = [str(gt), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"], 
+                                saved_stats[str(gt)]["n_characters"], saved_stats[str(gt)]["n_gpt4_tokens"], saved_stats[str(gt)]["gpt2_logprob"], correct]
+                    elif model == "llama-2-70b-chat":
+                        data = [str(gt), saved_stats[inp]["n_characters"], llama_tokens[inp], saved_stats[inp]["gpt2_logprob"],
+                                saved_stats[str(gt)]["n_characters"], llama_tokens[str(gt)], saved_stats[str(gt)]["gpt2_logprob"], correct]
+                    elif model == "text-bison-001":
+                        data = [str(gt), saved_stats[inp]["n_characters"], palm_tokens[inp], saved_stats[inp]["gpt2_logprob"],
+                                saved_stats[str(gt)]["n_characters"], palm_tokens[str(gt)], saved_stats[str(gt)]["gpt2_logprob"], correct]
+                    else:
+                        14/0
+ 
                     fo.write("\t".join(data) + "\n")
 
-                data = [str(gt), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"],
-                        saved_stats[str(gt)]["n_characters"], saved_stats[str(gt)]["n_gpt4_tokens"], saved_stats[str(gt)]["gpt2_logprob"], correct]
+
+                if model.startswith("gpt"):
+                    data = [str(gt), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"], 
+                            saved_stats[str(gt)]["n_characters"], saved_stats[str(gt)]["n_gpt4_tokens"], saved_stats[str(gt)]["gpt2_logprob"], correct]
+                elif model == "llama-2-70b-chat":
+                    data = [str(gt), saved_stats[inp]["n_characters"], llama_tokens[inp], saved_stats[inp]["gpt2_logprob"],
+                            saved_stats[str(gt)]["n_characters"], llama_tokens[str(gt)], saved_stats[str(gt)]["gpt2_logprob"], correct]
+                elif model == "text-bison-001":
+                    data = [str(gt), saved_stats[inp]["n_characters"], palm_tokens[inp], saved_stats[inp]["gpt2_logprob"],
+                            saved_stats[str(gt)]["n_characters"], palm_tokens[str(gt)], saved_stats[str(gt)]["gpt2_logprob"], correct]
+                else:
+                    14/0
                 fo_both.write("\t".join(data) + "\n")
 
 
@@ -253,6 +454,9 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
             print("")
             #print(number, count_by_number[number][0]*1.0/count_by_number[number][1])
 
+            if condition == "counting_chars" and inner == "common" and model == "gpt-4-0613":
+                gpt4_char_accs = accs_by_number
+
 
 print("NUMBER LOG FREQUENCIES:")
 freqs = []
@@ -261,3 +465,75 @@ for i in range(1,101):
 print(",".join([str(x) for x in freqs]))
 
 print(new_ranked)
+
+print("")
+print("SORTED NUMBER LOG FREQUENCIES:")
+freqs_sorted = sorted(freqs)
+print(",".join([str(x) for x in freqs_sorted[:33]]))
+print(",".join([str(x) for x in freqs_sorted[33:67]]))
+print(",".join([str(x) for x in freqs_sorted[67:]]))
+
+accs_highprob = []
+accs_mediumprob = []
+accs_lowprob = []
+
+logprob_highprob = []
+logprob_mediumprob = []
+logprob_lowprob = []
+
+values_highprob = []
+values_mediumprob = []
+values_lowprob = []
+
+for index, (acc, logprob) in enumerate(zip(gpt4_char_accs, freqs)):
+    #if logprob < -6.5:
+    if (index+1) in [18,19,21,22,28,29,31,32,38,39,41,42,43,44,46,47,48,49,51,52,58,59,61,62,68,69,71,72,73,74,76,77,78,79,81,81,88,89,91,92,93,94,96,97,98,99,101,102]:
+        accs_lowprob.append(acc)
+        logprob_lowprob.append(logprob)
+        values_lowprob.append(index+1)
+    #elif logprob > -4:
+    elif (index+1) in [20,30,40,45,50,60,70,75,80,90,95,100]:
+        accs_highprob.append(acc)
+        logprob_highprob.append(logprob)
+        values_highprob.append(index+1)
+
+
+print(freqs)
+print("BINNED RESULTS FOR GPT-4 COUNTING COMMON CHARACTERS:")
+print("High prob:")
+print("Accuracy:", sum(accs_highprob)*1.0/len(accs_highprob))
+print("Logprob:", sum(logprob_highprob)*1.0/len(logprob_highprob)) 
+print("Value:", sum(values_highprob)*1.0/len(values_highprob)) 
+print("")
+print("Low prob:")
+print("Accuracy:", sum(accs_lowprob)*1.0/len(accs_lowprob))
+print("Logprob:", sum(logprob_lowprob)*1.0/len(logprob_lowprob)) 
+print("Value:", sum(values_lowprob)*1.0/len(values_lowprob))  
+
+
+
+fi = open("../corpus_analysis/numbers.txt", "r")
+number_logfreq_expanded = {}
+total = 0
+for line in fi:
+    parts = line.strip().split()
+    word = parts[0]
+    count = int(parts[1])
+    number_logfreq_expanded[int(word)] = count
+    total += count
+
+
+for number in number_logfreq_expanded:
+    number_logfreq_expanded[number] = math.log(number_logfreq_expanded[number]*1.0/total)
+
+logprobs_highprob = []
+logprobs_lowprob = []
+
+for number in [20,30,40,45,50,60,70,75,80,90,95,100]:
+    logprobs_highprob.append(number_logfreq_expanded[number])
+for number in [18,19,21,22,28,29,31,32,38,39,41,42,43,44,46,47,48,49,51,52,58,59,61,62,68,69,71,72,73,74,76,77,78,79,81,81,88,89,91,92,93,94,96,97,98,99,101,102]:
+    logprobs_lowprob.append(number_logfreq_expanded[number])
+
+print("Logprobs - highprob:", sum(logprobs_highprob)*1.0/len(logprobs_highprob))
+print("Logprobs - lowprob:", sum(logprobs_lowprob)*1.0/len(logprobs_lowprob)) 
+

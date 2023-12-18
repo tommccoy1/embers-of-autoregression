@@ -3,7 +3,7 @@ import json
 from Levenshtein import distance
 
 
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
     print("")
     print(model)
     for direction in ["enc", "dec"]:
@@ -23,16 +23,18 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
                     gt = gt[1:]
                 if gt[-1] == '"':
                     gt = gt[:-1]
-    
-                if res[0] == '"':
-                    res = res[1:]
-                if res[-1] == '"':
-                    res = res[:-1]
+   
+                if len(res) > 0:
+                    if res[0] == '"':
+                        res = res[1:]
+                if len(res) > 0:
+                    if res[-1] == '"':
+                        res = res[:-1]
 
                 dist = distance(gt, res)
                 total_dist += dist
             
-                if gt.lower() == res.lower():
+                if gt.lower() in res.lower():
                     count_correct += 1
                 else:
                     if model == "gpt-4-0613":

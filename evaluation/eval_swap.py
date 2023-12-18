@@ -35,7 +35,20 @@ for line in fi:
         saved_stats[this_obj["sentence"]] = this_obj
 
 
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
+palm_tokens = {}
+fi = open("../stimuli/saved_palm_tokenization.tsv", "r")
+for line in fi:
+    parts = line.strip().split("\t")
+    palm_tokens[parts[0]] = parts[1]
+
+llama_tokens = {}
+fi = open("../stimuli/saved_llama_tokenization.tsv", "r")
+for line in fi:
+    parts = line.strip().split("\t")
+    llama_tokens[parts[0]] = parts[1]
+
+
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
     print("")
     print(model)
     
@@ -65,15 +78,17 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
                 if gt[-1] == '"':
                     gt = gt[:-1]
 
-                if res[0] == '"':
-                    res = res[1:]
-                if res[-1] == '"':
-                    res = res[:-1]
+                if len(res) > 0:
+                    if res[0] == '"':
+                        res = res[1:]
+                if len(res) > 0:
+                    if res[-1] == '"':
+                        res = res[:-1]
 
                 if " the a " in gt or " a the " in gt or " a an " in gt or " an a " in gt or " an the " in gt or " the an " in gt:
                     print(gt)
 
-                if gt == res:
+                if gt in res:
                     correct = "1"
                     count_correct += 1
                     if model == "gpt-4-0613" and condition in ["swap_next_base_highprob", "swap_next_base_highprob"] and len(gt) < 70 and article_count(gt) > 1:
@@ -85,10 +100,10 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
                 else:
                     correct = "0"
                     if model == "gpt-4-0613" and condition in ["swap_next_base_lowprob", "swap_next_base_prob"] and len(gt) < 70 and article_count(gt) > 1:
-                        print(inp)
-                        print(gt)
-                        print(res)
-                        print("")
+                        #print(inp)
+                        #print(gt)
+                        #print(res)
+                        #print("")
                         pass
 
                 #if len(gt) < 40 and "moment" in gt:
@@ -98,9 +113,19 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
 
                 count_total += 1
 
-                data = [str(index), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"], 
-                        saved_stats[gt]["n_characters"], saved_stats[gt]["n_gpt4_tokens"], saved_stats[gt]["gpt2_logprob"], correct]
+                if model.startswith("gpt"):
+                    data = [str(index), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"], 
+                            saved_stats[gt]["n_characters"], saved_stats[gt]["n_gpt4_tokens"], saved_stats[gt]["gpt2_logprob"], correct]
+                elif model == "llama-2-70b-chat":
+                    data = [str(index), saved_stats[inp]["n_characters"], llama_tokens[inp], saved_stats[inp]["gpt2_logprob"],
+                            saved_stats[gt]["n_characters"], llama_tokens[gt], saved_stats[gt]["gpt2_logprob"], correct]
+                elif model == "text-bison-001":
+                    data = [str(index), saved_stats[inp]["n_characters"], palm_tokens[inp], saved_stats[inp]["gpt2_logprob"],
+                            saved_stats[gt]["n_characters"], palm_tokens[gt], saved_stats[gt]["gpt2_logprob"], correct]
+                else:
+                    14/0
                 fo.write("\t".join(data) + "\n")
+
 
 
             print(model, condition, count_correct*1.0/count_total)

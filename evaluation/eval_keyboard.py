@@ -30,7 +30,7 @@ def keyboard_decode(sequence):
 
 
 
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
     print("")
     print(model)
     for condition in ["keyboardcot_highprob", "keyboardcotreference_highprob", "keyboardcotdetailed_highprob"]:
@@ -63,18 +63,19 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
             if len(ends) != 0:
                 res = res[ends[-1]:].strip()
 
-
-            if res[0] == '"':
-                res = res[1:]
-            if res[-1] == '"':
-                res = res[:-1]
+            if len(res) > 0:
+                if res[0] == '"':
+                    res = res[1:]
+            if len(res) > 0:
+                if res[-1] == '"':
+                    res = res[:-1]
 
 
             dist = distance(gt, res)
             total_dist += dist
             dists.append(dist)
             
-            if gt == res:
+            if gt in res:
                 count_correct += 1
             else:
                 if model == "gpt-4-0613" and len(gt) < 60: # and condition == "keyboardcotreference_highprob":

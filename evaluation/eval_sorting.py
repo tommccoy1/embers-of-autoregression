@@ -24,6 +24,19 @@ for line in fi:
         saved_stats[this_obj["sentence"]] = this_obj
 
 
+palm_tokens = {}
+fi = open("../stimuli/saved_palm_tokenization.tsv", "r")
+for line in fi:
+    parts = line.strip().split("\t")
+    palm_tokens[parts[0]] = parts[1]
+
+llama_tokens = {}
+fi = open("../stimuli/saved_llama_tokenization.tsv", "r")
+for line in fi:
+    parts = line.strip().split("\t")
+    llama_tokens[parts[0]] = parts[1]
+
+
 
 
 
@@ -31,7 +44,7 @@ manual_dict = {}
 
 
 
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
     print("")
     print(model)
 
@@ -65,11 +78,12 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
                 if gt[-1] == '"':
                     gt = gt[:-1]
 
-
-                if res[0] == '"':
-                    res = res[1:]
-                if res[-1] == '"':
-                    res = res[:-1]
+                if len(res) > 0:
+                    if res[0] == '"':
+                        res = res[1:]
+                if len(res) > 0:
+                    if res[-1] == '"':
+                        res = res[:-1]
 
                 res = ", ".join(res.split("\n"))
                 if res in manual_dict:
@@ -105,7 +119,7 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
 
                
 
-                if gt == res:
+                if gt in res:
                     count_correct += 1
                     correct_answer = "1"
                 else:
@@ -134,8 +148,19 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
 
                 count_total += 1
 
-                data = [str(index), direction, saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"],
-                        saved_stats[str(gt)]["n_characters"], saved_stats[str(gt)]["n_gpt4_tokens"], saved_stats[str(gt)]["gpt2_logprob"], correct_answer]
+
+                if model.startswith("gpt"):
+                    data = [str(index), direction, saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"], 
+                            saved_stats[gt]["n_characters"], saved_stats[gt]["n_gpt4_tokens"], saved_stats[gt]["gpt2_logprob"], correct_answer]
+                elif model == "llama-2-70b-chat":
+                    data = [str(index), direction, saved_stats[inp]["n_characters"], llama_tokens[inp], saved_stats[inp]["gpt2_logprob"],
+                            saved_stats[gt]["n_characters"], llama_tokens[gt], saved_stats[gt]["gpt2_logprob"], correct_answer]
+                elif model == "text-bison-001":
+                    data = [str(index), direction, saved_stats[inp]["n_characters"], palm_tokens[inp], saved_stats[inp]["gpt2_logprob"],
+                            saved_stats[gt]["n_characters"], palm_tokens[gt], saved_stats[gt]["gpt2_logprob"], correct_answer]
+                else:
+                    14/0
+
 
                 if direction in ["fwd", "rev"]:
                     fo_words.write("\t".join(data) + "\n")

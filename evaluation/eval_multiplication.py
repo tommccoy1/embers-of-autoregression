@@ -5,7 +5,7 @@ from Levenshtein import distance
 import tiktoken
 enc = tiktoken.get_encoding("cl100k_base")
 
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
     print("")
     print(model)
 
@@ -51,7 +51,7 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
                 #print("")
                 pass
 
-            if gt == res:
+            if gt in res:
                 count_correct += 1
                 correct = "1"
             else:
@@ -67,7 +67,7 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
                     value = int(res)
                 except:
                     pass
-                    print(res)
+                    #print(res)
                     #if condition == "multiplication_number":
                         #print(inp)
                         #print(gt)

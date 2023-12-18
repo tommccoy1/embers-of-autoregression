@@ -3,6 +3,7 @@ import json
 import jsonlines
 from Levenshtein import distance
 import statistics
+import re
 import math
 
 saved_stats = {}
@@ -23,6 +24,19 @@ for line in fi:
         for index, part in enumerate(parts):
             this_obj[index2label[index]] = part
         saved_stats[this_obj["sentence"]] = this_obj
+
+palm_tokens = {}
+fi = open("../stimuli/saved_palm_tokenization.tsv", "r")
+for line in fi:
+    parts = line.strip().split("\t")
+    palm_tokens[parts[0]] = parts[1]
+
+llama_tokens = {}
+fi = open("../stimuli/saved_llama_tokenization.tsv", "r")
+for line in fi:
+    parts = line.strip().split("\t")
+    llama_tokens[parts[0]] = parts[1]
+
 
 
 number_logfreq = {}
@@ -79,7 +93,23 @@ for key in n2t:
 manually_recognized_answers = {}
 manually_recognized_answers["100 letters."] = 100
 
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
+end_after_strings = ["the correct answer is ", "answer: ", "the list you provided contains ", " i lost count after ", "i know there are ", "the list contains ", "i'm not sure, but it's definitely more than ", "there are ", "i know the list has ", "i tried to count them and i got ", "but it returns ", "i am not sure if the answer is ", "ans: ", "but i am getting ", "appears ", "i have a list of ", "the list has ", "i have tried to count them and i get ", "the answer is ", "the words in the list are:", "i have found ", "i count ", "i can count ", "this list contains ", "this is a list of ", "your list contains ", "i have counted ", "i have ", "if you count the words in the list you will get ", "i've counted ", "the following is a list of words:", "the number of words in the list is "]
+delete_after_strings = []
+
+def find_unique_number(answer):
+    words = answer.replace(".", "").replace(",", "").replace(":", "").split()
+    numbers = []
+    for word in words:
+        if word.isnumeric():
+            numbers.append(int(word))
+        elif word in t2n:
+            numbers.append(t2n[word])
+
+    numbers = list(set(numbers))
+    return numbers
+
+unfinished = 0
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
     for condition in ["counting_words", "counting_chars"]:
         print("")
         print(model)
@@ -113,22 +143,24 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
                 if gt[-1] == '"':
                     gt = gt[:-1]
 
-                if res[0] == '"':
-                    res = res[1:]
-                if res[-1] == '"':
-                    res = res[:-1]
+                if len(res) > 0:
+                    if res[0] == '"':
+                        res = res[1:]
+                if len(res) > 0:
+                    if res[-1] == '"':
+                        res = res[:-1]
 
                 res = res.lower()
                 words = res.split()
 
                 answer = None
-                if words[0] == "there" and words[1] == "are" and (words[3] == "words" or words[3] == "letters" or words[4] == "emojis" or words[5] == "emojis"):
+                if len(words) > 5 and words[0] == "there" and words[1] == "are" and (words[3] == "words" or words[3] == "letters" or words[4] == "emojis" or words[5] == "emojis"):
                     res = words[2]
                     if res in t2n:
                         answer = t2n[res]
                     elif res.isnumeric():
                         answer = int(res)
-                elif words[0] == "the" and words[1] == "list" and words[2] == "contains" and (words[4] == "letters." or words[5] == "emojis." or words[5] == "letters." or (len(words) >= 7 and words[6] == "emojis.")):
+                elif len(words) > 5 and words[0] == "the" and words[1] == "list" and words[2] == "contains" and (words[4] == "letters." or words[5] == "emojis." or words[5] == "letters." or (len(words) >= 7 and words[6] == "emojis.")):
                     answer = int(words[3])
                 elif res.startswith("there is only one word"):
                     answer = 1
@@ -138,9 +170,58 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
                     answer = manually_recognized_answers[res]
 
                 gt = int(gt)
-                
+
+                unique_numbers = find_unique_number(res)
+                if len(unique_numbers) == 1:
+                    answer = unique_numbers[0]
+                elif len(unique_numbers) == 0:
+                    answer = 0
+
+                if gt not in unique_numbers:
+                    answer = 0
+ 
+                for delete_after_string in delete_after_strings:
+                    if delete_after_string in res:
+                        starts = [m.start() for m in re.finditer(delete_after_string, res)]
+                        res = res[:starts[0]].strip()
+
+                for end_after_string in end_after_strings:
+                    if end_after_string in res:
+                        ends = [m.end() for m in re.finditer(end_after_string, res)]
+                        
+                        try:
+                            res = res[ends[-1]:].strip()
+                            number = int(res.split()[0])
+                            res = res.split()[0]
+                        except:
+                            pass
+
+                # If the first word is a number, we say that's the answer
+                try:
+                    first_word = res.strip().split()[0]
+                    if first_word[-1] == "." or first_word[-1] == ",":
+                        first_word = first_word[:-1]
+                    number = int(first_word.strip())
+                    res = first_word
+                except:
+                    pass
+
+
+                unique_numbers = find_unique_number(res)
+                if len(unique_numbers) == 1:
+                    answer = unique_numbers[0]
+                elif len(unique_numbers) == 0:
+                    answer = 0
+ 
+              
+                if res.strip().startswith("a)") or res.strip().startswith("a. "):
+                    answer = 0
+
+
                 if answer is None:
-                    print(res)
+                    print("ANSWER", res)
+                    answer = 0
+                    unfinished += 1
 
                 dist = abs(answer - gt)
                 total_dist += dist
@@ -161,13 +242,36 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
                 count_total += 1
 
                 if inner.endswith("common"):
-                    data = [str(gt), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"],
-                                            saved_stats[str(gt)]["n_characters"], saved_stats[str(gt)]["n_gpt4_tokens"], saved_stats[str(gt)]["gpt2_logprob"], correct]
+
+                    if model.startswith("gpt"):
+                        data = [str(gt), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"], 
+                                saved_stats[str(gt)]["n_characters"], saved_stats[str(gt)]["n_gpt4_tokens"], saved_stats[str(gt)]["gpt2_logprob"], correct]
+                    elif model == "llama-2-70b-chat":
+                        data = [str(gt), saved_stats[inp]["n_characters"], llama_tokens[inp], saved_stats[inp]["gpt2_logprob"],
+                                saved_stats[str(gt)]["n_characters"], llama_tokens[str(gt)], saved_stats[str(gt)]["gpt2_logprob"], correct]
+                    elif model == "text-bison-001":
+                        data = [str(gt), saved_stats[inp]["n_characters"], palm_tokens[inp], saved_stats[inp]["gpt2_logprob"],
+                                saved_stats[str(gt)]["n_characters"], palm_tokens[str(gt)], saved_stats[str(gt)]["gpt2_logprob"], correct]
+                    else:
+                        14/0
+                    
                     fo.write("\t".join(data) + "\n")
 
+
                 if inner.startswith("common"):
-                    data = [str(gt), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"],
-                                            saved_stats[str(gt)]["n_characters"], saved_stats[str(gt)]["n_gpt4_tokens"], saved_stats[str(gt)]["gpt2_logprob"], correct]
+
+                    if model.startswith("gpt"):
+                        data = [str(gt), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"], 
+                                saved_stats[str(gt)]["n_characters"], saved_stats[str(gt)]["n_gpt4_tokens"], saved_stats[str(gt)]["gpt2_logprob"], correct]
+                    elif model == "llama-2-70b-chat":
+                        data = [str(gt), saved_stats[inp]["n_characters"], llama_tokens[inp], saved_stats[inp]["gpt2_logprob"],
+                                saved_stats[str(gt)]["n_characters"], llama_tokens[str(gt)], saved_stats[str(gt)]["gpt2_logprob"], correct]
+                    elif model == "text-bison-001":
+                        data = [str(gt), saved_stats[inp]["n_characters"], palm_tokens[inp], saved_stats[inp]["gpt2_logprob"],
+                                saved_stats[str(gt)]["n_characters"], palm_tokens[str(gt)], saved_stats[str(gt)]["gpt2_logprob"], correct]
+                    else:
+                        14/0
+ 
                     fo_input.write("\t".join(data) + "\n")
 
                 #print(gt, answer)
@@ -175,4 +279,4 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
             print(condition + "_" + inner, "acc:", count_correct*1.0/count_total, "levdist:", total_dist*1.0/count_total, statistics.median(dists))
             
 
-
+print(unfinished)

@@ -10,7 +10,14 @@ for answer in manual_answers:
     manually_recognized_answers[answer] = 1
 
 
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
+def all_singles(string):
+    confirmed = True
+    for word in string.strip().split():
+        if len(word) != 1:
+            confirmed = False
+    return confirmed
+
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
     print("")
     print(model)
 
@@ -37,10 +44,12 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
             if gt[-1] == '"':
                 gt = gt[:-1]
 
-            if res[0] == '"':
-                res = res[1:]
-            if res[-1] == '"':
-                res = res[:-1]
+            if len(res) > 0:
+                if res[0] == '"':
+                    res = res[1:]
+            if len(res) > 0:
+                if res[-1] == '"':
+                    res = res[:-1]
 
             res = res.lower()
             gt = gt.lower()
@@ -53,12 +62,13 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
             total_dist += dist
             dists.append(dist)
 
-            if res == gt:
+            if gt in res or "-".join(gt.split()) in res:
                 count_correct += 1
             else:
-                print(res)
-                print(gt)
-                print("")
+                #if not all_singles(res):
+                #    print("RES", res)
+                #    print("GT", gt)
+                #    print("")
                 pass
             count_total += 1
 

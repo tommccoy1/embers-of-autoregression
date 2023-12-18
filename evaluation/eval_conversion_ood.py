@@ -4,7 +4,20 @@ import jsonlines
 from Levenshtein import distance
 
 
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
+def find_unique_number(answer):
+    words = answer.split()
+    numbers = []
+    for word in words:
+        try:
+            float_word = float(word)
+            numbers.append(word)
+        except:
+            pass
+
+    numbers = list(set(numbers))
+    return numbers
+
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
     print("")
     print(model)
 
@@ -43,6 +56,8 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
             if res[-1] == ".":
                 res = res[:-1]
 
+            gt = float(gt)
+
             if res.startswith("The answer is "):
                 res = res.replace("The answer is ", "")
 
@@ -59,11 +74,56 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
             
             elif len(res_words) > 2 and res_words[-2] == "degrees" and res_words[-1] == "Fahrenheit":
                 res = res_words[-3]
+
+
+            unique_numbers = find_unique_number(res)
+                
+            if len(unique_numbers) == 1:
+                res = unique_numbers[0]
+            elif len(unique_numbers) == 0:
+                res = -1000000
           
-            if len(res.split("/")) == 2:
-                parts = res.split("/")
-                res = float(parts[0]) / float(parts[1])
-            res = float(res)
+            if len(str(res).split("/")) == 2:
+                try:
+                    parts = res.split("/")
+                    res = float(parts[0]) / float(parts[1])
+                except:
+                    pass
+ 
+            gt_in_res = False
+            for word in str(res).split():
+                try:
+                    float_word = float(word)
+                    if float_word == float(gt):
+                        gt_in_res = True
+                except:
+                    pass
+
+            if not gt_in_res:
+                # Don't have to worry about finding the correct answer
+                # if there's no way it is in the response
+                res = -1000000
+
+            if str(res).startswith("331\n\nHere's how"):
+                res = 331
+            if str(res).startswith("313\n\nInput:"):
+                res = 313
+            if str(res).startswith("99\n\nThe input"):
+                res = 99
+            if str(res).startswith("717\n\nThe number"):
+                res = 717
+            if str(res).startswith("1046\n\nHere's"):
+                res = 1046
+            if str(res).startswith("2497\n\nThe solution"):
+                res = 2497
+
+            try:
+                res = float(res)
+            except:
+                print("RES")
+                print(res)
+                print("")
+                res = -1000000
 
 
             gt = float(gt)
@@ -116,5 +176,4 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
 
 
         print(condition, "acc:", count_correct*1.0/count_total, "levdist:", total_dist*1.0/count_total)
-
 

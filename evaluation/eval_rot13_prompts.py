@@ -63,7 +63,7 @@ for task in ["enc", "dec"]:
                     total_dist += dist
                     dists.append(dist)
             
-                    if gt == res:
+                    if gt in res:
                         count_correct += 1
                     else:
                         if "\n" in res:

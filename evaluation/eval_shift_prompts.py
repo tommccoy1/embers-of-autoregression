@@ -60,14 +60,15 @@ for prompt_type in ["", "step", "cot"]:
                     total_dist += dist
                     distances.append(dist)
             
-                    if gt == res:
+                    if gt in res:
                         count_correct += 1
                     else:
                         #if False:
                         if model == "gpt-4-0613" and shift == 12:
-                            print(gt)
-                            print(res)
-                            print("")
+                            #print(gt)
+                            #print(res)
+                            #print("")
+                            pass
                         if "\n" in res:
                             #print(gt)
                             #print(res)

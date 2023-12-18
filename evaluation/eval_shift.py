@@ -10,7 +10,7 @@ for task in ["dec"]:
     print("")
     print("TASK:", task)
 
-    for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]: #["gpt-3.5-turbo", "gpt-4"]:
+    for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]: #["gpt-3.5-turbo", "gpt-4"]:
         print("")
         print(model)
         all_accs = []
@@ -33,16 +33,18 @@ for task in ["dec"]:
                     if gt[-1] == '"':
                         gt = gt[:-1]
 
-                    if res[0] == '"':
-                        res = res[1:]
-                    if res[-1] == '"':
-                        res = res[:-1]
+                    if len(res) > 0:
+                        if res[0] == '"':
+                            res = res[1:]
+                    if len(res) > 0:
+                        if res[-1] == '"':
+                            res = res[:-1]
 
                     dist = distance(gt, res)
                     total_dist += dist
                     distances.append(dist)
             
-                    if gt == res:
+                    if gt in res:
                         count_correct += 1
                     else:
                         if model == "gpt-4-0613" and shift == 10: # and "To be or not" in res: #shift == 12 and len(gt) < 60:
@@ -58,10 +60,10 @@ for task in ["dec"]:
                         pass
 
                     if model == "gpt-4-0613" and gt.startswith("It would just take"):
-                        print(shift)
-                        print(gt)
-                        print(res)
-                        print("")
+                        #print(shift)
+                        #print(gt)
+                        #print(res)
+                        #print("")
                         pass
 
                     #if len(gt) < 100 and model == "gpt-4" and shift == 13:
