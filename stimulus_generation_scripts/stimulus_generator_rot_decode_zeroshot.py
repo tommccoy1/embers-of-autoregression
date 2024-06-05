@@ -38,8 +38,27 @@ def rot13_encode(sequence):
 print(rot12_encode("stay"))
 print(rot13_encode("stay"))
 
-for fi_name, fo_name in [("../examples/sentences_high_probability.txt", "../stimuli/rot12dec_highprob.jsonl"), ("../examples/sentences_medium_probability.txt", "../stimuli/rot12dec_mediumprob.jsonl"), ("../examples/sentences_adversarial.txt", "../stimuli/rot12dec_adversarial.jsonl"), ("../examples/sentences_low_probability.txt", "../stimuli/rot12dec_lowprob.jsonl")]:
+
+examples_high = []
+examples_medium = []
+examples_low = []
+
+fi_high = open("../examples/sentences_high_probability_train.txt", "r")
+fi_medium = open("../examples/sentences_medium_probability_train.txt", "r")
+fi_low = open("../examples/sentences_low_probability_train.txt", "r")
+
+for line in fi_high:
+    examples_high.append(line.strip())
+for line in fi_medium:
+    examples_medium.append(line.strip())
+for line in fi_low:
+    examples_low.append(line.strip())
+
+
+for fi_name, fo_name in [("../examples/sentences_high_probability_test.txt", "../stimuli/rot12dec_highprob_0shot.jsonl"), ("../examples/sentences_medium_probability_test.txt", "../stimuli/rot12dec_mediumprob_0shot.jsonl"), ("../examples/sentences_low_probability_test.txt", "../stimuli/rot12dec_lowprob_0shot.jsonl"),
+        ]:
     
+
     fi = open(fi_name, "r")
     fo12 = open(fo_name, "w")
     jsl12 = jsonlines.Writer(fo12)
@@ -67,8 +86,16 @@ for fi_name, fo_name in [("../examples/sentences_high_probability.txt", "../stim
 
         
         # Instruction
-        example12["task_instruction"] = 'Rot-12 is a cipher in which each letter is shifted 12 positions forward in the alphabet. For example, here is a message written in rot-12 along with the original text that it was created from:\nRot-12 text: "Efmk tqdq!"\nOriginal text: "Stay here!"\n\nHere is another message in rot-12. Decode this message to produce the original text:\nRot-12 text: "%s"\nOriginal text:'
-        example13["task_instruction"] = 'Rot-13 is a cipher in which each letter is shifted 13 positions forward in the alphabet. For example, here is a message written in rot-13 along with the original text that it was created from:\nRot-13 text: "Fgnl urer!"\nOriginal text: "Stay here!"\n\nHere is another message in rot-13. Decode this message to produce the original text:\nRot-13 text: "%s"\nOriginal text:'
+        example12["task_instruction"] = 'Rot-12 is a cipher in which each letter is shifted 12 positions forward in the alphabet. Below is a message in rot-12. Provide the original text that this encoded message was created from.\n'
+        example12["task_instruction"] += 'Rot-12 text: "%s"\n'
+        example12["task_instruction"] += 'Original text:'
+        
+        example13["task_instruction"] = 'Rot-13 is a cipher in which each letter is shifted 13 positions forward in the alphabet. Below is a message in rot-13. Provide the original text that this encoded message was created from.\n'
+        example13["task_instruction"] += 'Rot-13 text: "%s"\n'
+        example13["task_instruction"] += 'Original text:'
+        
+
+    
 
         # Input
         example12["input"] = encoded12
