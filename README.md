@@ -3,7 +3,7 @@
 
 # Embers of autoregression
 
-This repository gives the stimuli and LLM predictions for the paper Embers of Autoregression. The commands given in the rest of this README show how to run the tests for GPT-3.5 and GPT-4. To extend the results to Llama 2, change `run_openai.py` to `run_llama.py` and use `--model llama-2-70b-chat`. To extend the results to PaLM 2, change `run_openai.py` to `run_palm.py` and use `--model text-bison-001`.
+This repository gives the stimuli and LLM predictions for the paper Embers of Autoregression. The commands given in the rest of this README show how to run the tests for GPT-3.5 and GPT-4. To extend the results to Llama 3, change `run_openai.py` to `run_llama3.py` and use `--model llama-3-70b-chat`. To extend the results to Claude 3, change `run_openai.py` to `run_claude3.py` and use `--model claude-3`. To extend the results to Gemini 1.0, change `run_openai.py` to `run_gemini.py` and use `--model gemini-1.0-pro-001`.
 
 
 
@@ -26,8 +26,8 @@ This repository gives the stimuli and LLM predictions for the paper Embers of Au
 - Run these commands:
 ```
 # Rot-13
-python run_openai.py --tasks rot13enc,rot13dec,rot2enc,rot2dec --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200  --model gpt-4-0613
-python run_openai.py --tasks rot13enc,rot13dec,rot2enc,rot2dec --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200  --model gpt-3.5-turbo-0613
+python run_openai.py --tasks rot13enc,rot13dec,rot12enc,rot12dec --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200  --model gpt-4-0613
+python run_openai.py --tasks rot13enc,rot13dec,rot12enc,rot12dec --conditions highprob,mediumprob,lowprob,adversarial --max_tokens 200  --model gpt-3.5-turbo-0613
 
 # Other shifts
 python run_openai.py --tasks shift --conditions 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 --max_tokens 200  --model gpt-4-0613
@@ -38,7 +38,7 @@ python run_openai.py --tasks shift --conditions 1,2,3,4,5,6,7,8,9,10,11,12,13,14
 python run_openai.py --tasks shiftcot,shiftstep --conditions 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 --max_tokens 2000  --model gpt-4-0613
 
 python run_openai.py --tasks rot13encstep,rot13decstep,rot13enccot,rot13deccot --conditions highprob,mediumprob,lowprob --max_tokens 2000  --model gpt-4-0613
-python run_openai.py --tasks rot2encstep,rot2decstep,rot2enccot,rot2deccot --conditions highprob --max_tokens 2000  --model gpt-4-0613
+python run_openai.py --tasks rot12encstep,rot12decstep,rot12enccot,rot12deccot --conditions highprob --max_tokens 2000  --model gpt-4-0613
 
 ```
 
@@ -65,15 +65,15 @@ python stimuli_statistics.py --fi rot13dec_mediumprob.jsonl
 python stimuli_statistics.py --fi rot13dec_lowprob.jsonl 
 python stimuli_statistics.py --fi rot13dec_adversarial.jsonl
 
-python stimuli_statistics.py --fi rot2enc_highprob.jsonl
-python stimuli_statistics.py --fi rot2enc_mediumprob.jsonl 
-python stimuli_statistics.py --fi rot2enc_lowprob.jsonl
-python stimuli_statistics.py --fi rot2enc_adversarial.jsonl 
+python stimuli_statistics.py --fi rot12enc_highprob.jsonl
+python stimuli_statistics.py --fi rot12enc_mediumprob.jsonl 
+python stimuli_statistics.py --fi rot12enc_lowprob.jsonl
+python stimuli_statistics.py --fi rot12enc_adversarial.jsonl 
 
-python stimuli_statistics.py --fi rot2dec_highprob.jsonl
-python stimuli_statistics.py --fi rot2dec_mediumprob.jsonl 
-python stimuli_statistics.py --fi rot2dec_lowprob.jsonl 
-python stimuli_statistics.py --fi rot2dec_adversarial.jsonl 
+python stimuli_statistics.py --fi rot12dec_highprob.jsonl
+python stimuli_statistics.py --fi rot12dec_mediumprob.jsonl 
+python stimuli_statistics.py --fi rot12dec_lowprob.jsonl 
+python stimuli_statistics.py --fi rot12dec_adversarial.jsonl 
 ```
 
 To produce data for regressions in R:
@@ -655,6 +655,230 @@ python run_openai.py --tasks zeroshot_pigenc_ay,zeroshot_pigdec_ay --conditions 
 ```
 
 
+# Few-shot
+python stimulus_generator_counting_fewshot.py
+python stimulus_generator_counting_fewshot.py
+python stimulus_generator_rot_encode_zeroshot.py
+python stimulus_generator_rot_decode_zeroshot.py
+stimulus_generator_reverse_decode_zeroshot.py
+stimulus_generator_reverse_encode_zeroshot.py
+stimulus_generator_reverse_decode_fewshot.py
+stimulus_generator_reverse_encode_fewshot.py
+
+python run_openai.py --tasks counting_words_common --conditions 5shot,10shot --max_tokens 25 --model gpt-4-0613
+python run_openai.py --tasks counting_words_common --conditions 5shot,10shot --max_tokens 25 --model gpt-3.5-turbo-0613
+python run_claude3.py --tasks counting_words_common --conditions 5shot,10shot --max_tokens 25 --model claude-3
+
+python run_openai.py --tasks rot13enc,rot13dec --conditions highprob_0shot,mediumprob_0shot,lowprob_0shot,highprob_5shot,mediumprob_5shot,lowprob_5shot,highprob_10shot,mediumprob_10shot,lowprob_10shot --max_tokens 200  --model gpt-3.5-turbo-0613
+python run_openai.py --tasks rot13enc,rot13dec --conditions highprob_0shot,mediumprob_0shot,lowprob_0shot,highprob_5shot,mediumprob_5shot,lowprob_5shot,highprob_10shot,mediumprob_10shot,lowprob_10shot --max_tokens 200  --model gpt-4-0613
  
+python run_openai.py --tasks rot12enc,rot12dec --conditions highprob_0shot,highprob_5shot,highprob_10shot --max_tokens 200  --model gpt-3.5-turbo-0613
+python run_openai.py --tasks rot12enc,rot12dec --conditions highprob_0shot,highprob_5shot,highprob_10shot --max_tokens 200  --model gpt-4-0613
+
+
+
+python run_claude3.py --tasks rot13enc,rot13dec --conditions highprob_0shot,mediumprob_0shot,lowprob_0shot,highprob_5shot,mediumprob_5shot,lowprob_5shot,highprob_10shot,mediumprob_10shot,lowprob_10shot --max_tokens 200  --model claude-3
+ 
+python run_claude3.py --tasks rot12enc,rot12dec --conditions highprob_0shot,highprob_5shot,highprob_10shot --max_tokens 200  --model claude-3
+
+
+
+
+python run_openai.py --tasks rot12dec,rot12enc,rot13dec,rot13enc --conditions highprob_word_overlap_0shot,highprob_word_overlap_5shot,highprob_word_overlap_10shot,highprob_word_0shot,highprob_word_5shot,highprob_word_10shot --max_tokens 200  --model gpt-4-0613
+python run_openai.py --tasks rot13dec,rot13enc --conditions mediumprob_word_0shot,mediumprob_word_5shot,mediumprob_word_10shot,lowprob_word_0shot,lowprob_word_5shot,lowprob_word_10shot,mediumprob_word_overlap_0shot,mediumprob_word_overlap_5shot,mediumprob_word_overlap_10shot,lowprob_word_overlap_0shot,lowprob_word_overlap_5shot,lowprob_word_overlap_10shot --max_tokens 200  --model gpt-4-0613
+
+
+python run_openai.py --tasks rot12dec,rot12enc,rot13dec,rot13enc --conditions highprob_word_overlap_0shot,highprob_word_overlap_5shot,highprob_word_overlap_10shot,highprob_word_0shot,highprob_word_5shot,highprob_word_10shot --max_tokens 200  --model gpt-3.5-turbo-0613
+python run_openai.py --tasks rot13dec,rot13enc --conditions mediumprob_word_0shot,mediumprob_word_5shot,mediumprob_word_10shot,lowprob_word_0shot,lowprob_word_5shot,lowprob_word_10shot,mediumprob_word_overlap_0shot,mediumprob_word_overlap_5shot,mediumprob_word_overlap_10shot,lowprob_word_overlap_0shot,lowprob_word_overlap_5shot,lowprob_word_overlap_10shot --max_tokens 200  --model gpt-3.5-turbo-0613
+
+
+python run_claude3.py --tasks rot12dec,rot12enc,rot13dec,rot13enc --conditions highprob_word_overlap_0shot,highprob_word_overlap_5shot,highprob_word_overlap_10shot,highprob_word_0shot,highprob_word_5shot,highprob_word_10shot --max_tokens 200  --model claude-3
+python run_claude3.py --tasks rot13dec,rot13enc --conditions mediumprob_word_0shot,mediumprob_word_5shot,mediumprob_word_10shot,lowprob_word_0shot,lowprob_word_5shot,lowprob_word_10shot,mediumprob_word_overlap_0shot,mediumprob_word_overlap_5shot,mediumprob_word_overlap_10shot,lowprob_word_overlap_0shot,lowprob_word_overlap_5shot,lowprob_word_overlap_10shot --max_tokens 200  --model claude-3
+
+
+
+
+
+python run_openai.py --tasks revenc,revdec --conditions highprob_0shot,mediumprob_0shot,lowprob_0shot,highprob_5shot,mediumprob_5shot,lowprob_5shot,highprob_10shot,mediumprob_10shot,lowprob_10shot --max_tokens 200 --model gpt-4-0613
+python run_openai.py --tasks revenc,revdec --conditions highprob_0shot,mediumprob_0shot,lowprob_0shot,highprob_5shot,mediumprob_5shot,lowprob_5shot,highprob_10shot,mediumprob_10shot,lowprob_10shot --max_tokens 200 --model gpt-3.5-turbo-0613
+
+python run_claude3.py --tasks revenc,revdec --conditions highprob_0shot,mediumprob_0shot,lowprob_0shot,highprob_5shot,mediumprob_5shot,lowprob_5shot,highprob_10shot,mediumprob_10shot,lowprob_10shot --max_tokens 200 --model claude-3
+
+
+
+
+python run_openai.py --tasks sorting --conditions fwd_0shot,fwd_5shot,fwd_10shot,rev_0shot,rev_5shot,rev_10shot --max_tokens 200 --model gpt-4-0613
+python run_openai.py --tasks sorting --conditions fwd_0shot,fwd_5shot,fwd_10shot,rev_0shot,rev_5shot,rev_10shot --max_tokens 200 --model gpt-3.5-turbo-0613
+python run_claude3.py --tasks sorting --conditions fwd_0shot,fwd_5shot,fwd_10shot,rev_0shot,rev_5shot,rev_10shot --max_tokens 200 --model claude-3
+
+
+# Fine-tuning
+python openai_upload.py stimuli/counting_words_common_10shot_finetune.jsonl
+python openai_finetune.py file-w2jjb6krUVevId2x45Rbbs2h count_10shot
+python run_openai.py --tasks counting_words --conditions common --max_tokens 25 --model ft:gpt-3.5-turbo-0613:personal:count-10shot:9NYCyc4X
+
+python openai_upload.py stimuli/counting_words_common_100shot_finetune.jsonl
+python openai_finetune.py file-wY9wMoAYV5jE5HU9jUQg3HxI count_100shot
+python run_openai.py --tasks counting_words --conditions common --max_tokens 25 --model ft:gpt-3.5-turbo-0613:personal:count-100shot:9NYN8hZQ
+
+
+
+
+
+python openai_upload.py stimuli/rot12dec_highprob_100shot_finetune.jsonl
+python openai_finetune.py file-eZx9zLdFZMKmPvqPpshe8aZ6 r12dh_100shot
+python run_openai.py --tasks rot12dec --conditions highprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r12dh-100shot:9NgJvlfG
+
+python openai_upload.py stimuli/rot12dec_highprob_10shot_finetune.jsonl
+python openai_finetune.py file-mU8SxkmnOmMjCYBL8OUxQt2w r12dh_10shot
+python run_openai.py --tasks rot12dec --conditions highprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r12dh-10shot:9NgHTiOF
+
+python openai_upload.py stimuli/rot12enc_highprob_100shot_finetune.jsonl
+python openai_finetune.py file-jJg4pgnlrhETgHbW85lM45nx r12eh_100shot
+python run_openai.py --tasks rot12enc --conditions highprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r12eh-100shot:9NgL3Vjx
+
+python openai_upload.py stimuli/rot12enc_highprob_10shot_finetune.jsonl
+python openai_finetune.py file-9x7zPZsqKmm0ydBDVAtXkg24 r12eh_10shot
+python run_openai.py --tasks rot12enc --conditions highprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r12eh-10shot:9NgPyaPc
+
+python openai_upload.py stimuli/rot13dec_highprob_100shot_finetune.jsonl
+python openai_finetune.py file-PwXqcTHDMloa6AXEVdcAPYWG r13dh_100shot
+python run_openai.py --tasks rot13dec --conditions highprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13dh-100shot:9NgePY2P
+
+python openai_upload.py stimuli/rot13dec_highprob_10shot_finetune.jsonl
+python openai_finetune.py file-rNQeVHcjPdVxPyJrCBctl4jR r13dh_10shot
+python run_openai.py --tasks rot13dec --conditions highprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13dh-10shot:9NgXMOZK
+
+python openai_upload.py stimuli/rot13dec_lowprob_100shot_finetune.jsonl
+python openai_finetune.py file-idgp1snOM5O5yBTPtHaz3m01 r13dl_100shot
+python run_openai.py --tasks rot13dec --conditions lowprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13dl-100shot:9NgcPo3H
+
+python openai_upload.py stimuli/rot13dec_lowprob_10shot_finetune.jsonl
+python openai_finetune.py file-zSkivYHjRRGuY8rlh9ChLeBG r13dl_10shot
+python run_openai.py --tasks rot13dec --conditions lowprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13dl-10shot:9NggubuL
+
+python openai_upload.py stimuli/rot13dec_mediumprob_100shot_finetune.jsonl
+python openai_finetune.py file-UcezAD8Ph81ahY87ZAHr2l9E r13dm_100shot
+python run_openai.py --tasks rot13dec --conditions mediumprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13dm-100shot:9Ngwmxff
+
+python openai_upload.py stimuli/rot13dec_mediumprob_10shot_finetune.jsonl
+python openai_finetune.py file-djdrXriHdrpDavP5MQeCe7tu r13dm_10shot
+python run_openai.py --tasks rot13dec --conditions mediumprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13dm-10shot:9Ngsb1im
+
+python openai_upload.py stimuli/rot13enc_highprob_100shot_finetune.jsonl
+python openai_finetune.py file-TF5f2NSxyU9B921OfeQYmAsy r13eh_100shot
+python run_openai.py --tasks rot13enc --conditions highprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13eh-100shot:9Nh0obrD
+
+python openai_upload.py stimuli/rot13enc_highprob_10shot_finetune.jsonl
+python openai_finetune.py file-coLDGIeNK2HnwI2RuB4edNVN r13eh_10shot
+python run_openai.py --tasks rot13enc --conditions highprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13eh-10shot:9Nh9hmyo
+
+python openai_upload.py stimuli/rot13enc_mediumprob_100shot_finetune.jsonl
+python openai_finetune.py file-gEkwjxQZ5dOAscMknIvUh63x r13em_100shot
+python run_openai.py --tasks rot13enc --conditions mediumprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13em-100shot:9NhCSTcf
+
+python openai_upload.py stimuli/rot13enc_mediumprob_10shot_finetune.jsonl
+python openai_finetune.py file-8RPivgLC5sa3GSKJFs8xjxIa r13em_10shot
+python run_openai.py --tasks rot13enc --conditions mediumprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13em-10shot:9Nh7Yqg6
+
+python openai_upload.py stimuli/rot13enc_lowprob_10shot_finetune.jsonl
+python openai_finetune.py file-yrA4yA6sFTBLXoi27uSy2T1o r13el_10shot
+python run_openai.py --tasks rot13enc --conditions lowprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13el-10shot:9NhJlYd7
+
+python openai_upload.py stimuli/rot13enc_lowprob_100shot_finetune.jsonl
+python openai_finetune.py file-qDH42OJ9SZw4d7virzJP493F r13el_100shot
+python run_openai.py --tasks rot13enc --conditions lowprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13el-100shot:9NhO5zIm
+
+
+
+# LAUNCHED
+python openai_upload.py stimuli/revdec_highprob_10shot_finetune.jsonl
+python openai_finetune.py file-huaXcPLgDEXiqcCOMiyT0E8N rdh_10shot
+python run_openai.py --tasks revdec --conditions highprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rdh-10shot:9S9QOf6v 
+
+python openai_upload.py stimuli/revdec_highprob_100shot_finetune.jsonl
+python openai_finetune.py file-OeTBNslxnTfj0BD7fY6bvEwa rdh_100shot
+python run_openai.py --tasks revdec --conditions highprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rdh-100shot:9S9VZFB5
+
+python openai_upload.py stimuli/revdec_mediumprob_10shot_finetune.jsonl 
+python openai_finetune.py file-9KsKLgvIO3oMGgP09mEzzreb rdm_10shot
+python run_openai.py --tasks revdec --conditions mediumprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rdm-10shot:9S9QgVm4
+
+
+python openai_upload.py stimuli/revdec_mediumprob_100shot_finetune.jsonl
+python openai_finetune.py file-tAGSd1OOrCYg5mqOn2stQvhd rdm_100shot
+python run_openai.py --tasks revdec --conditions mediumprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rdm-100shot:9S9gUIsK
+
+python openai_upload.py stimuli/revdec_lowprob_10shot_finetune.jsonl
+python openai_finetune.py file-RNps1P0zekBEgQfFTKlfzFlq rdl_10shot
+python run_openai.py --tasks revdec --conditions lowprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rdl-10shot:9S9dK7en
+
+python openai_upload.py stimuli/revdec_lowprob_100shot_finetune.jsonl
+python openai_finetune.py file-45fvrEEVMuGO1L95t9r5yeAQ rdl_100shot
+python run_openai.py --tasks revdec --conditions lowprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rdl-100shot:9S9gPeoH
+
+
+
+
+# REVENC
+python openai_upload.py stimuli/revenc_highprob_10shot_finetune.jsonl
+python openai_finetune.py file-S1Lj7WyT4qNe2qREKAZHBXqW reh_10shot
+python run_openai.py --tasks revenc --conditions highprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:reh-10shot:9SALatx6 
+
+python openai_upload.py stimuli/revenc_highprob_100shot_finetune.jsonl
+python openai_finetune.py file-4DMuv8BzQal8u8dHlIhW22wf reh_100shot
+python run_openai.py --tasks revenc --conditions highprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:reh-100shot:9SABR6eq
+
+python openai_upload.py stimuli/revenc_mediumprob_10shot_finetune.jsonl
+python openai_finetune.py file-uytB2PIG7U7gcVjP2yGvUkd1 rem_10shot
+python run_openai.py --tasks revenc --conditions mediumprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rem-10shot:9SALjJuT
+
+
+python openai_upload.py stimuli/revenc_mediumprob_100shot_finetune.jsonl
+python openai_finetune.py file-dZIfC2uWty1cQlur61L1aLm7 rem_100shot
+python run_openai.py --tasks revenc --conditions mediumprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rem-100shot:9SAEh76I
+
+python openai_upload.py stimuli/revenc_lowprob_10shot_finetune.jsonl
+python openai_finetune.py file-XbcKCRCdQrVK052TDA8vZ7Nn rel_10shot
+python run_openai.py --tasks revenc --conditions lowprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rel-10shot:9SAMip7T
+
+python openai_upload.py stimuli/revenc_lowprob_100shot_finetune.jsonl
+python openai_finetune.py file-xZw6tpNu04CNdzeL0WGd87C2 rel_100shot
+python run_openai.py --tasks revenc --conditions lowprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rel-100shot:9SACHgpi
+
+
+
+
+
+
+
+
+
+
+# Sorting
+python openai_upload.py stimuli/sorting_fwd_10shot_finetune.jsonl
+python openai_finetune.py file-3rou5taox63cYdnLr2VWVadh fwd_10shot
+python run_openai.py --tasks sorting --conditions fwd_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:fwd-10shot:9S9lmcHt
+
+python openai_upload.py stimuli/sorting_fwd_100shot_finetune.jsonl
+python openai_finetune.py file-5slb4bzbSL51MrMsxIDeSU0h fwd_100shot
+python run_openai.py --tasks sorting --conditions fwd_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:fwd-100shot:9S9sz3um
+
+python openai_upload.py stimuli/sorting_rev_10shot_finetune.jsonl
+python openai_finetune.py file-3d0l6eFEJRIh1Gc4hIMcEdDZ rev_10shot
+python run_openai.py --tasks sorting --conditions rev_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rev-10shot:9S9uQlp7
+
+python openai_upload.py stimuli/sorting_rev_100shot_finetune.jsonl
+python openai_finetune.py file-mfdJBlIPZ1wljHgT7U71nEMP rev_100shot
+python run_openai.py --tasks sorting --conditions rev_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rev-100shot:9S9vpZRp
+
+
+
+
+
+
+
+
+
 
 

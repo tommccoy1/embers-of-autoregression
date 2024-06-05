@@ -93,9 +93,9 @@ def chatgpts(messages_list, model="gpt-4", temperature=0.7, max_tokens=1000, sto
     responses =  asyncio.run(generate_from_openai_chat_completion(model=model, messages_list=messages_list, temperature=temperature, max_tokens=max_tokens, top_p=1, stop=stop))
     texts = [x["choices"][0]["message"]["content"] for x in responses]
     # print(responses)
-    global completion_tokens, prompt_tokens
-    completion_tokens[model] += sum(x["usage"]["completion_tokens"] for x in responses if "usage" in x and "completion_tokens" in x["usage"])
-    prompt_tokens[model] += sum(x["usage"]["prompt_tokens"] for x in responses if "usage" in x and "prompt_tokens" in x["usage"])
+    #global completion_tokens, prompt_tokens
+    #completion_tokens[model] += sum(x["usage"]["completion_tokens"] for x in responses if "usage" in x and "completion_tokens" in x["usage"])
+    #prompt_tokens[model] += sum(x["usage"]["prompt_tokens"] for x in responses if "usage" in x and "prompt_tokens" in x["usage"])
     return texts
 
 def gpt_usage():

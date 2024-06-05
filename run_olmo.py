@@ -1,9 +1,14 @@
-from models.openai import gpts
 import logging
 import json
 import argparse
+from tqdm import tqdm
 import os
+import together
+import time
 logging.getLogger().setLevel(logging.ERROR)
+
+together.api_key = os.environ['TOGETHER_API_KEY']
+client = together.Together(api_key=together.api_key)
 
 def edit_distance(s1: str, s2: str) -> int:
     """Compute the Levenshtein distance between two strings."""
@@ -23,6 +28,47 @@ def edit_distance(s1: str, s2: str) -> int:
     return previous_row[-1]
 
 
+def olmo_responses(prompt_list, model="olmo-7b-instruct", max_tokens=1000, temperature=0.0):
+    responses = []
+    for prompt in tqdm(prompt_list):
+        output = None
+        for _ in range(10):
+            try:
+                if "instruct" in model:
+                    output = client.chat.completions.create(
+                                messages = [{"role": "user", "content": prompt}], 
+                                model = "allenai/" + model,
+                                max_tokens = max_tokens,
+                                temperature = temperature,
+                            )
+                else:
+                    output = client.completions.create(
+                                prompt=prompt,
+                                model = "allenai/" + model,
+                                max_tokens = max_tokens,
+                                temperature = temperature,
+                            )
+            except:
+                time.sleep(1)
+            
+            if not (output is None):
+                break
+
+        if "instruct" in model:
+            if output is None:
+                responses.append("")
+            else:
+                responses.append(output.choices[0].message.content)
+        else:
+            if output is None:
+                responses.appemd("")
+            else:
+                responses.append(output.choices[0].text)
+    return responses
+
+    
+
+
 def solve_file(name, model, temperature, max_tokens):
     file = f'./stimuli/{name}.jsonl'
     if not os.path.exists(file):
@@ -32,9 +78,12 @@ def solve_file(name, model, temperature, max_tokens):
         lines = f.readlines()
     lines = [json.loads(line) for line in lines]
     prompts = [line['instruction_plus_input'] for line in lines]
-    gts = ['"' + line['correct_output'] + '"' for line in lines]
-    res = gpts(prompts, model=model, temperature=0.0, max_tokens=max_tokens)
-    accs = [(gt.replace('"', '') in r) for r, gt in zip(res, gts)]
+    gts = [line['correct_output'] for line in lines]
+    res = olmo_responses(prompts, model=model, temperature=0.0, max_tokens=max_tokens)
+
+    # These accs are not what we use in the paper - they're just for quick estimates. 
+    # The stats used in the paper are computed in the evaluation/ folder
+    accs = [(gt.replace('"', '') in r.replace('"', '')) for r, gt in zip(res, gts)]
     eds = [edit_distance(r, gt) for r, gt in zip(res, gts)]
     acc = sum(accs) / len(accs)
     ed = sum(eds) / len(eds)
@@ -53,7 +102,7 @@ def parse_args():
     args = argparse.ArgumentParser()
     args.add_argument('--tasks', type=str, required=True, help='split by comma')
     args.add_argument('--conditions', type=str, required=True, help='split by comma')
-    args.add_argument('--model', type=str, required=True) #, choices=['gpt-3.5-turbo-0613', 'gpt-4-0613', 'ft:gpt-3.5-turbo-0613:personal:count-10shot:9NYCyc4X', 'ft:gpt-3.5-turbo-0613:personal:count-100shot:9NYN8hZQ'])
+    args.add_argument('--model', type=str, required=True, choices=['olmo-7b-instruct', 'olmo-7b'])
     args.add_argument('--max_tokens', type=int, help='default = 1000', default=1000)
     args = args.parse_args()
     return args
