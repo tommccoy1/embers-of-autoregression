@@ -17,7 +17,7 @@ def find_unique_number(answer):
     numbers = list(set(numbers))
     return numbers
 
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude-3-opus-20240229", "gemini-1.0-pro-001"]: 
     print("")
     print(model)
 
@@ -120,9 +120,9 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
             try:
                 res = float(res)
             except:
-                print("RES")
-                print(res)
-                print("")
+                #print("RES")
+                #print(res)
+                #print("")
                 res = -1000000
 
 

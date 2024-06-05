@@ -47,8 +47,12 @@ def pig_encode(sentence, suffix="ay", vowel_consonant=""):
         elif len(word) > 0 and word[0] in ["a", "e", "i", "o", "u"]:
             if is_roman(word):
                 new_word = prefix + word + vowel_consonant + suffix
+            elif word == "eíthuv":
+                new_word = "eíthuv" + suffix
+            elif word == "ivésluv":
+                new_word = "ivésluv" + suffix
             else:
-                #print("UNHANDLED WORD VOWEL-INITIAL", word)
+                print("UNHANDLED WORD VOWEL-INITIAL", word)
                 15/0
 
         elif len(word) > 0 and word[0] == "y":
@@ -74,6 +78,10 @@ def pig_encode(sentence, suffix="ay", vowel_consonant=""):
                     new_word = prefix + word + suffix
                 else:
                     new_word = prefix + word[index_vowel:] + word[:index_vowel] + suffix
+            elif word == "héthuv":
+                new_word = "éthuvh" + suffix
+            elif word == "ītsuv":
+                new_word = "ītsuv" + suffix
             else:
                 print("UNHANDLED WORD CONSONANT-INITIAL", word)
                 15/0
@@ -83,7 +91,7 @@ def pig_encode(sentence, suffix="ay", vowel_consonant=""):
     return " ".join(new_sentence)
 
 
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001", "llama-3-70b-chat-hf", "claude-3-opus-20240229", "olmo-7b-instruct", "gemini-1.0-pro-001"]:
     print("")
     print(model)
     for suffix in ["ay", "uv"]:
@@ -128,6 +136,12 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                         #print(gt)
                         #print(res)
                         #print("")
+                        pass
+
+                    if "claude" in model and "dec" in condition:
+                        #print(gt)
+                        #print(res)
+                        #print("\n\n\n")
                         pass
 
                     if model == "gpt-4":

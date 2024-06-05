@@ -17,7 +17,7 @@ def find_unique_number(answer):
     return numbers
 
 nonfloat = 0
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude-3-opus-20240229", "gemini-1.0-pro-001"]: 
     print("")
     print(model)
 
@@ -118,8 +118,17 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                 res = "1950"
             if res.startswith("301\n\nHere's"):
                 res = "301"
-            
-
+            if "So, the answer is:" in res:
+                if len(res[res.index("So, the answer is:"):].split()) > 4:
+                    res = res[res.index("So, the answer is:"):].split()[4]
+            if res.endswith("729 + 32 = 761\n\nSo, the answer is:"):
+                res = "761"
+            if "So, my answer would be:" in res:
+                res = res[res.index("So, my answer would be:"):].split()[5]
+            if "the answer is:" in res:
+                res = res[res.index("the answer is:"):].split()[3]
+            if "Rounded to the nearest integer:" in res:
+                res = res[res.index("Rounded to the nearest integer:"):].split()[5]
 
 
 
@@ -154,6 +163,8 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                 res = 17
             if str(res).startswith("1228\n\nExplanation:"):
                 res = 1228
+            if str(res).startswith("The number is 6."):
+                res = 6
 
             try:
                 res = float(res)
@@ -167,6 +178,11 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                 correct = "1"
             else:
                 correct = "0"
+
+                #if "claude" in model:
+                #    print(gt)
+                #    print(res)
+                #    print("\n\n\n")
 
             if model == "gpt-4-0613" and gt != res and condition == "conversion_fake":
                 #print(inp)

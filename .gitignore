@@ -8,3 +8,4 @@ prev/
 saved_tsv_files/
 test_llms/
 .DS_Store
+.venv/

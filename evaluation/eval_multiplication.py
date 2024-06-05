@@ -5,7 +5,21 @@ from Levenshtein import distance
 import tiktoken
 enc = tiktoken.get_encoding("cl100k_base")
 
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
+gemini_tokens = {}
+fi = open("../stimuli/saved_gemini_tokenization.tsv", "r")
+for line in fi:
+    parts = line.strip().split("\t")
+    gemini_tokens[parts[0]] = parts[1]
+
+llama3_tokens = {}
+fi = open("../stimuli/saved_llama3_tokenization.tsv", "r")
+for line in fi:
+    parts = line.strip().split("\t")
+    llama3_tokens[parts[0]] = parts[1]
+
+
+
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude-3-opus-20240229", "gemini-1.0-pro-001"]: 
     print("")
     print(model)
 
@@ -62,6 +76,12 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                     #print(gt)
                     #print(res)
                     #print("")
+
+                if "claude" in model:
+                    #print(gt)
+                    #print(res)
+                    #print("\n\n\n")
+                    pass
 
                 try:
                     value = int(res)

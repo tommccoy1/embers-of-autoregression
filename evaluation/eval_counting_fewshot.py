@@ -26,19 +26,17 @@ for line in fi:
         saved_stats[this_obj["sentence"]] = this_obj
 
 
-gemini_tokens = {}
-fi = open("../stimuli/saved_gemini_tokenization.tsv", "r")
+palm_tokens = {}
+fi = open("../stimuli/saved_palm_tokenization.tsv", "r")
 for line in fi:
     parts = line.strip().split("\t")
-    gemini_tokens[parts[0]] = parts[1]
+    palm_tokens[parts[0]] = parts[1]
 
-llama3_tokens = {}
-fi = open("../stimuli/saved_llama3_tokenization.tsv", "r")
+llama_tokens = {}
+fi = open("../stimuli/saved_llama_tokenization.tsv", "r")
 for line in fi:
     parts = line.strip().split("\t")
-    llama3_tokens[parts[0]] = parts[1]
-
-
+    llama_tokens[parts[0]] = parts[1]
 
 
 number_logfreq = {}
@@ -169,29 +167,79 @@ def find_unique_number(answer):
     numbers = list(set(numbers))
     return numbers
 
+
+
+number_counts_0shot = {}
+number_counts_5shot = {}
+number_counts_10shot = {}
+number_counts_100shot = {}
+
+for i in range(101):
+    number_counts_0shot[i] = 0
+    number_counts_5shot[i] = 0
+    number_counts_10shot[i] = 0
+    number_counts_100shot[i] = 0
+
+for count, count_dict in [("5", number_counts_5shot), ("10", number_counts_10shot), ("100", number_counts_100shot)]:
+    fi = open("../examples/counting_words_" + count + "shot.txt", "r")
+
+    for line in fi:
+        length = len(line.strip().split())
+        count_dict[length] += 1
+
+    fi.close()
+
+
 unfinished = 0
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude-3-opus-20240229", "gemini-1.0-pro-001"]: 
-    for condition in ["counting_chars", "counting_words"]:
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "claude-3-opus-20240229", "ft:gpt-3.5-turbo-0613:personal:count-10shot:9NYCyc4X", "ft:gpt-3.5-turbo-0613:personal:count-100shot:9NYN8hZQ"]:
+    for condition in ["counting_words", "counting_words_5shot", "counting_words_10shot"]:
     #for condition in ["counting_words"]:
+
+        if model.startswith("ft"):
+            if condition != "counting_words":
+                continue
+        #    elif "10shot" in model:
+        #        condition = "counting_words_10shot"
+        #    elif "100shot" in model:
+        #        condition = "counting_words_100shot"
+        #    model = "ft-gpt-3.5-turbo-0613"
+
+        n_examples = None
+        count_dict = None
+        if model.startswith("ft"):
+            if "10shot" in model:
+                n_examples = 10
+                count_dict = number_counts_10shot
+            elif "100shot" in model:
+                n_examples = 100
+                count_dict = number_counts_100shot
+        elif condition == "counting_words_5shot":
+            n_examples = 5
+            count_dict = number_counts_5shot
+        elif condition == "counting_words_10shot":
+            n_examples = 10
+            count_dict = number_counts_10shot
+        else:
+            n_examples = 0
+            count_dict = number_counts_0shot
+
         print("")
         print(model)
 
-        fo = open("table_" + condition + "_" + model + ".tsv", "w")
-        fo.write("\t".join(["index", "input_nchars", "input_ntokens", "input_logprob", "output_nchars", "output_ntokens", "output_logprob", "correct"]) + "\n")
+        fo = open("table_few_" + condition + "_" + model + ".tsv", "w")
+        fo.write("\t".join(["index", "demonstration_count", "input_nchars", "input_ntokens", "input_logprob", "output_nchars", "output_ntokens", "output_logprob", "correct"]) + "\n")
 
-        fo_both = open("table_" + condition + "_both_" + model + ".tsv", "w")
-        fo_both.write("\t".join(["index", "input_nchars", "input_ntokens", "input_logprob", "output_nchars", "output_ntokens", "output_logprob", "correct"]) + "\n")
-
-        for inner in ["common", "rare"]:
+        for inner in ["common"]:
             count_by_number = {}
 
 
             inputs = []
-            with jsonlines.open("../stimuli/" + condition + "_" + str(inner) + ".jsonl") as reader:
+            with jsonlines.open("../stimuli/" + condition.replace("words", "words" + "_" + str(inner)) + ".jsonl") as reader:
                 for obj in reader:
                     inputs.append(obj["input"])
 
-            fi = open("../logs/" + condition + "_" + inner + "_" +  model + "_temp=0.0_n=1.json", "r")
+    
+            fi = open("../logs/" + condition.replace("words", "words" + "_" + str(inner)) + "_" +  model + "_temp=0.0_n=1.json", "r")
             data = json.load(fi)
 
 
@@ -452,42 +500,18 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
 
                 if inner == "common":
 
-                    if model.startswith("gpt"):
-                        data = [str(gt), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"],
+                    if "gpt" in model:
+                        data = [str(gt), str(count_dict[gt]), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"], 
                                 saved_stats[str(gt)]["n_characters"], saved_stats[str(gt)]["n_gpt4_tokens"], saved_stats[str(gt)]["gpt2_logprob"], correct]
-                    elif model == "llama-3-70b-chat-hf":
-                        data = [str(gt), saved_stats[inp]["n_characters"], llama3_tokens[inp], saved_stats[inp]["gpt2_logprob"],
-                                saved_stats[str(gt)]["n_characters"], llama3_tokens[str(gt)], saved_stats[str(gt)]["gpt2_logprob"], correct]
-                    elif model == "gemini-1.0-pro-001":
-                        data = [str(gt), saved_stats[inp]["n_characters"], gemini_tokens[inp], saved_stats[inp]["gpt2_logprob"],
-                                saved_stats[str(gt)]["n_characters"], gemini_tokens[str(gt)], saved_stats[str(gt)]["gpt2_logprob"], correct]
                     elif model == "claude-3-opus-20240229":
-                        data = [str(gt), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"],
+                        data = [str(gt), str(count_dict[gt]), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"],
                                 saved_stats[str(gt)]["n_characters"], saved_stats[str(gt)]["n_gpt4_tokens"], saved_stats[str(gt)]["gpt2_logprob"], correct]
                     else:
+                        #pass
                         14/0
  
                     fo.write("\t".join(data) + "\n")
 
-
-                if model.startswith("gpt"):
-                    data = [str(gt), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"],
-                            saved_stats[str(gt)]["n_characters"], saved_stats[str(gt)]["n_gpt4_tokens"], saved_stats[str(gt)]["gpt2_logprob"], correct]
-                elif model == "llama-3-70b-chat-hf":
-                    data = [str(gt), saved_stats[inp]["n_characters"], llama3_tokens[inp], saved_stats[inp]["gpt2_logprob"],
-                            saved_stats[str(gt)]["n_characters"], llama3_tokens[str(gt)], saved_stats[str(gt)]["gpt2_logprob"], correct]
-                elif model == "gemini-1.0-pro-001":
-                    data = [str(gt), saved_stats[inp]["n_characters"], gemini_tokens[inp], saved_stats[inp]["gpt2_logprob"],
-                            saved_stats[str(gt)]["n_characters"], gemini_tokens[str(gt)], saved_stats[str(gt)]["gpt2_logprob"], correct]
-                elif model == "claude-3-opus-20240229":
-                    data = [str(gt), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"],
-                            saved_stats[str(gt)]["n_characters"], saved_stats[str(gt)]["n_gpt4_tokens"], saved_stats[str(gt)]["gpt2_logprob"], correct]
-                else:
-                    14/0
-                fo_both.write("\t".join(data) + "\n")
-
-
-               
             print(condition + "_" + inner, "acc:", count_correct*1.0/count_total, "levdist:", total_dist*1.0/count_total, statistics.median(dists))
             
             accs_by_number = []
@@ -499,87 +523,6 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
             print("")
             #print(number, count_by_number[number][0]*1.0/count_by_number[number][1])
 
-            if condition == "counting_chars" and inner == "common" and model == "gpt-4-0613":
-                gpt4_char_accs = accs_by_number
 
-
-print("NUMBER LOG FREQUENCIES:")
-freqs = []
-for i in range(1,101):
-    freqs.append(number_logfreq[i])
-print(",".join([str(x) for x in freqs]))
-
-print(new_ranked)
-
-print("")
-print("SORTED NUMBER LOG FREQUENCIES:")
-freqs_sorted = sorted(freqs)
-print(",".join([str(x) for x in freqs_sorted[:33]]))
-print(",".join([str(x) for x in freqs_sorted[33:67]]))
-print(",".join([str(x) for x in freqs_sorted[67:]]))
-
-accs_highprob = []
-accs_mediumprob = []
-accs_lowprob = []
-
-logprob_highprob = []
-logprob_mediumprob = []
-logprob_lowprob = []
-
-values_highprob = []
-values_mediumprob = []
-values_lowprob = []
-
-for index, (acc, logprob) in enumerate(zip(gpt4_char_accs, freqs)):
-    #if logprob < -6.5:
-    if (index+1) in [18,19,21,22,28,29,31,32,38,39,41,42,43,44,46,47,48,49,51,52,58,59,61,62,68,69,71,72,73,74,76,77,78,79,81,81,88,89,91,92,93,94,96,97,98,99,101,102]:
-        accs_lowprob.append(acc)
-        logprob_lowprob.append(logprob)
-        values_lowprob.append(index+1)
-    #elif logprob > -4:
-    elif (index+1) in [20,30,40,45,50,60,70,75,80,90,95,100]:
-        accs_highprob.append(acc)
-        logprob_highprob.append(logprob)
-        values_highprob.append(index+1)
-
-
-print(freqs)
-print("BINNED RESULTS FOR GPT-4 COUNTING COMMON CHARACTERS:")
-print("High prob:")
-print("Accuracy:", sum(accs_highprob)*1.0/len(accs_highprob))
-print("Logprob:", sum(logprob_highprob)*1.0/len(logprob_highprob)) 
-print("Value:", sum(values_highprob)*1.0/len(values_highprob)) 
-print("")
-print("Low prob:")
-print("Accuracy:", sum(accs_lowprob)*1.0/len(accs_lowprob))
-print("Logprob:", sum(logprob_lowprob)*1.0/len(logprob_lowprob)) 
-print("Value:", sum(values_lowprob)*1.0/len(values_lowprob))  
-
-
-
-fi = open("../corpus_analysis/numbers.txt", "r")
-number_logfreq_expanded = {}
-total = 0
-for line in fi:
-    parts = line.strip().split()
-    word = parts[0]
-    count = int(parts[1])
-    number_logfreq_expanded[int(word)] = count
-    total += count
-
-
-for number in number_logfreq_expanded:
-    number_logfreq_expanded[number] = math.log(number_logfreq_expanded[number]*1.0/total)
-
-logprobs_highprob = []
-logprobs_lowprob = []
-
-for number in [20,30,40,45,50,60,70,75,80,90,95,100]:
-    logprobs_highprob.append(number_logfreq_expanded[number])
-for number in [18,19,21,22,28,29,31,32,38,39,41,42,43,44,46,47,48,49,51,52,58,59,61,62,68,69,71,72,73,74,76,77,78,79,81,81,88,89,91,92,93,94,96,97,98,99,101,102]:
-    logprobs_lowprob.append(number_logfreq_expanded[number])
-
-print("Logprobs - highprob:", sum(logprobs_highprob)*1.0/len(logprobs_highprob))
-print("Logprobs - lowprob:", sum(logprobs_lowprob)*1.0/len(logprobs_lowprob)) 
 
 print(unfinished)
