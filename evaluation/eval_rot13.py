@@ -18,10 +18,10 @@ for task in ["enc", "dec"]:
     print("")
     print("TASK:", task)
 
-    for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
+    for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude-3-opus-20240229", "olmo-7b-instruct", "gemini-1.0-pro-001"]:
         print("")
         print(model)
-        for condition in ["rot13" + task + "_highprob", "rot13" + task + "_mediumprob", "rot13" + task + "_lowprob", "rot2" + task + "_highprob"]:
+        for condition in ["rot13" + task + "_highprob", "rot13" + task + "_mediumprob", "rot13" + task + "_lowprob", "rot12" + task + "_highprob"]:
 
             fi = open("../logs/" + condition + "_" + model + "_temp=0.0_n=1.json", "r")
             data = json.load(fi)

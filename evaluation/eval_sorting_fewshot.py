@@ -41,20 +41,44 @@ manual_dict = {}
 
 unhandled = 0
 
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude-3-opus-20240229", "gemini-1.0-pro-001"]: 
-    print("")
-    print(model)
 
-    fo_words = open("table_sortwords_" + model + ".tsv", "w")
-    fo_words.write("\t".join(["index", "task", "input_nchars", "input_ntokens", "input_logprob", "output_nchars", "output_ntokens", "output_logprob", "correct"]) + "\n")
 
-    fo_numbers = open("table_sortnumbers_" + model + ".tsv", "w")
-    fo_numbers.write("\t".join(["index", "task", "input_nchars", "input_ntokens", "input_logprob", "output_nchars", "output_ntokens", "output_logprob", "correct"]) + "\n")
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "claude-3-opus-20240229", "ft_gpt-3.5_10shot", "ft_gpt-3.5_100shot"]:
 
-    for direction in ["fwd", "rev", "ascending", "descending"]:
-        for condition in ["sorting_" + direction]: 
-        
-            fi = open("../logs/" + condition + "_" + model + "_temp=0.0_n=1.json", "r")
+    for nshot in ["0shot", "5shot", "10shot"]:
+
+        fo_words = open("table_few_sortwords_" + model + "_" + nshot + ".tsv", "w")
+        fo_words.write("\t".join(["index", "task", "input_nchars", "input_ntokens", "input_logprob", "output_nchars", "output_ntokens", "output_logprob", "correct"]) + "\n")
+
+
+        for direction in ["fwd", "rev"]:
+            condition = "sorting_" + direction
+
+            if nshot != "0shot":
+                condition = condition + "_" + nshot
+            elif nshot == "0shot" and model.startswith("ft"):
+                condition = condition + "_" + nshot
+            
+
+
+            if model.startswith("ft") and nshot != "0shot":
+                continue
+
+            print("")
+            print(model, condition)
+
+            if model == "ft_gpt-3.5_10shot":
+                if direction == "fwd":
+                    fi = open("../logs/" + condition + "_" + "ft:gpt-3.5-turbo-0613:personal:fwd-10shot:9S9lmcHt" + "_temp=0.0_n=1.json", "r")
+                elif direction == "rev":
+                    fi = open("../logs/" + condition + "_" + "ft:gpt-3.5-turbo-0613:personal:rev-10shot:9S9uQlp7" + "_temp=0.0_n=1.json", "r")
+            elif model == "ft_gpt-3.5_100shot":
+                if direction == "fwd":
+                    fi = open("../logs/" + condition + "_" + "ft:gpt-3.5-turbo-0613:personal:fwd-100shot:9S9sz3um" + "_temp=0.0_n=1.json", "r")
+                elif direction == "rev":
+                    fi = open("../logs/" + condition + "_" + "ft:gpt-3.5-turbo-0613:personal:rev-100shot:9S9vpZRp" + "_temp=0.0_n=1.json", "r")
+            else:
+                fi = open("../logs/" + condition + "_" + model + "_temp=0.0_n=1.json", "r")
             data = json.load(fi)
 
             count_correct = 0
@@ -228,6 +252,8 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
                 res = res.replace("Answer:", "").strip()
                 res = res.replace("The number 1417 should be at the top of the list the number 61 should be at the bottom.", "").strip()
                 res = res.replace("Here are the numbers you provided, sorted in descending order:", "").strip()
+                res = res.replace("Here is the sorted list for the last set of words:", "").strip()
+                res = res.replace("Here is the last list sorted in reverse alphabetical order:", "").strip()
 
                 
                 res = res.replace("  ", " ").strip()
@@ -313,7 +339,7 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
                 count_total += 1
 
 
-                if model.startswith("gpt"):
+                if "gpt" in model:
                     data = [str(index), direction, saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"],
                             saved_stats[gt]["n_characters"], saved_stats[gt]["n_gpt4_tokens"], saved_stats[gt]["gpt2_logprob"], correct_answer]
                 elif model == "llama-3-70b-chat-hf":

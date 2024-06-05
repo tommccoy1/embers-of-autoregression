@@ -4,7 +4,7 @@ from Levenshtein import distance
 import statistics
 import re
 
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001", "llama-3-70b-chat-hf", "claude-3-opus-20240229", "olmo-7b-instruct", "gemini-1.0-pro-001"]:
     print("")
     print(model)
     #for direction in ["enc", "dec"]:
@@ -48,6 +48,11 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                 else:
                     # Uncomment to show errors
                     if model == "gpt-4-0613" and "dec" in condition and len(gt) < 55 and distance(gt.split(), res.split()) > 0:
+                        #print(gt)
+                        #print(res)
+                        #print("")
+                        pass
+                    if "claude" in model:
                         #print(gt)
                         #print(res)
                         #print("")

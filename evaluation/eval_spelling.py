@@ -17,7 +17,7 @@ def all_singles(string):
             confirmed = False
     return confirmed
 
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "gemini-1.0-pro-001", "claude-3-opus-20240229"]:
     print("")
     print(model)
 
@@ -65,6 +65,9 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
             if gt in res or "-".join(gt.split()) in res:
                 count_correct += 1
             else:
+                #print("RES", res)
+                #print("GT", gt)
+                #print("")
                 #if not all_singles(res):
                 #    print("RES", res)
                 #    print("GT", gt)

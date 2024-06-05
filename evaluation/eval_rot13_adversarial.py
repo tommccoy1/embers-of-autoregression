@@ -7,7 +7,7 @@ fi_highprob = open("../examples/sentences_high_probability.txt", "r")
 for line in fi_highprob:
     answers_highprob.append(line.strip())
 
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude-3-opus-20240229", "gemini-1.0-pro-001"]:
     print("")
     print(model)
     for condition in ["rot13dec_adversarial"]: 
