@@ -24,23 +24,23 @@ for line in fi:
         saved_stats[this_obj["sentence"]] = this_obj
 
 
-palm_tokens = {}
-fi = open("../stimuli/saved_palm_tokenization.tsv", "r")
+gemini_tokens = {}
+fi = open("../stimuli/saved_gemini_tokenization.tsv", "r")
 for line in fi:
     parts = line.strip().split("\t")
-    palm_tokens[parts[0]] = parts[1]
+    gemini_tokens[parts[0]] = parts[1]
 
-llama_tokens = {}
-fi = open("../stimuli/saved_llama_tokenization.tsv", "r")
+llama3_tokens = {}
+fi = open("../stimuli/saved_llama3_tokenization.tsv", "r")
 for line in fi:
     parts = line.strip().split("\t")
-    llama_tokens[parts[0]] = parts[1]
+    llama3_tokens[parts[0]] = parts[1]
 
 
 
 for task in ["enc", "dec"]:
     
-    for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
+    for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude-3-opus-20240229", "gemini-1.0-pro-001"]: 
         
         fo = open("table_rev" + task + "_" + model + ".tsv", "w")
         fo.write("\t".join(["index", "input_nchars", "input_ntokens", "input_logprob", "output_nchars", "output_ntokens", "output_logprob", "correct"]) + "\n")
@@ -80,12 +80,15 @@ for task in ["enc", "dec"]:
                 if model.startswith("gpt"):
                     data = [str(index), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"], 
                             saved_stats[gt]["n_characters"], saved_stats[gt]["n_gpt4_tokens"], saved_stats[gt]["gpt2_logprob"], correct]
-                elif model == "llama-2-70b-chat":
-                    data = [str(index), saved_stats[inp]["n_characters"], llama_tokens[inp], saved_stats[inp]["gpt2_logprob"],
-                            saved_stats[gt]["n_characters"], llama_tokens[gt], saved_stats[gt]["gpt2_logprob"], correct]
-                elif model == "text-bison-001":
-                    data = [str(index), saved_stats[inp]["n_characters"], palm_tokens[inp], saved_stats[inp]["gpt2_logprob"],
-                            saved_stats[gt]["n_characters"], palm_tokens[gt], saved_stats[gt]["gpt2_logprob"], correct]
+                elif model == "llama-3-70b-chat-hf":
+                    data = [str(index), saved_stats[inp]["n_characters"], llama3_tokens[inp], saved_stats[inp]["gpt2_logprob"],
+                            saved_stats[gt]["n_characters"], llama3_tokens[gt], saved_stats[gt]["gpt2_logprob"], correct]
+                elif model == "gemini-1.0-pro-001":
+                    data = [str(index), saved_stats[inp]["n_characters"], gemini_tokens[inp], saved_stats[inp]["gpt2_logprob"],
+                            saved_stats[gt]["n_characters"], gemini_tokens[gt], saved_stats[gt]["gpt2_logprob"], correct]
+                elif model == "claude-3-opus-20240229":
+                    data = [str(index), saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"],
+                            saved_stats[gt]["n_characters"], saved_stats[gt]["n_gpt4_tokens"], saved_stats[gt]["gpt2_logprob"], correct]
                 else:
                     14/0
                 fo.write("\t".join(data) + "\n")

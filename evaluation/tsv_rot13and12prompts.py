@@ -27,7 +27,7 @@ for line in fi:
 
 end_after_strings = ["Rot-2 text: ", "Rot-13 text: ", "Original text: "]
 for prompt in ["", "step", "cot"]:
-    for task in ["dec"]:
+    for task in ["dec", "enc"]:
     
         for model in ["gpt-4-0613"]:
         

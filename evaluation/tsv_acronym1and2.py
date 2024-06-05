@@ -23,17 +23,18 @@ for line in fi:
             this_obj[index2label[index]] = part
         saved_stats[this_obj["sentence"]] = this_obj
 
-palm_tokens = {}
-fi = open("../stimuli/saved_palm_tokenization.tsv", "r")
-for line in fi:
-    parts = line.strip().split("\t")
-    palm_tokens[parts[0]] = parts[1]
 
-llama_tokens = {}
-fi = open("../stimuli/saved_llama_tokenization.tsv", "r")
+gemini_tokens = {}
+fi = open("../stimuli/saved_gemini_tokenization.tsv", "r")
 for line in fi:
     parts = line.strip().split("\t")
-    llama_tokens[parts[0]] = parts[1]
+    gemini_tokens[parts[0]] = parts[1]
+
+llama3_tokens = {}
+fi = open("../stimuli/saved_llama3_tokenization.tsv", "r")
+for line in fi:
+    parts = line.strip().split("\t")
+    llama3_tokens[parts[0]] = parts[1]
 
 
 def join_single_letters(res):
@@ -67,17 +68,17 @@ def join_single_letters(res):
     return " ".join(new_words), first_three_single
 
 
-indicator_sequences = ["spells out the word ", "gives us the sequence ", "resulting in the answer ", "this spells out ", "the answer is ", "spell out the word ", "spells out the sequence ", "spells out the sequence: ", "creates the sequence ", "you get the sequence ", "spells out the code ", "results in the following sequence of letters: ", "answer: ", "results in the sequence ", "a sequence of letters is created when you combine the first letters of the words in the sequence is the following: ", "a sequence of letters is created when you combine the first letters of the words in the sequence as follows: ", "the first letter of each word in order spells ", "combine the first letters of each word to form a new sequence: ", "a sequence of letters is created by combining the first letters of the words in the sequence as follows: ", "the first letters of each word in order spell out ", "the first letter of each word in order would be: ", "the first letter of each word in sequence spells out ", "combining these letters in the correct order spells ", "the answer to this puzzle is ", "these letters form the word ", "to create the following sequence of letters: ", "combined first letters: ", "the first letter of each word in the sequence spells out ", "the first letter of each word in sequence spells out: ", "spells the word ", "the first letter of each word in the sequence spells ", "combining the first letters of these words gives us ", "you get the following sequence of letters: ", "results in the following sequence: ", "when combined they form the sequence ", "what is the answer to this puzzle? c) ", "they form the word ", "spell out the following sequence of letters: ", "the correct answer is ", "here's the solution: ", "if we take the first letter of each word and combine them the sequence would be: ", "combining the first letters of each word in the sequence spells out ", "when you combine these letters you get the word ", "combining these letters gives us the word ", "combine the first letters of each word to form the sequence: ", "the first letters of these words form the sequence ", "the solution to this puzzle is ", "the sequence of letters created by combining the first letters of the words in the sequence is ", "when combined they form the letter sequence ", "combined first letters of = ", "when combined forms the word ", "this sequence of letters can be written in capital letters as follows: ", "forms the following sequence: ", "when you combine the first letters of the words in the sequence you get the letters ", "spell out the name ", "can be rearranged to form the word ", "the first letters of the words in this sequence spell the name ", "here is the sequence of letters you asked for: ", "the correct sequence is ", "i think the sequence of letters would be: ", "you get the sequence: ", "the first letter of each word spells out ", "the answer to this question is ", "the correct sequence of letters is ", "combine the letters to form a new sequence: ", "the first letter of each word in order spells: ", "creates the following sequence of letters: ", "the letters in capital letters with no spaces or punctuation would be:", "which spells out ", "spell out the following sequence: ", "the answer to this riddle is ", "gives you a new sequence of letters:", "when combined these letters form the sequence", "spell out the letters ", "to form the sequence of letters ", "formed by combining the first letters of the words in the given sequence is ", "the answer would be: ", "the sequence of letters created by combining the first letters of the given words is "]
+indicator_sequences = ["spells out the word ", "gives us the sequence ", "resulting in the answer ", "this spells out ", "the answer is ", "spell out the word ", "spells out the sequence ", "spells out the sequence: ", "creates the sequence ", "you get the sequence ", "spells out the code ", "results in the following sequence of letters: ", "answer: ", "results in the sequence ", "a sequence of letters is created when you combine the first letters of the words in the sequence is the following: ", "a sequence of letters is created when you combine the first letters of the words in the sequence as follows: ", "the first letter of each word in order spells ", "combine the first letters of each word to form a new sequence: ", "a sequence of letters is created by combining the first letters of the words in the sequence as follows: ", "the first letters of each word in order spell out ", "the first letter of each word in order would be: ", "the first letter of each word in sequence spells out ", "combining these letters in the correct order spells ", "the answer to this puzzle is ", "these letters form the word ", "to create the following sequence of letters: ", "combined first letters: ", "the first letter of each word in the sequence spells out ", "the first letter of each word in sequence spells out: ", "spells the word ", "the first letter of each word in the sequence spells ", "combining the first letters of these words gives us ", "you get the following sequence of letters: ", "results in the following sequence: ", "when combined they form the sequence ", "what is the answer to this puzzle? c) ", "they form the word ", "spell out the following sequence of letters: ", "the correct answer is ", "here's the solution: ", "if we take the first letter of each word and combine them the sequence would be: ", "combining the first letters of each word in the sequence spells out ", "when you combine these letters you get the word ", "combining these letters gives us the word ", "combine the first letters of each word to form the sequence: ", "the first letters of these words form the sequence ", "the solution to this puzzle is ", "the sequence of letters created by combining the first letters of the words in the sequence is ", "when combined they form the letter sequence ", "combined first letters of = ", "when combined forms the word ", "this sequence of letters can be written in capital letters as follows: ", "forms the following sequence: ", "when you combine the first letters of the words in the sequence you get the letters ", "spell out the name ", "can be rearranged to form the word ", "the first letters of the words in this sequence spell the name ", "here is the sequence of letters you asked for: ", "the correct sequence is ", "i think the sequence of letters would be: ", "you get the sequence: ", "the first letter of each word spells out ", "the answer to this question is ", "the correct sequence of letters is ", "combine the letters to form a new sequence: ", "the first letter of each word in order spells: ", "creates the following sequence of letters: ", "the letters in capital letters with no spaces or punctuation would be:", "which spells out ", "spell out the following sequence: ", "the answer to this riddle is ", "gives you a new sequence of letters:", "when combined these letters form the sequence", "spell out the letters ", "to form the sequence of letters ", "formed by combining the first letters of the words in the given sequence is ", "the answer would be: ", "the sequence of letters created by combining the first letters of the given words is ", "the sequence of letters created by combining the first letters of the words in the given sequence is ", "let's combine these letters to form a new sequence:", "let's combine them:", "let's combine these letters to form the sequence:", "let's combine these second letters to form a sequence:", "let's combine these letters to get the sequence:", "when we combine these first letters we get:", "when we combine the first letters we get:", "which when written in capital letters with no spaces or punctuation becomes:", "let's combine these letters to form a sequence:", "when we combine these letters we get:", "when you combine the first letters of the words you get:", "when you combine the first letters of the words in the sequence you get:", "let's combine the first letters of each word:", "when i combine the first letters of the words in the sequence i get:", "combining the first letters we get:", "here's the sequence of letters created when you combine the first letters of the words:", "when we combine the first letters of each word we get:", "and combine them into a single sequence:", "when we combine the first letters of the words we get:", "when i combine the first letters of the words i get:"]
 
 manually_recognized_answers = {}
-manual_answers = ["UNCLE SAM", "THE ROADSTER", "BE LATE D", "BAC KIN GI", "THE RIVES", "NO NCO", "TRAN SIT", "CR EAT OR", "SHORTE R", "TEACH ER", "APP LIED" "STAR TREK", "APP LIDE", "PRUDE NT", "STAR TRE", "MATC HUP", "STAR TREK", "POPU LAR", "HIPS TER", "AME RICA", "SP ECIES", "NEAR EST", "REC LAM", "APP LIED", "PRINTE D", "STAR TUP", "SHA TTER", "UNCLE AR", "NEAR EAST", "CONE SLOE", "PAS SIV VE", "SP EC IE S", "PAS SIVE", "CLIC KER", "DRI LLED", "COND CERT", "SMARTE R", "AR RIV AL", "ROUN DUP", "MARKE RS", "ROTA TED", "COUNTE D", "HAS HING", "STAR TREKS", "BLUE RED", "LIGH TEN", "HAS HING", "STAR TED", "FAR RIRE", "ANNA BEL", "COUNTE D", "HAS HING", "PAS SING", "STAN GER", "BRA TTLE", "CHES TER", "LES SING", "BLAC KEN", "ARCHE RS", "STEALE R", "STEA MED", "STAC KER", "BAC KERS", "BAC KM AN", "BACKE RS", "BAC KERS", "SPELLE R", "LES SIGN", "MANS HIP", "MAD DING", "TRAN SOM", "ONE TIME", "EARS HOT", "MAR KMAN", "SEL ECTS", "PAT CHIN", "NEW SMAN", "CEN TIME", "POPP ELL", "OVE RUSE", "CARDO NE", "FIRS TAR", "TORS TAR", "RAIN GER", "HAS H MAN", "ROSA BEL", "HAN DIER", "ATTA CHE", "WRATH ER", "RECR OSS", "ARMR EST", "PATCHE N", "NEW SOME", "SEC LUDE", "GERS TER", "INCS TAR", "INS CORE", "DEC HANT", "MARKE RT", "INSURE DEVIOUS", "CARP OOLO", "A MENDED DRAGNET ECHELON DRAGNET", "DELIVER EXCELLENCE RESPONSIBLY", "ATTRACTIVE THIEVES COHOST RIEMANN ATTRACTIONS ASKANCE", "DIS TAN TEX"]
+manual_answers = ["UNCLE SAM", "THE ROADSTER", "BE LATE D", "BAC KIN GI", "THE RIVES", "NO NCO", "TRAN SIT", "CR EAT OR", "SHORTE R", "TEACH ER", "APP LIED" "STAR TREK", "APP LIDE", "PRUDE NT", "STAR TRE", "MATC HUP", "STAR TREK", "POPU LAR", "HIPS TER", "AME RICA", "SP ECIES", "NEAR EST", "REC LAM", "APP LIED", "PRINTE D", "STAR TUP", "SHA TTER", "UNCLE AR", "NEAR EAST", "CONE SLOE", "PAS SIV VE", "SP EC IE S", "PAS SIVE", "CLIC KER", "DRI LLED", "COND CERT", "SMARTE R", "AR RIV AL", "ROUN DUP", "MARKE RS", "ROTA TED", "COUNTE D", "HAS HING", "STAR TREKS", "BLUE RED", "LIGH TEN", "HAS HING", "STAR TED", "FAR RIRE", "ANNA BEL", "COUNTE D", "HAS HING", "PAS SING", "STAN GER", "BRA TTLE", "CHES TER", "LES SING", "BLAC KEN", "ARCHE RS", "STEALE R", "STEA MED", "STAC KER", "BAC KERS", "BAC KM AN", "BACKE RS", "BAC KERS", "SPELLE R", "LES SIGN", "MANS HIP", "MAD DING", "TRAN SOM", "ONE TIME", "EARS HOT", "MAR KMAN", "SEL ECTS", "PAT CHIN", "NEW SMAN", "CEN TIME", "POPP ELL", "OVE RUSE", "CARDO NE", "FIRS TAR", "TORS TAR", "RAIN GER", "HAS H MAN", "ROSA BEL", "HAN DIER", "ATTA CHE", "WRATH ER", "RECR OSS", "ARMR EST", "PATCHE N", "NEW SOME", "SEC LUDE", "GERS TER", "INCS TAR", "INS CORE", "DEC HANT", "MARKE RT", "INSURE DEVIOUS", "CARP OOLO", "A MENDED DRAGNET ECHELON DRAGNET", "DELIVER EXCELLENCE RESPONSIBLY", "ATTRACTIVE THIEVES COHOST RIEMANN ATTRACTIONS ASKANCE", "DIS TAN TEX", "CEN TIMEME"]
 for answer in manual_answers:
     manually_recognized_answers[answer] = 1
 
 
 uncovered = 0
-for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001"]:
-    for variable in ["vary_inp", "vary_outp"]:
+for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude-3-opus-20240229", "gemini-1.0-pro-001"]: 
+    for variable in ["vary_inp"]:
 
         fo = open("table_acronym_varytask_" + model + ".tsv", "w")
         fo.write("\t".join(["index", "task", "input_nchars", "input_ntokens", "input_logprob", "output_nchars", "output_ntokens", "output_logprob", "correct"]) + "\n")
@@ -86,7 +87,6 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
 
             inner_end = 2
             outer_end = 2
-
 
             print("")
             print(model)
@@ -139,6 +139,7 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                         res = res.replace("answer: ", "")
                         res = res.replace("the sequence of letters created is: ", "")
                         res = res.replace("the sequence of letters created when you combine the second letters of the words in the given sequence is: ", "")
+                        res = res.replace("written in capital letters, with no spaces or punctuation.", "")
  
                         temp_res = res[:]
                         res = res.replace("the sequence of letters created when you combine the first letters of the words in the sequence \"" + inp.lower() + "\" is:", "")
@@ -196,6 +197,8 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                             res = "r e a l t o r o w"
                         if res.strip().endswith("the first letter of each word, when arranged in order, forms the word attract."):
                             res = "attract"
+                        if '2. "thrills" - second letter is' in res:
+                            res = res.replace('2. "thrills" - second letter is', '')
                         if res.strip().startswith("the solution is p-a-r-t-i-a-l."):
                             res = "partial"
                         if res.strip().startswith("a: science\n"):
@@ -587,6 +590,21 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                         if res == "I + N + S + W + E + S + T = INSWEST":
                             res = "INSWEST"
 
+                        if res.endswith("BACKERS WHEN COMBINED BACKERES"):
+                            res = "BACKERES"
+                        if res.endswith("COMBINE THESE FIRST LETTERS: EDITING SO THE"):
+                            res = "EDITING"
+                        if res.endswith("OF EACH WORD: REVERSE REVERSSE"):
+                            res = "REVERSSE"
+                        if res.endswith(">R THINNERR"):
+                            res = "THINNERR"
+                        if res.endswith("LET'S COMBINE THESE FIRST LETTERS: LEATHER"):
+                            res = "LEATHER"
+                        if res.endswith("LET'S COMBINE THESE FIRST LETTERS: MINIMUM"):
+                            res = "MINIMUM"
+                        if res.endswith("OF EACH WORD: REVERSE REVERSXE"):
+                            res = "REVERSXE"
+
 
                         # Checking if there are any answers that are not covered by the above cases
                         if res in manually_recognized_answers:
@@ -597,8 +615,8 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                         elif len(res.split()) != 1:
                             print("RES", res)
                             print("TEMP_RES", temp_res)
-                            print(inp)
-                            print(words)
+                            #print(inp)
+                            #print(words)
                             print("")
                             uncovered += 1
                             pass
@@ -624,6 +642,14 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                                 pass
                         else:
                             correct = "0"
+
+
+                            if "olmo" in model:
+                                #print(gt)
+                                #print(res)
+                                #print("\n\n\n")
+                                pass
+
                             if model == "gpt-4-0613" and condition == "acronym1" and inner == 1 and outer == 1 and gt == "PARTIES": # and len(gt) != len(res):
                                 #print(inp)
                                 #print(gt)
@@ -640,19 +666,22 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-biso
                             pass
                         count_total += 1
 
-        
                         if model.startswith("gpt"):
-                            data = [str(index), condition, saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"], 
+                            data = [str(index), condition, saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"],
                                     saved_stats[gt]["n_characters"], saved_stats[gt]["n_gpt4_tokens"], saved_stats[gt]["gpt2_logprob"], correct]
-                        elif model == "llama-2-70b-chat":
-                            data = [str(index), condition, saved_stats[inp]["n_characters"], llama_tokens[inp], saved_stats[inp]["gpt2_logprob"],
-                                    saved_stats[gt]["n_characters"], llama_tokens[gt], saved_stats[gt]["gpt2_logprob"], correct]
-                        elif model == "text-bison-001":
-                            data = [str(index), condition, saved_stats[inp]["n_characters"], palm_tokens[inp], saved_stats[inp]["gpt2_logprob"],
-                                    saved_stats[gt]["n_characters"], palm_tokens[gt], saved_stats[gt]["gpt2_logprob"], correct]
+                        elif model == "llama-3-70b-chat-hf":
+                            data = [str(index), condition, saved_stats[inp]["n_characters"], llama3_tokens[inp], saved_stats[inp]["gpt2_logprob"],
+                                    saved_stats[gt]["n_characters"], llama3_tokens[gt], saved_stats[gt]["gpt2_logprob"], correct]
+                        elif model == "gemini-1.0-pro-001":
+                            data = [str(index), condition, saved_stats[inp]["n_characters"], gemini_tokens[inp], saved_stats[inp]["gpt2_logprob"],
+                                    saved_stats[gt]["n_characters"], gemini_tokens[gt], saved_stats[gt]["gpt2_logprob"], correct]
+                        elif model == "claude-3-opus-20240229":
+                            data = [str(index), condition, saved_stats[inp]["n_characters"], saved_stats[inp]["n_gpt4_tokens"], saved_stats[inp]["gpt2_logprob"],
+                                    saved_stats[gt]["n_characters"], saved_stats[gt]["n_gpt4_tokens"], saved_stats[gt]["gpt2_logprob"], correct]
                         else:
                             14/0
                         fo.write("\t".join(data) + "\n")
+
 
 
                     print(condition + "_" + str(inner) + str(outer), "acc:", count_correct*1.0/count_total, "levdist:", total_dist*1.0/count_total, statistics.median(dists))
