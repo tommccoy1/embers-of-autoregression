@@ -25,7 +25,7 @@ for line in fi:
         saved_stats[this_obj["sentence"]] = this_obj
 
 
-end_after_strings = ["Rot-2 text: ", "Rot-13 text: ", "Original text: "]
+end_after_strings = ["Rot-12 text: ", "Rot-13 text: ", "Original text: "]
 fo_enc_prompt_comparison = open("table_rot13enc_prompt_comparison.tsv", "w")
 fo_dec_prompt_comparison = open("table_rot13dec_prompt_comparison.tsv", "w")
 fo_enc_prompt_comparison.write("\t".join(["index", "prompt", "input_nchars", "input_ntokens", "input_logprob", "output_nchars", "output_ntokens", "output_logprob", "correct"]) + "\n")
