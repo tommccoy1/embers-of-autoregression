@@ -36,7 +36,7 @@ for prompt in ["", "step", "cot"]:
             # Headers
             fo.write("\t".join(["index", "task", "input_nchars", "input_ntokens", "input_logprob", "output_nchars", "output_ntokens", "output_logprob", "correct"]) + "\n")
 
-            for condition in ["shift" + prompt + "_12", "rot13" + task + prompt + "_highprob"]:
+            for condition in ["rot12" + task + prompt + "_highprob", "rot13" + task + prompt + "_highprob"]:
                 inputs = []
                 with jsonlines.open("../stimuli/" + condition + ".jsonl") as reader:
                     for obj in reader:
