@@ -47,7 +47,7 @@ for task in ["dec"]:
                     if gt in res:
                         count_correct += 1
                     else:
-                        if model == "gpt-4-0613" and shift == 10: # and "To be or not" in res: #shift == 12 and len(gt) < 60:
+                        if model == "gpt-4-0613" and shift == 12 and len(gt) < 60: # and "To be or not" in res: #shift == 12 and len(gt) < 60:
                             #print(gt)
                             #print(res)
                             #print("")
