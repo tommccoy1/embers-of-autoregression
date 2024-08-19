@@ -10,7 +10,7 @@ def second_not_first_contains(first, second, wordlist):
             return True
     return False
 
-end_after_strings = ["Rot-2 text: ", "Rot-13 text: ", "Original text: ", "message is:", "message is "]
+end_after_strings = ["Rot-12 text: ", "Rot-13 text: ", "Original text: ", "message is:", "message is "]
 delete_after_strings = ["However, this doesn't make sense", "However, this doesn't make much sense", "This sentence still doesn't make", "However, this sentence doesn't make", "This still doesn't make sense"]
 for task in ["enc", "dec"]:
     
@@ -22,7 +22,7 @@ for task in ["enc", "dec"]:
     for model in ["gpt-4-0613"]:
         print("")
         print(model)
-        for condition in ["rot13" + task + "_highprob", "rot13" + task + "_mediumprob", "rot13" + task + "_lowprob", "rot2" + task + "_highprob"]:
+        for condition in ["rot13" + task + "_highprob", "rot13" + task + "_mediumprob", "rot13" + task + "_lowprob", "rot12" + task + "_highprob"]:
 
             for prompt in ["", "step", "cot"]:
         
@@ -66,11 +66,12 @@ for task in ["enc", "dec"]:
                     if gt in res:
                         count_correct += 1
                     else:
-                        if "\n" in res:
-                            print(gt)
-                            print("RES", res)
-                            print("ORIG", orig_res)
-                            print("")
+                        #if "\n" in res:
+                        #    print(gt)
+                        #    print("RES", res)
+                        #    print("ORIG", orig_res)
+                        #    print("")
+                        pass
                     #elif condition.startswith("rot13enc"):
                     #    print(gt)
                     #    print(res)
