@@ -10,7 +10,7 @@ for task in ["dec"]:
     print("")
     print("TASK:", task)
 
-    for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-2-70b-chat", "text-bison-001", "llama-3-70b-chat-hf", "claude-3-opus-20240229", "olmo-7b-instruct", "gemini-1.0-pro-001"]: #["gpt-3.5-turbo", "gpt-4"]:
+    for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude-3-opus-20240229", "gemini-1.0-pro-001"]: 
         print("")
         print(model)
         all_accs = []
