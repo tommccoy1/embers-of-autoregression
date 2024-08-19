@@ -26,18 +26,6 @@ for line in fi:
         saved_stats[this_obj["sentence"]] = this_obj
 
 
-palm_tokens = {}
-fi = open("../stimuli/saved_palm_tokenization.tsv", "r")
-for line in fi:
-    parts = line.strip().split("\t")
-    palm_tokens[parts[0]] = parts[1]
-
-llama_tokens = {}
-fi = open("../stimuli/saved_llama_tokenization.tsv", "r")
-for line in fi:
-    parts = line.strip().split("\t")
-    llama_tokens[parts[0]] = parts[1]
-
 
 number_logfreq = {}
 numbers_str = {}
