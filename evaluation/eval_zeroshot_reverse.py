@@ -32,7 +32,7 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
                 total_dist += dist
                 dists.append(dist)
             
-                if gt == res:
+                if gt in res:
                     count_correct += 1
                     if model == "gpt-4-0613" and "dec_mediumprob" in condition and len(gt) < 55:
                         #print(gt)

@@ -43,7 +43,7 @@ for task in ["enc", "dec"]:
                 total_dist += dist
                 dists.append(dist)
 
-                if gt == res:
+                if gt in res:
                     count_correct += 1
                     if condition == "rot13dec_highprob" and model == "gpt-4-0613" and len(gt) < 80 and len(gt) < 80:
                         print(gt)

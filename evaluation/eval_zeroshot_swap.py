@@ -73,7 +73,7 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613"]:
                 if " the a " in gt or " a the " in gt or " a an " in gt or " an a " in gt or " an the " in gt or " the an " in gt:
                     print(gt)
 
-                if gt == res:
+                if gt in res:
                     correct = "1"
                     count_correct += 1
                     if model == "gpt-4-0613" and condition in ["zeroshot_swap_next_base_highprob", "zeroshot_swap_next_base_highprob"] and len(gt) < 70 and article_count(gt) > 1:
