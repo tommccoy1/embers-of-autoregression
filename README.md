@@ -3,8 +3,11 @@
 
 # Embers of autoregression
 
+# TODO: CHANGE MODELS
 This repository gives the stimuli and LLM predictions for the paper Embers of Autoregression. The commands given in the rest of this README show how to run the tests for GPT-3.5 and GPT-4. To extend the results to Llama 3, change `run_openai.py` to `run_llama3.py` and use `--model llama-3-70b-chat`. To extend the results to Claude 3, change `run_openai.py` to `run_claude3.py` and use `--model claude-3`. To extend the results to Gemini 1.0, change `run_openai.py` to `run_gemini.py` and use `--model gemini-1.0-pro-001`.
 
+
+# TODO: ADD REQUIREMENTS
 
 
 # Shift ciphers
@@ -20,7 +23,7 @@ This repository gives the stimuli and LLM predictions for the paper Embers of Au
 - Adversarial sentences: Copied the high-probability sentences into a new file, and then manually edited each line to replace a single word with another word that was grammatical but unlikely in that context. The new word was selected to be one that had a Levenshtein edit distance of either 1 or 2 from the word being replaced (where each edit could be a single-letter insertion, deletion, or substitution).
 
 ## Stimulus generation
-- Done with `stimulus_example_generation/stimulus_generator_rot_encode.py`, `stimulus_example_generation/stimulus_generator_rot_decode.py`, `python stimulus_generator_rot_prompts.py`, `stimulus_example_generator/stimulus_generator_shift.py`, and `stimulus_generator_shift_prompts.py`.
+- Done with `stimulus_generation_scripts/stimulus_generator_rot_encode.py`, `stimulus_generation_scripts/stimulus_generator_rot_decode.py`, `stimulus_generation_scripts/stimulus_generator_rot_prompts.py`, `stimulus_example_generator/stimulus_generator_shift.py`, and `stimulus_generator_shift_prompts.py`.
 
 ## Model testing
 - Run these commands:
@@ -66,20 +69,13 @@ python stimuli_statistics.py --fi rot13dec_lowprob.jsonl
 python stimuli_statistics.py --fi rot13dec_adversarial.jsonl
 
 python stimuli_statistics.py --fi rot12enc_highprob.jsonl
-python stimuli_statistics.py --fi rot12enc_mediumprob.jsonl 
-python stimuli_statistics.py --fi rot12enc_lowprob.jsonl
-python stimuli_statistics.py --fi rot12enc_adversarial.jsonl 
-
 python stimuli_statistics.py --fi rot12dec_highprob.jsonl
-python stimuli_statistics.py --fi rot12dec_mediumprob.jsonl 
-python stimuli_statistics.py --fi rot12dec_lowprob.jsonl 
-python stimuli_statistics.py --fi rot12dec_adversarial.jsonl 
 ```
 
 To produce data for regressions in R:
 ```
 python tsv_rot13.py 
-python tsv_rot13and2.py 
+python tsv_rot13and12.py 
 ```
 
 The actual regressions were run in the notebook `Regressions.ipynb`.
@@ -138,7 +134,7 @@ The actual regressions were run in the notebook `Regressions.ipynb`.
 # Swapping task
 
 ## Example generation
-- This sentences were generated in a similar way as the sentences for rot-13, except with the added restriction that each sentence had to contain at least one article (a, an, or the). Further, they could not have an article as the first or last letter (since that could create issues when attempting to swap the article the adjacent word - in such cases there would be no adjacent word for one of the possible swapping directions).
+- This sentences were generated in a similar way as the sentences for rot-13, except with the added restriction that each sentence had to contain at least one article (a, an, or the). Further, they could not have an article as the first or last word (since that could create issues when attempting to swap the article the adjacent word - in such cases there would be no adjacent word for one of the possible swapping directions).
 ```
 python swap_high_probability.py
 python swap_low_probability.py
@@ -193,16 +189,16 @@ The regressions were run in the notebook `Regressions.ipynb`.
 - High-probability sentences: Created by `example_generation_scripts/piglatin_high_probability.py`. The results were then manually filtered for the same criteria as the Rot-13 sentences, as well as the criteria specified below about initial consonant clusters; we then used the first 100 (i.e., 100 lowest perplexity) remaining examples.
 - Medium-probability sentences: Created by `example_generation_scripts/piglatin_medium_probability.py`, using the same basic approach as the medium-probability sentences for rot-13.
 - Adversarial sentences: Created in the same way as the rot-13 adversarial sentences.
+- Low-probability sentences: Created by `example_generation_scripts/piglatin_low_probability.py`.
 - Pig Latin is primarily a spoken game. Since English spelling often differs from pronuncation, this means that the Pig Latin treatment of many written words is ambiguous. E.g., should "union" become "unionay" or "unionyay"? Should "hour" become "houray" or "ourhay"? To check for such cases, we excluded words whose first written consonant cluster did not parallel their first spoken consonant cluster. In addition, for each word whose first vowel was [u], we checked the word's British pronunciation in the online Cambridge dictionary (https://dictionary.cambridge.org/) to see if it was pronounced with an unwritten /j/ (e.g., "new" is pronounced /nju/); if so, we excluded it. Checking for such words was done with the aid of the CMU pronouncing dictionary. To replicate this checking:
 ```
 wget https://raw.githubusercontent.com/Alexir/CMUdict/master/cmudict-0.7b
 mv cmudict-0.7b cmudict.txt
 python piglatin_consonant_check.py
 ```
-- Low-probability sentences: Created by `example_generation_scripts/piglatin_low_probability.py`.
 
 ## Stimulus generation
-- Done with `stimulus_example_generation/stimulus_generator_piglatin_encode.py` and `stimulus_example_generation/stimulus_generator_piglatin_decode.py`
+- Done with `stimulus_generation_scripts/stimulus_generator_piglatin_encode.py` and `stimulus_generation_scripts/stimulus_generator_piglatin_decode.py`
 
 ## Model testing
 - Run these commands:
@@ -299,10 +295,11 @@ python probability_cmu.py
 ```
 
 - Then, generate acronyms using `example_generation_scripts/acronym.py`. This controls for split points: that is, for a given line index, all generated acronym files will have at that index an output word that has the same split point as all other files do, and each input word will have the same split point as the input words at the same position in all other files. The split point is the index where the first subword token ends.
-- To check that the inputs and outputs match, and that the break points are correctly controlled for, we ran `python acronym_check.py` in `example_generation_scripts/- A note about the filenames: "1" means highest probability, "5" means lowest. Each file has a 2-digit tag indicating first the output probability then the input probability. E.g., `acronym1_51` means very low-probability outputs and very high-probability inputs.
+- To check that the inputs and outputs match, and that the break points are correctly controlled for, we ran `python acronym_check.py` in `example_generation_scripts/
+- A note about the filenames: "1" means highest probability, "5" means lowest. Each file has a 2-digit tag indicating first the output probability then the input probability. E.g., `acronym1_51` means very low-probability outputs and very high-probability inputs.
 
 ## Stimulus generation
-- Done with `stimulus_example_generation/stimulus_generator_acronym.py`
+- Done with `stimulus_generation_scripts/stimulus_generator_acronym.py`
 
 ## Model testing
 - Run these commands:
@@ -412,7 +409,7 @@ python stimuli_statistics_counting.py --fi counting_words_rare_common.jsonl
 python stimuli_statistics_counting.py --fi counting_words_rare_rare.jsonl 
 ```
 
-The regressions were run inside `Regressions.ipynb`.
+The regressions were run inside `Regressions.ipynb`. Determining which numbers count as common for our binary common/rare comparison was done with `corpus_analysis/identify_common_numbers.py`.
 
 
 
@@ -422,7 +419,7 @@ The regressions were run inside `Regressions.ipynb`.
 - Done with `example_generation_scripts/multiplication.py`
 
 ## Stimulus generation
-- Done with `stimulus_example_generation/stimulus_generator_multiplication.py` and `stimulus_example_generation/stimulus_generator_multiplication3.py`
+- Done with `stimulus_generation_scripts/stimulus_generator_multiplication.py`
 
 ## Model testing
 - Run these commands:
@@ -478,8 +475,7 @@ python eval_conversion_ood.py
 
 ## Statistics
 
-Statistical tests were perfomed in `Regressions.ipynb`.
-
+Statistical tests were perfomed in `Regressions.ipynb`. For deciding what temperatures were OOD, we used `corpus_analysis/c4_fahrenheit_celsius.py` and `corpus_analysis/temp_analysis.py`.
 
 
 
@@ -489,7 +485,7 @@ Statistical tests were perfomed in `Regressions.ipynb`.
 - This task uses the same examples as the rot-13 task.
 
 ## Stimulus generation
-- Done with `stimulus_example_generation/stimulus_generator_keyboard.py`
+- Done with `stimulus_generation_scripts/stimulus_generator_keyboard.py`
 
 ## Model testing
 - Run these commands:
@@ -515,7 +511,7 @@ python sort_numbers.py
 ```
 
 ## Stimulus generation
-- Done with `stimulus_example_generation/python stimulus_generator_sorting.py` and `stimulus_example_generation/stimulus_generator_sortingnumbers.py`
+- Done with `stimulus_generation_scripts/python stimulus_generator_sorting.py` and `stimulus_generation_scripts/stimulus_generator_sortingnumbers.py`
 
 ## Model testing
 - Run these commands:
@@ -561,7 +557,7 @@ python birthday_generator.py
 
 
 ## Stimulus generation
-- Done with `stimulus_example_generation/stimulus_generator_birthdays.py`
+- Done with `stimulus_generation_scripts/stimulus_generator_birthdays.py`
 
 ## Model testing
 - Run these commands:
@@ -655,15 +651,39 @@ python run_openai.py --tasks zeroshot_pigenc_ay,zeroshot_pigdec_ay --conditions 
 ```
 
 
+
+
+
+
+
 # Few-shot
+
+## Example generation
+counting_words_fewshot.py
+
+
 python stimulus_generator_counting_fewshot.py
-python stimulus_generator_counting_fewshot.py
+python stimulus_generator_finetune_count.py
+
 python stimulus_generator_rot_encode_zeroshot.py
 python stimulus_generator_rot_decode_zeroshot.py
-stimulus_generator_reverse_decode_zeroshot.py
-stimulus_generator_reverse_encode_zeroshot.py
-stimulus_generator_reverse_decode_fewshot.py
-stimulus_generator_reverse_encode_fewshot.py
+python stimulus_generator_rot_encode_fewshot.py
+python stimulus_generator_rot_decode_fewshot.py
+python stimulus_generator_finetune_rot.py
+
+python stimulus_generator_rot_encode_word_fewshot.py
+python stimulus_generator_rot_decode_word_fewshot.py
+python stimulus_generator_rot_encode_word_overlap_fewshot.py
+python stimulus_generator_rot_decode_word_overlap_fewshot.py
+
+python stimulus_generator_reverse_decode_zeroshot.py
+python stimulus_generator_reverse_encode_zeroshot.py
+python stimulus_generator_reverse_decode_fewshot.py
+python stimulus_generator_reverse_encode_fewshot.py
+
+python stimulus_generator_sorting_fewshot.py
+python stimulus_generator_finetune_sort.py 
+
 
 python run_openai.py --tasks counting_words_common --conditions 5shot,10shot --max_tokens 25 --model gpt-4-0613
 python run_openai.py --tasks counting_words_common --conditions 5shot,10shot --max_tokens 25 --model gpt-3.5-turbo-0613
@@ -671,14 +691,10 @@ python run_claude3.py --tasks counting_words_common --conditions 5shot,10shot --
 
 python run_openai.py --tasks rot13enc,rot13dec --conditions highprob_0shot,mediumprob_0shot,lowprob_0shot,highprob_5shot,mediumprob_5shot,lowprob_5shot,highprob_10shot,mediumprob_10shot,lowprob_10shot --max_tokens 200  --model gpt-3.5-turbo-0613
 python run_openai.py --tasks rot13enc,rot13dec --conditions highprob_0shot,mediumprob_0shot,lowprob_0shot,highprob_5shot,mediumprob_5shot,lowprob_5shot,highprob_10shot,mediumprob_10shot,lowprob_10shot --max_tokens 200  --model gpt-4-0613
+python run_claude3.py --tasks rot13enc,rot13dec --conditions highprob_0shot,mediumprob_0shot,lowprob_0shot,highprob_5shot,mediumprob_5shot,lowprob_5shot,highprob_10shot,mediumprob_10shot,lowprob_10shot --max_tokens 200  --model claude-3
  
 python run_openai.py --tasks rot12enc,rot12dec --conditions highprob_0shot,highprob_5shot,highprob_10shot --max_tokens 200  --model gpt-3.5-turbo-0613
 python run_openai.py --tasks rot12enc,rot12dec --conditions highprob_0shot,highprob_5shot,highprob_10shot --max_tokens 200  --model gpt-4-0613
-
-
-
-python run_claude3.py --tasks rot13enc,rot13dec --conditions highprob_0shot,mediumprob_0shot,lowprob_0shot,highprob_5shot,mediumprob_5shot,lowprob_5shot,highprob_10shot,mediumprob_10shot,lowprob_10shot --max_tokens 200  --model claude-3
- 
 python run_claude3.py --tasks rot12enc,rot12dec --conditions highprob_0shot,highprob_5shot,highprob_10shot --max_tokens 200  --model claude-3
 
 
@@ -692,9 +708,9 @@ python run_openai.py --tasks rot12dec,rot12enc,rot13dec,rot13enc --conditions hi
 python run_openai.py --tasks rot13dec,rot13enc --conditions mediumprob_word_0shot,mediumprob_word_5shot,mediumprob_word_10shot,lowprob_word_0shot,lowprob_word_5shot,lowprob_word_10shot,mediumprob_word_overlap_0shot,mediumprob_word_overlap_5shot,mediumprob_word_overlap_10shot,lowprob_word_overlap_0shot,lowprob_word_overlap_5shot,lowprob_word_overlap_10shot --max_tokens 200  --model gpt-3.5-turbo-0613
 
 
+
 python run_claude3.py --tasks rot12dec,rot12enc,rot13dec,rot13enc --conditions highprob_word_overlap_0shot,highprob_word_overlap_5shot,highprob_word_overlap_10shot,highprob_word_0shot,highprob_word_5shot,highprob_word_10shot --max_tokens 200  --model claude-3
 python run_claude3.py --tasks rot13dec,rot13enc --conditions mediumprob_word_0shot,mediumprob_word_5shot,mediumprob_word_10shot,lowprob_word_0shot,lowprob_word_5shot,lowprob_word_10shot,mediumprob_word_overlap_0shot,mediumprob_word_overlap_5shot,mediumprob_word_overlap_10shot,lowprob_word_overlap_0shot,lowprob_word_overlap_5shot,lowprob_word_overlap_10shot --max_tokens 200  --model claude-3
-
 
 
 
@@ -791,7 +807,6 @@ python run_openai.py --tasks rot13enc --conditions lowprob_0shot --max_tokens 20
 
 
 
-# LAUNCHED
 python openai_upload.py stimuli/revdec_highprob_10shot_finetune.jsonl
 python openai_finetune.py file-huaXcPLgDEXiqcCOMiyT0E8N rdh_10shot
 python run_openai.py --tasks revdec --conditions highprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rdh-10shot:9S9QOf6v 
@@ -820,7 +835,6 @@ python run_openai.py --tasks revdec --conditions lowprob_0shot --max_tokens 200 
 
 
 
-# REVENC
 python openai_upload.py stimuli/revenc_highprob_10shot_finetune.jsonl
 python openai_finetune.py file-S1Lj7WyT4qNe2qREKAZHBXqW reh_10shot
 python run_openai.py --tasks revenc --conditions highprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:reh-10shot:9SALatx6 
@@ -855,7 +869,6 @@ python run_openai.py --tasks revenc --conditions lowprob_0shot --max_tokens 200 
 
 
 
-# Sorting
 python openai_upload.py stimuli/sorting_fwd_10shot_finetune.jsonl
 python openai_finetune.py file-3rou5taox63cYdnLr2VWVadh fwd_10shot
 python run_openai.py --tasks sorting --conditions fwd_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:fwd-10shot:9S9lmcHt
@@ -874,6 +887,15 @@ python run_openai.py --tasks sorting --conditions rev_0shot --max_tokens 200 --m
 
 
 
+# Evaluation
+python eval_counting_fewshot.py
+python eval_rot13_fewshot.py
+python tsv_rot13_fewshot.py
+python tsv_rot13_fewshot_word.py
+python tsv_rot13and12_fewshot.py
+python tsv_rot13and12_fewshot_word.py
+python eval_sorting_fewshot.py
+python tsv_reverse_fewshot.py
 
 
 
