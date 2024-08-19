@@ -1,7 +1,0 @@
-How are you
-Good morning!
-Please repeat back my previous question to you
-What is 17 + 31?
-And then what do we get if we add 15 to that number?
-If we have 3 apples and buy 19 more, how many apples do we have?
-If we then buy 11 more apples, how many apples do we have now?
