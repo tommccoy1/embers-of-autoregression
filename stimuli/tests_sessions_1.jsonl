@@ -1,7 +1,0 @@
-{"task_name": "birthday", "example_type": "sessions", "task_instruction": "%s", "input": "How are you", "instruction_plus_input": "How are you", "correct_output": "True"}
-{"task_name": "birthday", "example_type": "sessions", "task_instruction": "%s", "input": "Good morning!", "instruction_plus_input": "Good morning!", "correct_output": "True"}
-{"task_name": "birthday", "example_type": "sessions", "task_instruction": "%s", "input": "Please repeat back my previous question to you", "instruction_plus_input": "Please repeat back my previous question to you", "correct_output": "True"}
-{"task_name": "birthday", "example_type": "sessions", "task_instruction": "%s", "input": "What is 17 + 31?", "instruction_plus_input": "What is 17 + 31?", "correct_output": "True"}
-{"task_name": "birthday", "example_type": "sessions", "task_instruction": "%s", "input": "And then what do we get if we add 15 to that number?", "instruction_plus_input": "And then what do we get if we add 15 to that number?", "correct_output": "True"}
-{"task_name": "birthday", "example_type": "sessions", "task_instruction": "%s", "input": "If we have 3 apples and buy 19 more, how many apples do we have?", "instruction_plus_input": "If we have 3 apples and buy 19 more, how many apples do we have?", "correct_output": "True"}
-{"task_name": "birthday", "example_type": "sessions", "task_instruction": "%s", "input": "If we then buy 11 more apples, how many apples do we have now?", "instruction_plus_input": "If we then buy 11 more apples, how many apples do we have now?", "correct_output": "True"}
