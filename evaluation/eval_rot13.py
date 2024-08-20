@@ -63,7 +63,7 @@ for task in ["enc", "dec"]:
                         #print("")
                         pass
                 else:
-                    if condition == "rot13dec_mediumprob" and model == "gpt-4-0613" and len(gt) < 80 and len(gt) < 80 and distance(gt.split(), res.split()) >= 2:
+                    if condition == "rot13enc_mediumprob" and model == "gpt-4-0613" and len(gt) < 80 and len(gt) < 80 and distance(gt.split(), res.split()) >= 2:
                         #print(gt)
                         #print(res)
                         #print("")
