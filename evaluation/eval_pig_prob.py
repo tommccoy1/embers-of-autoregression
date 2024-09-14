@@ -147,9 +147,9 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
 # omplicatedcay erethay*
 # utbay isthay imetay*
 
-                #if model == "gpt-4-0613" and "utbay isthay imetay" in gt and direction == "enc":
-                #    print(gt)
-                #    print(res)
-                #    print("")
+                #if model == "gpt-4-0613" and "agmaticpray" in gt and direction == "enc":
+                    #print(gt)
+                    #print(res)
+                    #print("")
 
             print(condition, "acc:", count_correct*1.0/count_total, "levdist:", total_dist*1.0/count_total)

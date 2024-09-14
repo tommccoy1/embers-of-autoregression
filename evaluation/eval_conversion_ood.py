@@ -102,7 +102,8 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
             if not gt_in_res:
                 # Don't have to worry about finding the correct answer
                 # if there's no way it is in the response
-                res = -1000000
+                res = -1000000 #REVERT
+                pass
 
             if str(res).startswith("331\n\nHere's how"):
                 res = 331
@@ -123,7 +124,8 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
                 #print("RES")
                 #print(res)
                 #print("")
-                res = -1000000
+                res = -1000000 # REVERT
+                pass
 
 
             gt = float(gt)
@@ -143,12 +145,12 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
                     #print(inp)
                     pass
                
-            #if model == "gpt-4-0613" and condition in ["conversion_ood_actual", "conversion_ood_actualprimedcontrol", "conversion_ood_actualprimed"] and inp in ["731", "558", "842", "977"]:
-            #    print(inp)
-            #    print(gt)
-            #    print(res)
-            #    print("")
-            #    pass
+            if model == "gpt-4-0613" and condition in ["conversion_ood_actual", "conversion_ood_actualprimedcontrol", "conversion_ood_actualprimed"] and inp in ["731", "558", "842", "977"]:
+                #print(inp)
+                #print(gt)
+                #print(res)
+                #print("")
+                pass
 
             #if index == 0:
             #    print(gt)

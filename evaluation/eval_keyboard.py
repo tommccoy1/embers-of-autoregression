@@ -78,7 +78,7 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
             if gt in res:
                 count_correct += 1
             else:
-                if model == "gpt-4-0613" and len(gt) < 60: # and condition == "keyboardcotreference_highprob":
+                if model == "gpt-4-0613" and len(gt) < 60 and condition == "keyboardcot_highprob":
                     # Uncomment to see what models are doing
                     #print(keyboard_decode(gt))
                     #print(keyboard_decode(res))

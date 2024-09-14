@@ -646,7 +646,7 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
                         if gt == res:
                             count_correct += 1
                             correct = "1"
-                            if model == "gpt-4-0613" and condition == "acronym1" and inner == 1 and outer == 1 and gt == "PARTIES":
+                            if model == "gpt-4-0613" and condition == "acronym1" and inner == 1 and outer == 1 and gt == "STOPPED":
                                 #print(inp)
                                 #print(gt)
                                 #print(res)
@@ -662,10 +662,10 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
                                 #print("\n\n\n")
                                 pass
 
-                            if model == "gpt-4-0613" and condition == "acronym1" and inner == 1 and outer == 1 and gt == "PARTIES": # and len(gt) != len(res):
+                            if model == "gpt-4-0613" and condition == "acronym1" and gt == "GAMELIN": # and len(gt) != len(res):
                                 #print(inp)
                                 #print(gt)
-                                #print(res)
+                                #print(res, inner, outer)
                                 #print("")
                                 pass
                         #    print(res, gt)

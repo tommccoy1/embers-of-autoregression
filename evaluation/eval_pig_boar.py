@@ -127,7 +127,7 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
                 # If decoding, allow for nondeterminism (multiple possible answers)
                 if gt.lower() in res.lower() or ("dec" in condition and pig_encode(gt.lower()) in pig_encode(res.lower())):
                     count_correct += 1
-                    #if model == "gpt-4" and "dec_ay_highprob" in condition and len(gt) < 60:
+                    #if model == "gpt-4-0613" and "dec_ay_highprob" in condition and len(gt) < 80:
                     #    print(gt)
                     #    print(res)
                     #    print("")

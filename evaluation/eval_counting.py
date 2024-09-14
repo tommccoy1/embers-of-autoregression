@@ -430,7 +430,7 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
                 if answer == gt:
                     count_by_number[gt][0] += 1
                     correct = "1"
-                    if model == "gpt-4-0613" and gt == 30 and condition == "counting_chars" and len(inp) < 300:
+                    if model == "gpt-4-0613" and gt == 20 and condition == "counting_chars" and len(inp) < 300:
                         #print(inp)
                         #print(gt)
                         #print(answer)
@@ -438,7 +438,7 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
                         pass
                 else:
                     correct = "0"
-                    if model == "gpt-4-0613" and gt == 29 and condition == "counting_chars" and len(inp) < 300:
+                    if model == "gpt-4-0613" and gt == 18 and condition == "counting_chars" and len(inp) < 300:
                         #print(inp)
                         #print(gt)
                         #print(answer)

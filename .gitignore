@@ -1,5 +1,6 @@
 corpus_analysis/c4_shifts.txt
 corpus_analysis/c4_piglatin.txt
+figures/
 global_voices/
 old_llama/
 old_logs/
@@ -8,4 +9,5 @@ prev/
 saved_tsv_files/
 test_llms/
 .DS_Store
+.o1_venv/
 .venv/

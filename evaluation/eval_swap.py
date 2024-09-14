@@ -99,7 +99,7 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
                         pass
                 else:
                     correct = "0"
-                    if model == "gpt-4-0613" and condition in ["swap_next_base_lowprob", "swap_next_base_prob"] and len(gt) < 70 and article_count(gt) > 1:
+                    if model == "gpt-4-0613" and condition in ["swap_next_base_lowprob", "swap_next_base_mediumprob"] and len(gt) < 70 and article_count(gt) > 1:
                         #print(inp)
                         #print(gt)
                         #print(res)

@@ -47,13 +47,14 @@ for task in ["dec"]:
                     if gt in res:
                         count_correct += 1
                     else:
-                        if model == "gpt-4-0613" and shift == 12 and len(gt) < 60: # and "To be or not" in res: #shift == 12 and len(gt) < 60:
+                        #if model == "gpt-4-0613" and shift == 10: # and "To be or" in res: #shift == 2 and ("crypt" in res or "code" in res): #shift == 10 and len(gt) < 160 and "To be or" in res: #shift == 12 and len(gt) < 60:
+                        if model == "gpt-4-0613" and shift == 2 and ("crypt" in res or "code" in res):
                             #print(gt)
                             #print(res)
                             #print("")
                             pass
 
-                    if model == "gpt-4-0613" and shift == 13 and gt == res and len(gt) < 70: # and gt == res:
+                    if model == "gpt-4-0613" and shift == 10 and gt != res and len(gt) < 800 and "humanities" in gt: # and gt == res:
                         #print(gt)
                         #print(res)
                         #print("")

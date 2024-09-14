@@ -35,12 +35,12 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
             if res == gt:
                 count_correct_full += 1
                 #if len(gt) < 70:
-                #    print(gt)
-                #    print(res)
-                #    print("")
+                    #print(gt)
+                    #print(res)
+                    #print("")
             if res == regularized:
                 count_regularized_full += 1
-                #if len(gt) < 50:
+                #if len(gt) < 800 and "gpt-4" in model:
                 #    print(gt)
                 #    print(res)
                 #    print("")
@@ -63,10 +63,10 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
                 #    print("")
             if res_word == regularized_word:
                 count_regularized_critical += 1
-                #if gt != res and res != regularized and len(gt) < 70:
-                #    print(gt)
-                #    print(res)
-                #    print("")
+                #if model == "gpt-4-0613" and gt != res and res != regularized and len(gt) < 80:
+                    #print(gt)
+                    #print(res)
+                    #print("")
 
 
             count_total += 1

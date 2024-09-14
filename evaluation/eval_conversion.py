@@ -152,7 +152,8 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
             if not gt_in_res:
                 # Don't have to worry about finding the correct answer
                 # if there's no way it is in the response
-                res = -1000000
+                res = -1000000 # REVERT
+                pass
 
 
             if str(res).endswith("1149.8\n\nSo, the final answer"):
@@ -184,7 +185,7 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
                 #    print(res)
                 #    print("\n\n\n")
 
-            if model == "gpt-4-0613" and gt != res and condition == "conversion_fake":
+            if model == "gpt-4-0613" and inp == "577": #gt != res and condition == "conversion_fake":
                 #print(inp)
                 #print(gt)
                 #print(res)
@@ -194,6 +195,7 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "claude
             #    print(gt, res)
             #else:
                 #print("")
+
             count_total += 1
 
 

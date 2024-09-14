@@ -65,9 +65,10 @@ for model in ["gpt-3.5-turbo-0613", "gpt-4-0613", "llama-3-70b-chat-hf", "gemini
             if gt in res or "-".join(gt.split()) in res:
                 count_correct += 1
             else:
-                #print("RES", res)
-                #print("GT", gt)
-                #print("")
+                #if "gpt-3" in model:
+                    #print("RES", res)
+                    #print("GT", gt)
+                    #print("")
                 #if not all_singles(res):
                 #    print("RES", res)
                 #    print("GT", gt)
