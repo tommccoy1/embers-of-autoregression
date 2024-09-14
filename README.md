@@ -3,11 +3,8 @@
 
 # Embers of autoregression
 
-# TODO: CHANGE MODELS
 This repository gives the stimuli and LLM predictions for the paper Embers of Autoregression. The commands given in the rest of this README show how to run the tests for GPT-3.5 and GPT-4. To extend the results to Llama 3, change `run_openai.py` to `run_llama3.py` and use `--model llama-3-70b-chat`. To extend the results to Claude 3, change `run_openai.py` to `run_claude3.py` and use `--model claude-3`. To extend the results to Gemini 1.0, change `run_openai.py` to `run_gemini.py` and use `--model gemini-1.0-pro-001`.
 
-
-# TODO: ADD REQUIREMENTS
 
 
 # Shift ciphers
@@ -884,6 +881,61 @@ python run_openai.py --tasks sorting --conditions rev_0shot --max_tokens 200 --m
 python openai_upload.py stimuli/sorting_rev_100shot_finetune.jsonl
 python openai_finetune.py file-mfdJBlIPZ1wljHgT7U71nEMP rev_100shot
 python run_openai.py --tasks sorting --conditions rev_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rev-100shot:9S9vpZRp
+
+
+
+
+
+
+
+
+python run_openai.py --tasks revdec --conditions highprob_5shotmis,lowprob_5shotmis,highprob_10shotmis,lowprob_10shotmis --max_tokens 200 --model gpt-4-0613
+python run_openai.py --tasks revdec --conditions highprob_5shotmis,lowprob_5shotmis,highprob_10shotmis,lowprob_10shotmis --max_tokens 200 --model gpt-3.5-turbo-0613
+python run_claude3.py --tasks revdec --conditions highprob_5shotmis,lowprob_5shotmis,highprob_10shotmis,lowprob_10shotmis --max_tokens 200 --model claude-3
+
+
+
+python run_openai.py --tasks revdec --conditions lowprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rdh-10shot:9S9QOf6v
+python run_openai.py --tasks revdec --conditions lowprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rdh-100shot:9S9VZFB5
+python run_openai.py --tasks revdec --conditions highprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rdl-10shot:9S9dK7en
+python run_openai.py --tasks revdec --conditions highprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rdl-100shot:9S9gPeoH
+
+
+
+
+python run_openai.py --tasks revenc --conditions highprob_5shotmis,lowprob_5shotmis,highprob_10shotmis,lowprob_10shotmis --max_tokens 200 --model gpt-4-0613
+python run_openai.py --tasks revenc --conditions highprob_5shotmis,lowprob_5shotmis,highprob_10shotmis,lowprob_10shotmis --max_tokens 200 --model gpt-3.5-turbo-0613
+python run_claude3.py --tasks revenc --conditions highprob_5shotmis,lowprob_5shotmis,highprob_10shotmis,lowprob_10shotmis --max_tokens 200 --model claude-3
+
+
+
+python run_openai.py --tasks revenc --conditions lowprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rdh-10shot:9S9QOf6v
+python run_openai.py --tasks revenc --conditions lowprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rdh-100shot:9S9VZFB5
+python run_openai.py --tasks revenc --conditions highprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rdl-10shot:9S9dK7en
+python run_openai.py --tasks revenc --conditions highprob_0shot --max_tokens 200 --model ft:gpt-3.5-turbo-0613:personal:rdl-100shot:9S9gPeoH
+
+
+
+
+
+
+
+python run_openai.py --tasks rot13enc,rot13dec --conditions highprob_5shotmis,lowprob_5shotmis,highprob_10shotmis,lowprob_10shotmis --max_tokens 200  --model gpt-3.5-turbo-0613
+python run_openai.py --tasks rot13enc,rot13dec --conditions highprob_5shotmis,lowprob_5shotmis,highprob_10shotmis,lowprob_10shotmis --max_tokens 200  --model gpt-4-0613
+python run_claude3.py --tasks rot13enc,rot13dec --conditions highprob_5shotmis,lowprob_5shotmis,highprob_10shotmis,lowprob_10shotmis --max_tokens 200  --model claude-3
+
+
+python run_openai.py --tasks rot13dec --conditions lowprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13dh-100shot:9NgePY2P
+python run_openai.py --tasks rot13dec --conditions lowprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13dh-10shot:9NgXMOZK
+python run_openai.py --tasks rot13dec --conditions highprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13dl-100shot:9NgcPo3H
+python run_openai.py --tasks rot13dec --conditions highprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13dl-10shot:9NggubuL
+
+python run_openai.py --tasks rot13enc --conditions lowprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13eh-100shot:9Nh0obrD
+python run_openai.py --tasks rot13enc --conditions lowprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13eh-10shot:9Nh9hmyo
+python run_openai.py --tasks rot13enc --conditions highprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13el-10shot:9NhJlYd7
+python run_openai.py --tasks rot13enc --conditions highprob_0shot --max_tokens 200  --model ft:gpt-3.5-turbo-0613:personal:r13el-100shot:9NhO5zIm
+
+
 
 
 
